@@ -22,6 +22,7 @@ public class MenuView extends SubPanel implements ActionListener {
         
         bottom.add(jbStart);
         add(bottom, BorderLayout.SOUTH);
+        System.out.println("opgelost");
     }
 
     @Override
