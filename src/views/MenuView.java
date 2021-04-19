@@ -19,24 +19,27 @@ public class MenuView extends SubPanel implements ActionListener {
         setLayout(new BorderLayout());
         setVisible(false);
 
+        // Hier moet uiteindelijk de methode worden aangeroepen waarmee de gebruikers worden opgehaald
+        ArrayList<String> gebruikers = new ArrayList<String>();
+        Collections.addAll(gebruikers, "Eugene", "Bram", "Justin", "Cindy", "Jonathan", "Storm", "Camiel");
+
+        // TOP
         JPanel top = new JPanel();
-        top.setBorder(BorderFactory.createEmptyBorder(50, 0, 10, 0));
-        JPanel center = new JPanel();
-        JPanel bottom = new JPanel();
-        bottom.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
+        top.setBorder(BorderFactory.createEmptyBorder(40, 0, 10, 0));
 
         jlKies = new JLabel("Kies uw profiel:");
         jlKies.setFont(jlKies.getFont().deriveFont(24.0f));
         jbNieuwProfiel = new CButton(this, "＋", Color.black, Color.white);
+        jbNieuwProfiel.setFont(new Font(jbNieuwProfiel.getFont().getFamily(), Font.PLAIN, 24));
 
         top.add(jlKies);
         add(top, BorderLayout.NORTH);
 
-        // Hier moet uiteindelijk de methode worden aangeroepen waarmee de gebruikers worden opgehaald
-        ArrayList<String> gebruikers = new ArrayList<String>();
-        Collections.addAll(gebruikers, "Bram", "Justin", "Cindy", "Jonathan", "Storm", "Camiel");
+        // CENTER
+        JPanel center = new JPanel();
         JPanel userGrid = new JPanel();
-        GridLayout userGridLayout = new GridLayout((gebruikers.size()/3), 3);
+        userGrid.setPreferredSize(new Dimension(600, 20*gebruikers.size()));
+        GridLayout userGridLayout = new GridLayout(3, (gebruikers.size()/3));
         userGridLayout.setHgap(10); userGridLayout.setVgap(10);
         userGrid.setLayout(userGridLayout);
         for (String naam: gebruikers) {
@@ -47,8 +50,19 @@ public class MenuView extends SubPanel implements ActionListener {
         center.add(userGrid);
         add(center, BorderLayout.CENTER);
 
-        bottom.add(new JLabel("Profiel toevoegen"));
-        bottom.add(jbNieuwProfiel);
+        // BOTTOM
+        JPanel bottom = new JPanel();
+        bottom.setLayout(new BorderLayout());
+        bottom.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
+
+        JPanel nieuwProfielButtonPanel = new JPanel();
+        nieuwProfielButtonPanel.add(jbNieuwProfiel);
+        bottom.add(nieuwProfielButtonPanel, BorderLayout.NORTH);
+
+        JPanel nieuwProfielLabelPanel = new JPanel();
+        nieuwProfielLabelPanel.add(new JLabel("Profiel toevoegen (" + gebruikers.size() + "/15)"), BorderLayout.SOUTH);
+        bottom.add(nieuwProfielLabelPanel, BorderLayout.SOUTH);
+
         add(bottom, BorderLayout.SOUTH);
     }
 
