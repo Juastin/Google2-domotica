@@ -10,11 +10,11 @@ import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class MenuView extends SubPanel implements ActionListener {
+public class ProfileView extends SubPanel implements ActionListener {
     private JButton jbNieuwProfiel;
     private JLabel jlKies;
 
-    public MenuView(MainPanel parent, String panel_name) {
+    public ProfileView(MainPanel parent, String panel_name) {
         super(parent, panel_name);
         setLayout(new BorderLayout());
         setVisible(false);

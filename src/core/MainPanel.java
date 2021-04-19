@@ -15,7 +15,7 @@ public class MainPanel extends JPanel {
         setBackground(Color.black);
         setLayout(new GridLayout(0, 1));
         
-        panels.add(new MenuView(this, "MenuView"));
+        panels.add(new ProfileView(this, "ProfileView"));
         panels.add(new ImageView(this, "ImageView"));
         
         Timer timer = new Timer();

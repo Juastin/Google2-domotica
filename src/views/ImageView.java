@@ -28,7 +28,7 @@ public class ImageView extends SubPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == jbStart) {
-            changeFocus("MenuView");
+            changeFocus("ProfileView");
         } else if (e.getSource() == jbTest) {
             JOptionPane.showMessageDialog(this, "Wow '" + jtTest.getText() + "' is echt een coole naam.");
         }
