@@ -1,5 +1,5 @@
-package google2_domotica.core;
-import google2_domotica.core.*;
+package google2.domotica.core;
+import google2.domotica.core.*;
 
 import java.util.TimerTask;
 import java.util.ArrayList;
