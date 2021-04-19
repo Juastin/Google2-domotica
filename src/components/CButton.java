@@ -1,4 +1,4 @@
-package google2.domotica.components;
+package src.components;
 
 import javax.swing.JButton;
 import java.awt.Color;

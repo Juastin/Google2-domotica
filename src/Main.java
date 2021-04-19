@@ -1,5 +1,5 @@
-package google2.domotica;
-import google2.domotica.core.*;
+package src;
+import src.core.*;
 
 public class Main {
     public static void main(String[] args) {
