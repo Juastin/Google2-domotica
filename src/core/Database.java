@@ -6,21 +6,14 @@ import java.util.ArrayList;
 /* Based on: https://www.youtube.com/watch?v=2i4t-SL1VsU
 
 EXAMPLE:
-ArrayList<ArrayList<ArrayList<String>>> result = Database.query("select * from Persoon");
+ArrayList<ArrayList<String>> result = Database.query("select * from Persoon");
 System.out.println(result.toString());
 
 Returns data in the following format:
 [
-  [                   // row1
-    [key, value],
-    [key, value],
-    [key, value]
-  ],
-  [                   // row2
-    [key, value],
-    [key, value],
-    [key, value]
-  ]
+  [value, value, value],   //row1
+  [value, value, value],   //row2
+  [value, value, value]    //row3
 ]
 */
 
@@ -29,8 +22,8 @@ public class Database {
     static String username = "google2";
     static String password = "windesheim123?";
 
-    public static ArrayList<ArrayList<ArrayList<String>>> query(String query) {
-		ArrayList<ArrayList<ArrayList<String>>> result = new ArrayList<ArrayList<ArrayList<String>>>();
+    public static ArrayList<ArrayList<String>> query(String query) {
+		ArrayList<ArrayList<String>> result = new ArrayList<ArrayList<String>>();
 		Connection myConn = null;
 		Statement myStmt = null;
 		ResultSet myRs = null;
@@ -43,12 +36,9 @@ public class Database {
 			int columnsNumber = rsmd.getColumnCount();
 
 			while (myRs.next()) {
-				ArrayList<ArrayList<String>> result_part = new ArrayList<ArrayList<String>>();
+				ArrayList<String> result_part = new ArrayList<String>();
 				for (int i = 1; i <= columnsNumber; i++) {
-					ArrayList<String> result_part_part = new ArrayList<String>();
-					result_part_part.add(rsmd.getColumnName(i));
-					result_part_part.add(myRs.getString(i));
-					result_part.add(result_part_part);
+					result_part.add(myRs.getString(i));
 				}
 				result.add(result_part);
 			}
