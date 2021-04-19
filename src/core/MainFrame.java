@@ -1,5 +1,4 @@
 package src.core;
-import src.components.*;
 
 import javax.swing.*;
 import java.awt.*;
