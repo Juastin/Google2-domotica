@@ -1,5 +1,5 @@
-package src.core;
-import src.views.*;
+package google2_domotica.core;
+import google2_domotica.views.*;
 
 import javax.swing.*;
 import java.awt.*;

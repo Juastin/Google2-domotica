@@ -1,4 +1,4 @@
-package src.core;
+package google2_domotica.core;
 
 import javax.swing.JPanel;
 import java.awt.event.ActionEvent;

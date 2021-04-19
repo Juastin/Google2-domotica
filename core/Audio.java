@@ -1,4 +1,4 @@
-package src.core;
+package google2_domotica.core;
 
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.AudioInputStream;
