@@ -1,6 +1,7 @@
 package src.views;
 import src.core.*;
 import src.components.*;
+import src.models.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,6 +13,7 @@ import java.util.Collections;
 public class ProfileView extends SubPanel implements ActionListener {
     private JButton jbNieuwProfiel;
     private JLabel jlKies;
+    private ArrayList<CButton> userButtons;
 
     public ProfileView(MainPanel parent, String panel_name) {
         super(parent, panel_name);
@@ -41,10 +43,12 @@ public class ProfileView extends SubPanel implements ActionListener {
         GridLayout userGridLayout = new GridLayout(3, (gebruikers.size()/3));
         userGridLayout.setHgap(10); userGridLayout.setVgap(10);
         userGrid.setLayout(userGridLayout);
+        userButtons = new ArrayList<CButton>();
         for (String naam: gebruikers) {
             CButton button = new CButton(this, naam, Color.black, Color.white);
             button.setFont(new Font(button.getFont().getFamily(), Font.PLAIN, 16));
             userGrid.add(button);
+            userButtons.add(button);
         }
         center.add(userGrid);
         add(center, BorderLayout.CENTER);
@@ -70,6 +74,13 @@ public class ProfileView extends SubPanel implements ActionListener {
         if (e.getSource() == jbNieuwProfiel) {
             changeFocus("ImageView");
         }
+
+        for (CButton button: userButtons) {
+            if (e.getSource() == button) {
+                User.setUsername(button.getText());
+            }
+        }
+
         Audio.play("../resources/click.wav");
     }
 
