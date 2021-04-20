@@ -7,11 +7,11 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class ImageView extends SubPanel implements ActionListener {
+public class MakeProfileView extends SubPanel implements ActionListener {
     private JButton jbBack, jbSave;
     private JTextField jtTest;
 
-    public ImageView(MainPanel parent, String panel_name) {
+    public MakeProfileView(MainPanel parent, String panel_name) {
         super(parent, panel_name);
         setVisible(false);
 
