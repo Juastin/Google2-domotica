@@ -14,10 +14,11 @@ public class MainPanel extends JPanel {
         this.parent = parent;
         setBackground(Color.black);
         setLayout(new GridLayout(0, 1));
-        
+
         panels.add(new ProfileView(this, "ProfileView"));
         panels.add(new ImageView(this, "ImageView"));
-        
+        panels.add(new LoginView(this, "LoginView"));
+
         Timer timer = new Timer();
         timer.schedule(new Worker(this), 0, 60000);
 
