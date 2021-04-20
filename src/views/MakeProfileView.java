@@ -23,7 +23,7 @@ public class MakeProfileView extends SubPanel implements ActionListener {
 
         welcomeLabel = new JLabel("Maak hier een profiel aan:");
         welcomeLabel.setFont(welcomeLabel.getFont().deriveFont(24.0f));
-        top.add(welcomeLabel);
+        top.add(welcomeLabel,BorderLayout.NORTH);
 
         // CENTER
         jtFirstName = new JTextField(20);
@@ -52,16 +52,22 @@ public class MakeProfileView extends SubPanel implements ActionListener {
         LastName.add(jtLastName);
 
         JPanel Password = new JPanel();
-        Password.setPreferredSize(new Dimension(1000,40));
+        Password.setPreferredSize(new Dimension(1000,250));
         Password.add(jlPasswordLabel);
         Password.add(jtPassword);
 
-        add(top);
-        add(FirstName);
-        add(LastName);
-        add(Password);
-        add(jbSave);
-        add(jbBack);
+        // BOTTOM
+        JPanel bottom = new JPanel();
+        bottom.setPreferredSize(new Dimension(1000,40));
+        bottom.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
+        bottom.add(jbBack);
+        bottom.add(jbSave);
+
+        add(top,BorderLayout.NORTH);
+        add(FirstName,BorderLayout.CENTER);
+        add(LastName,BorderLayout.CENTER);
+        add(Password,BorderLayout.CENTER);
+        add(bottom,BorderLayout.SOUTH);
     }
 
     @Override
