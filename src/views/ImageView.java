@@ -29,7 +29,7 @@ public class ImageView extends SubPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == jbBack) {
             changeFocus("ProfileView");
-        } else if (e.getSource() == jbTest) {
+        } else if (e.getSource() == jbSave) {
             JOptionPane.showMessageDialog(this, "Wow '" + jtTest.getText() + "' is echt een coole naam.");
         }
         Audio.play("../resources/click.wav");
