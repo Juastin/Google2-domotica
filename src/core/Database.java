@@ -6,7 +6,7 @@ import java.util.ArrayList;
 /* Based on: https://www.youtube.com/watch?v=2i4t-SL1VsU
 
 EXAMPLE:
-ArrayList<ArrayList<String>> result = Database.query("select * from Persoon");
+ArrayList<ArrayList<String>> result = Database.query("select * from Playlist");
 System.out.println(result.toString());
 
 Returns data in the following format:
@@ -19,7 +19,7 @@ Returns data in the following format:
 
 public class Database {
     static String host = "jdbc:mysql://40.113.153.48/DomoticaSysteem";
-    static String username = "remote";
+    static String username = "newRemote";
     static String password = "P@ssw0rd";
 
     public static ArrayList<ArrayList<String>> query(String query) {
