@@ -18,9 +18,9 @@ Returns data in the following format:
 */
 
 public class Database {
-    static String host = "jdbc:mysql://40.113.153.48/Google2";
-    static String username = "google2";
-    static String password = "windesheim123?";
+    static String host = "jdbc:mysql://40.113.153.48/DomoticaSysteem";
+    static String username = "remote";
+    static String password = "P@ssw0rd";
 
     public static ArrayList<ArrayList<String>> query(String query) {
 		ArrayList<ArrayList<String>> result = new ArrayList<ArrayList<String>>();

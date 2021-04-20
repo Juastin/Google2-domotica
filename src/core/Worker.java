@@ -11,7 +11,7 @@ public class Worker extends TimerTask {
 
     @Override
     public void run() {
-        System.out.println("Deze tekst wordt geprint in Worker.java");
+        System.out.println("Worker is working");
     }
     
 }

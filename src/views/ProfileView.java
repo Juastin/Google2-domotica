@@ -22,7 +22,7 @@ public class ProfileView extends SubPanel implements ActionListener {
 
         // Hier moet uiteindelijk de methode worden aangeroepen waarmee de gebruikers worden opgehaald
         ArrayList<String> gebruikers = new ArrayList<String>();
-        Collections.addAll(gebruikers, "Eugene", "Bram", "Justin", "Cindy", "Jonathan", "Storm", "Camiel");
+        Collections.addAll(gebruikers, "Bram", "Justin", "Cindy", "Jonathan", "Storm", "Camiel");
 
         // TOP
         JPanel top = new JPanel();
