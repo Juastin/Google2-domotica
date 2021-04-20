@@ -78,6 +78,7 @@ public class ProfileView extends SubPanel implements ActionListener {
         for (CButton button: userButtons) {
             if (e.getSource() == button) {
                 User.setUsername(button.getText());
+                changeFocus("LoginView");
             }
         }
 
