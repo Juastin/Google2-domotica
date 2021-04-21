@@ -78,7 +78,7 @@ public class LoginView extends SubPanel implements ActionListener{
             String password = String.valueOf(jbPassword.getPassword());
 
             try {
-                ArrayList<ArrayList<String>> result = Database.query("SELECT PasswordHash FROM Person WHERE FirstName = '" + User.getUsername() + "'");
+                ArrayList<ArrayList<String>> result = Database.query("SELECT PasswordHash FROM Person WHERE Username = '" + User.getUsername() + "'");
                 if (result.get(0).get(0).equals(password)) {
                     User.setLoggedIn(true);
                     changeFocus("MainScreenView");
