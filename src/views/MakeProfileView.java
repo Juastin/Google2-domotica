@@ -1,6 +1,8 @@
 package src.views;
+import at.favre.lib.crypto.bcrypt.BCrypt;
 import src.core.*;
 import src.components.*;
+import src.models.Authentication;
 
 import javax.swing.*;
 import java.awt.*;
@@ -95,6 +97,15 @@ public class MakeProfileView extends SubPanel implements ActionListener {
             String usernameText = jtUsername.getText();
             char[] passwordText = jtPassword.getPassword();
             System.out.println(usernameText+" "+passwordText);
+
+            String encryptedPassword = Authentication.encryptPassword(passwordText);
+            System.out.println("encrypted: "+passwordText +" "+ encryptedPassword);
+
+            String passwordTest = "1234";
+            System.out.println("Check true if password is: "+passwordTest);
+
+            BCrypt.Result result = Authentication.decryptPassword(passwordTest.toCharArray(),encryptedPassword);
+            System.out.println(result.verified);
         }
         Audio.play("../resources/click.wav");
     }
