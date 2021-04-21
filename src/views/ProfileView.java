@@ -43,12 +43,10 @@ public class ProfileView extends SubPanel implements ActionListener {
         userGrid.setLayout(userGridLayout);
         userButtons = new ArrayList<CButton>();
         for (ArrayList<String> row: gebruikers) {
-            for (String naam: row) {
-                CButton button = new CButton(this, naam, Color.black, Color.white);
-                button.setFont(new Font(button.getFont().getFamily(), Font.PLAIN, 16));
-                userGrid.add(button);
-                userButtons.add(button);
-            }
+            CButton button = new CButton(this, row.get(0), Color.black, Color.white);
+            button.setFont(new Font(button.getFont().getFamily(), Font.PLAIN, 16));
+            userGrid.add(button);
+            userButtons.add(button);
         }
         center.add(userGrid);
         add(center, BorderLayout.CENTER);
