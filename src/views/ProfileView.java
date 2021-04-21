@@ -20,7 +20,7 @@ public class ProfileView extends SubPanel implements ActionListener {
         setVisible(false);
 
         // GET PROFILES FROM DB
-        ArrayList<ArrayList<String>> gebruikers = Database.query("SELECT username FROM Person");
+        ArrayList<ArrayList<String>> gebruikers = Queries.getProfiles();
 
         // TOP
         JPanel top = new JPanel();
