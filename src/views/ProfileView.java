@@ -85,4 +85,9 @@ public class ProfileView extends SubPanel implements ActionListener {
         Audio.play("../resources/click.wav");
     }
 
+    @Override
+    public void onFocus() {
+        
+    }
+
 }
