@@ -29,8 +29,20 @@ public class MakeProfileView extends SubPanel implements ActionListener {
         // CENTER
         jtUsername = new JTextField(20);
         jtPassword = new JPasswordField(20);
+
+        JPanel backLabelPanel = new JPanel();
+        jbBack = new JButton("< Terug");
+        jbBack.addActionListener(this);
+        jbBack.setOpaque(false);
+        jbBack.setContentAreaFilled(false);
+        jbBack.setBorderPainted(false);
+        jbBack.setFont(jbBack.getFont().deriveFont(24.0f));
+        backLabelPanel.add(jbBack, BorderLayout.SOUTH);
+
+        JPanel savePanel = new JPanel();
         jbSave = new CButton(this, "Profiel aanmaken", Color.black, Color.white);
-        jbBack = new CButton(this, "Terug naar hoofdmenu", Color.black, Color.white);
+        jbSave.setFont(jbBack.getFont().deriveFont(20.0f));
+
 
         jlUsernameLabel = new JLabel("Gebruikersnaam");
         jlPasswordLabel = new JLabel("Wachtwoord");
@@ -52,21 +64,26 @@ public class MakeProfileView extends SubPanel implements ActionListener {
         passwordLabel.add(jlPasswordLabel);
 
         JPanel password = new JPanel();
-        password.setPreferredSize(new Dimension(1000,200));
+        password.setPreferredSize(new Dimension(1000,50));
         password.add(jtPassword);
+
+        JPanel save = new JPanel();
+        save.setPreferredSize(new Dimension(1000,100));
+        save.add(jbSave);
 
         // BOTTOM
         JPanel bottom = new JPanel();
-        bottom.setPreferredSize(new Dimension(1000,40));
+        bottom.setPreferredSize(new Dimension(1000,100));
         bottom.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
-        bottom.add(jbSave);
-        bottom.add(jbBack);
+        bottom.add(backLabelPanel, BorderLayout.SOUTH);
+
 
         add(top,BorderLayout.NORTH);
         add(usernameLabel,BorderLayout.CENTER);
         add(username,BorderLayout.CENTER);
         add(passwordLabel,BorderLayout.CENTER);
         add(password,BorderLayout.CENTER);
+        add(save,BorderLayout.CENTER);
         add(bottom,BorderLayout.SOUTH);
     }
 
