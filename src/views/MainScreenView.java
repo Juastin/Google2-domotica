@@ -19,5 +19,10 @@ public class MainScreenView extends SubPanel implements ActionListener {
 
     }
 
+    @Override
+    public void onFocus() {
+        
+    }
+
 }
 

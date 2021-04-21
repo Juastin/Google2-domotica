@@ -35,6 +35,7 @@ public class MainPanel extends JPanel {
             if (panel.getName().equals(panel_name)) {
                 add(panel);
                 panel.setVisible(true);
+                panel.onFocus();
             }
         }
     }

@@ -26,7 +26,7 @@ public class LoginView extends SubPanel implements ActionListener{
 
         // Username moet nog goed worden opgehaald
         JPanel gebruikerPanel = new JPanel();
-        jlUser = new JLabel("Naam: " + User.getUsername(), JLabel.CENTER);
+        jlUser = new JLabel("", JLabel.CENTER);
         jlUser.setFont(jlUser.getFont().deriveFont(24.0f));
         gebruikerPanel.add(jlUser, BorderLayout.NORTH);
         top.add(gebruikerPanel, BorderLayout.NORTH);
@@ -95,6 +95,11 @@ public class LoginView extends SubPanel implements ActionListener{
             changeFocus("ProfileView");
         }
         Audio.play("../resources/click.wav");
+    }
+
+    @Override
+    public void onFocus() {
+        jlUser.setText("Naam: " + User.getUsername());
     }
 
 }

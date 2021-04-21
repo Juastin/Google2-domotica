@@ -23,4 +23,5 @@ public abstract class SubPanel extends JPanel {
 
     public abstract void actionPerformed(ActionEvent e);
 
+    public abstract void onFocus();
 }
