@@ -6,6 +6,7 @@ import src.system.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 
 public class LoginView extends SubPanel implements ActionListener{
@@ -81,14 +82,27 @@ public class LoginView extends SubPanel implements ActionListener{
                 if (result) {
                     Audio.play("../resources/success.wav");
                     User.setLoggedIn(true);
+
+                    try {
+                        ArrayList<ArrayList<String>> resultPersonalSettings = Queries.getPersonalSettings(User.getUsername());
+                        User.setLight(Integer.parseInt(resultPersonalSettings.get(0).get(0)));
+                        User.setTemperature(Integer.parseInt(resultPersonalSettings.get(0).get(1)));
+                        User.setPlaylistID(Integer.parseInt(resultPersonalSettings.get(0).get(2)));
+                    } catch (Exception ex) {
+                        ex.getMessage();
+                        System.out.println("Error try 1");
+                    }
                     changeFocus("MainScreenView");
-                } else if (password.equals("")) {
-                    JOptionPane.showMessageDialog(this, "Try Again ");
                 } else {
-                    JOptionPane.showMessageDialog(this, "Incorrect Password. Do you understand " + User.getUsername() + "?", "Login Failed", 2);
+                    if (password.equals("")) {
+                        JOptionPane.showMessageDialog(this, "Try Again ");
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Incorrect Password. Do you understand " + User.getUsername() + "?", "Login Failed", 2);
+                    }
                 }
             } catch (Exception ex) {
                 ex.getMessage();
+                System.out.println("Error try 2");
             }
         } else if (e.getSource() == jbTerug) {
             jbPassword.setText("");

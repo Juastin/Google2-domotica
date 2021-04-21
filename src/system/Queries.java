@@ -32,4 +32,16 @@ public class Queries {
         }
     }
 
+    public static ArrayList<ArrayList<String>> getPersonalSettings(String username) {
+        try {
+            PreparedStatement myStmt = verbinding.prepareStatement("SELECT ps.Light, ps.Temperature, ps.PlaylistID FROM PersonalSettings ps JOIN Person p ON ps.ProfileID = p.PersonID WHERE p.Username = ?");
+            myStmt.setString(1, username);
+            ArrayList<ArrayList<String>> results = Database.query(myStmt);
+            return results;
+        } catch (Exception ex) {
+            System.out.println(ex);
+            return null;
+        }
+    }
+
 }
