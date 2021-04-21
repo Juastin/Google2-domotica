@@ -78,18 +78,31 @@ public class LoginView extends SubPanel implements ActionListener{
             String password = String.valueOf(jbPassword.getPassword());
 
             try {
-                ArrayList<ArrayList<String>> result = Database.query("SELECT PasswordHash FROM Person WHERE Username = '" + User.getUsername() + "'");
+                ArrayList<ArrayList<String>> result = Database.query("SELECT PasswordHash FROM Person WHERE UserName = '" + User.getUsername() + "'");
                 if (result.get(0).get(0).equals(password)) {
                     Audio.play("../resources/success.wav");
                     User.setLoggedIn(true);
+
+                    try {
+                        ArrayList<ArrayList<String>> resultPersonalSettings = Database.query("SELECT ps.Light, ps.Temperature, ps.PlaylistID FROM PersonalSettings ps JOIN Person p ON ps.ProfileID = p.PersonID WHERE p.Username = '" + User.getUsername() + "'");
+                        User.setLight(Integer.parseInt(resultPersonalSettings.get(0).get(0)));
+                        User.setTemperature(Integer.parseInt(resultPersonalSettings.get(0).get(1)));
+                        User.setPlaylistID(Integer.parseInt(resultPersonalSettings.get(0).get(2)));
+                    } catch (Exception ex) {
+                        ex.getMessage();
+                        System.out.println("Error try 1");
+                    }
                     changeFocus("MainScreenView");
-                } else if (password.equals("")) {
-                    JOptionPane.showMessageDialog(this, "Try Again ");
                 } else {
-                    JOptionPane.showMessageDialog(this, "Incorrect Password. Do you understand " + User.getUsername() + "?", "Login Failed", 2);
+                    if (password.equals("")) {
+                        JOptionPane.showMessageDialog(this, "Try Again ");
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Incorrect Password. Do you understand " + User.getUsername() + "?", "Login Failed", 2);
+                    }
                 }
             } catch (Exception ex) {
                 ex.getMessage();
+                System.out.println("Error try 2");
             }
         } else if (e.getSource() == jbTerug) {
             jbPassword.setText("");
