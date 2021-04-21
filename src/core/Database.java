@@ -16,9 +16,9 @@ Returns data in the following format:
 */
 
 public class Database {
-	static String host = "jdbc:mysql://40.113.153.48/Google2";
-	static String username = "google2";
-	static String password = "windesheim123?";
+    static String host = "jdbc:mysql://40.113.153.48/DomoticaSysteem";
+    static String username = "newRemote";
+    static String password = "P@ssw0rd";
 	
     public static Connection maakVerbinding() {
         try {
@@ -33,7 +33,6 @@ public class Database {
 
     public static ArrayList<ArrayList<String>> query(PreparedStatement myStmt) {
         ArrayList<ArrayList<String>> result = new ArrayList<ArrayList<String>>();
-        Connection myConn = null;
         ResultSet myRs = null;
 
         try {
@@ -56,7 +55,6 @@ public class Database {
         try {
             if (myRs != null) {myRs.close();}
             if (myStmt != null) {myStmt.close();}
-            if (myConn != null) {myConn.close();}
         } catch (Exception ex) {
             System.out.println(ex);
         }

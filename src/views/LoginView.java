@@ -7,7 +7,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import java.util.ArrayList;
 
 public class LoginView extends SubPanel implements ActionListener{
 
@@ -78,8 +77,8 @@ public class LoginView extends SubPanel implements ActionListener{
             String password = String.valueOf(jbPassword.getPassword());
 
             try {
-                ArrayList<ArrayList<String>> result = Database.query("SELECT PasswordHash FROM Person WHERE Username = '" + User.getUsername() + "'");
-                if (result.get(0).get(0).equals(password)) {
+                boolean result = Queries.isPasswordCorrect(User.getUsername(), password);
+                if (result) {
                     Audio.play("../resources/success.wav");
                     User.setLoggedIn(true);
                     changeFocus("MainScreenView");
