@@ -3,7 +3,6 @@
 /.idea/
 log.txt
 # Datasource local storage ignored files
-/../../../../../../../../:\Users\juspa\Documents\projects\Google2\Google2.domotica\.idea/dataSources/
 /dataSources.local.xml
 # Editor-based HTTP Client requests
 /httpRequests/
