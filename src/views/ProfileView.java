@@ -1,7 +1,7 @@
 package src.views;
 import src.core.*;
 import src.components.*;
-import src.models.*;
+import src.system.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -20,7 +20,7 @@ public class ProfileView extends SubPanel implements ActionListener {
         setVisible(false);
 
         // GET PROFILES FROM DB
-        ArrayList<ArrayList<String>> gebruikers = Database.query("SELECT username FROM Person");
+        ArrayList<ArrayList<String>> gebruikers = Queries.getProfiles();
 
         // TOP
         JPanel top = new JPanel();

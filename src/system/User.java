@@ -1,4 +1,4 @@
-package src.models;
+package src.system;
 
 public class User {
     private static boolean isLoggedIn = false;

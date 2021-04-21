@@ -1,4 +1,5 @@
 package src.core;
+import src.Main;
 
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.AudioInputStream;
@@ -7,10 +8,12 @@ import javax.sound.sampled.AudioSystem;
 public class Audio {
 
     public static void play(String file) {
-        try {
-            Audio.playSound("../resources/click.wav");
-        } catch (Exception e1) {
-            e1.printStackTrace();
+        if (Main.enableAudio) {
+            try {
+                Audio.playSound(file);
+            } catch (Exception e1) {
+                e1.printStackTrace();
+            }
         }
     }
 

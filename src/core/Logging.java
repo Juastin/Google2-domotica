@@ -1,12 +1,13 @@
 package src.core;
+import src.Main;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import src.Main;
 
 /* Logging
 
@@ -35,7 +36,11 @@ public class Logging {
     
             // LOG ONLINE - IF CONNECTED
             try {
-                Database.query("INSERT INTO Logging (time, description) VALUES ('" + time + "', '" + description + "')");
+                Connection verbinding = Database.maakVerbinding();
+                PreparedStatement myStmt = verbinding.prepareStatement("INSERT INTO Logging (datetime, description) VALUES (?, ?)");
+                myStmt.setString(1, time);
+                myStmt.setString(2, description);
+                Database.query(myStmt);
             } catch (Exception e) {
                 e.printStackTrace();
             }
