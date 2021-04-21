@@ -9,8 +9,8 @@ import java.awt.event.ActionEvent;
 
 public class MakeProfileView extends SubPanel implements ActionListener {
     private JButton jbBack, jbSave;
-    private JTextField jtFirstName, jtLastName, jtPassword;
-    private JLabel jlFirstNameLabel, jlLastNameLabel, jlPasswordLabel, welcomeLabel;
+    private JTextField jtUsername, jtPassword;
+    private JLabel jlUsernameLabel, jlPasswordLabel, welcomeLabel;
 
     public MakeProfileView(MainPanel parent, String panel_name) {
         super(parent, panel_name);
@@ -26,34 +26,32 @@ public class MakeProfileView extends SubPanel implements ActionListener {
         top.add(welcomeLabel,BorderLayout.NORTH);
 
         // CENTER
-        jtFirstName = new JTextField(20);
-        jtLastName = new JTextField(20);
+        jtUsername = new JTextField(20);
         jtPassword = new JTextField(20);
         jbSave = new CButton(this, "opslaan", Color.black, Color.white);
         jbBack = new CButton(this, "terug naar hoofdmenu", Color.black, Color.white);
 
-        jlFirstNameLabel = new JLabel("Vul hier je voornaam in:");
-        jlLastNameLabel = new JLabel("Vul hier je achternaam in:");
-        jlPasswordLabel = new JLabel("Vul hier je wachtwoord in:");
+        jlUsernameLabel = new JLabel("Gebruikersnaam");
+        jlPasswordLabel = new JLabel("Wachtwoord");
 
-        jlFirstNameLabel.setFont(jlFirstNameLabel.getFont().deriveFont(15.0f));
-        jlLastNameLabel.setFont(jlLastNameLabel.getFont().deriveFont(15.0f));
+        jlUsernameLabel.setFont(jlUsernameLabel.getFont().deriveFont(15.0f));
         jlPasswordLabel.setFont(jlPasswordLabel.getFont().deriveFont(15.0f));
 
         // Panels to divide labels and textfields.
-        JPanel FirstName = new JPanel();
-        FirstName.setPreferredSize(new Dimension(1000,40));
-        FirstName.add(jlFirstNameLabel);
-        FirstName.add(jtFirstName);
+        JPanel UsernameLabel = new JPanel();
+        UsernameLabel.setPreferredSize(new Dimension(1000,40));
+        UsernameLabel.add(jlUsernameLabel);
 
-        JPanel LastName = new JPanel();
-        LastName.setPreferredSize(new Dimension(1000,40));
-        LastName.add(jlLastNameLabel);
-        LastName.add(jtLastName);
+        JPanel Username = new JPanel();
+        Username.setPreferredSize(new Dimension(1000,40));
+        Username.add(jtUsername);
+
+        JPanel PasswordLabel = new JPanel();
+        PasswordLabel.setPreferredSize(new Dimension(1000,40));
+        PasswordLabel.add(jlPasswordLabel);
 
         JPanel Password = new JPanel();
-        Password.setPreferredSize(new Dimension(1000,250));
-        Password.add(jlPasswordLabel);
+        Password.setPreferredSize(new Dimension(1000,200));
         Password.add(jtPassword);
 
         // BOTTOM
@@ -64,8 +62,9 @@ public class MakeProfileView extends SubPanel implements ActionListener {
         bottom.add(jbSave);
 
         add(top,BorderLayout.NORTH);
-        add(FirstName,BorderLayout.CENTER);
-        add(LastName,BorderLayout.CENTER);
+        add(UsernameLabel,BorderLayout.CENTER);
+        add(Username,BorderLayout.CENTER);
+        add(PasswordLabel,BorderLayout.CENTER);
         add(Password,BorderLayout.CENTER);
         add(bottom,BorderLayout.SOUTH);
     }
@@ -75,7 +74,7 @@ public class MakeProfileView extends SubPanel implements ActionListener {
         if (e.getSource() == jbBack) {
             changeFocus("ProfileView");
         } else if (e.getSource() == jbSave) {
-            JOptionPane.showMessageDialog(this, "Wow '" + jtFirstName.getText() + "' is echt een coole naam.");
+            JOptionPane.showMessageDialog(this, "Wow '" + jtUsername.getText() + "' is echt een coole naam.");
         }
         Audio.play("../resources/click.wav");
     }
