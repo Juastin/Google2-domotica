@@ -39,21 +39,21 @@ public class MakeProfileView extends SubPanel implements ActionListener {
         jlPasswordLabel.setFont(jlPasswordLabel.getFont().deriveFont(15.0f));
 
         // Panels to divide labels and textfields.
-        JPanel UsernameLabel = new JPanel();
-        UsernameLabel.setPreferredSize(new Dimension(1000,40));
-        UsernameLabel.add(jlUsernameLabel);
+        JPanel usernameLabel = new JPanel();
+        usernameLabel.setPreferredSize(new Dimension(1000,40));
+        usernameLabel.add(jlUsernameLabel);
 
-        JPanel Username = new JPanel();
-        Username.setPreferredSize(new Dimension(1000,40));
-        Username.add(jtUsername);
+        JPanel username = new JPanel();
+        username.setPreferredSize(new Dimension(1000,40));
+        username.add(jtUsername);
 
-        JPanel PasswordLabel = new JPanel();
-        PasswordLabel.setPreferredSize(new Dimension(1000,40));
-        PasswordLabel.add(jlPasswordLabel);
+        JPanel passwordLabel = new JPanel();
+        passwordLabel.setPreferredSize(new Dimension(1000,40));
+        passwordLabel.add(jlPasswordLabel);
 
-        JPanel Password = new JPanel();
-        Password.setPreferredSize(new Dimension(1000,200));
-        Password.add(jtPassword);
+        JPanel password = new JPanel();
+        password.setPreferredSize(new Dimension(1000,200));
+        password.add(jtPassword);
 
         // BOTTOM
         JPanel bottom = new JPanel();
@@ -63,10 +63,10 @@ public class MakeProfileView extends SubPanel implements ActionListener {
         bottom.add(jbBack);
 
         add(top,BorderLayout.NORTH);
-        add(UsernameLabel,BorderLayout.CENTER);
-        add(Username,BorderLayout.CENTER);
-        add(PasswordLabel,BorderLayout.CENTER);
-        add(Password,BorderLayout.CENTER);
+        add(usernameLabel,BorderLayout.CENTER);
+        add(username,BorderLayout.CENTER);
+        add(passwordLabel,BorderLayout.CENTER);
+        add(password,BorderLayout.CENTER);
         add(bottom,BorderLayout.SOUTH);
     }
 
