@@ -1,7 +1,7 @@
 package src.views;
 import src.core.*;
 import src.components.*;
-import src.models.*;
+import src.system.*;
 
 import javax.swing.*;
 import java.awt.*;
