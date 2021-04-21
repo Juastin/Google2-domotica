@@ -94,6 +94,7 @@ public class MakeProfileView extends SubPanel implements ActionListener {
         } else if (e.getSource() == jbSave) {
             String usernameText = jtUsername.getText();
             char[] passwordText = jtPassword.getPassword();
+            System.out.println(usernameText+" "+passwordText);
         }
         Audio.play("../resources/click.wav");
     }
