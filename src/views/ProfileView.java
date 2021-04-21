@@ -72,7 +72,7 @@ public class ProfileView extends SubPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == jbNieuwProfiel) {
-            changeFocus("ImageView");
+            changeFocus("MakeProfileView");
         }
 
         for (CButton button: userButtons) {

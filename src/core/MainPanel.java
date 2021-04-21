@@ -16,7 +16,7 @@ public class MainPanel extends JPanel {
         setLayout(new GridLayout(0, 1));
 
         panels.add(new ProfileView(this, "ProfileView"));
-        panels.add(new ImageView(this, "ImageView"));
+        panels.add(new MakeProfileView(this, "MakeProfileView"));
         panels.add(new LoginView(this, "LoginView"));
         panels.add(new MainScreenView(this, "MainScreenView"));
 
