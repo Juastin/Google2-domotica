@@ -18,6 +18,7 @@ public class MainPanel extends JPanel {
         panels.add(new ProfileView(this, "ProfileView"));
         panels.add(new ImageView(this, "ImageView"));
         panels.add(new LoginView(this, "LoginView"));
+        panels.add(new MainScreenView(this, "MainScreenView"));
 
         Timer timer = new Timer();
         timer.schedule(new Worker(this), 0, 60000);
