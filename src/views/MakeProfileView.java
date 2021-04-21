@@ -9,7 +9,8 @@ import java.awt.event.ActionEvent;
 
 public class MakeProfileView extends SubPanel implements ActionListener {
     private JButton jbBack, jbSave;
-    private JTextField jtUsername, jtPassword;
+    private JTextField jtUsername;
+    private JPasswordField jtPassword;
     private JLabel jlUsernameLabel, jlPasswordLabel, welcomeLabel;
 
     public MakeProfileView(MainPanel parent, String panel_name) {
@@ -27,9 +28,9 @@ public class MakeProfileView extends SubPanel implements ActionListener {
 
         // CENTER
         jtUsername = new JTextField(20);
-        jtPassword = new JTextField(20);
-        jbSave = new CButton(this, "opslaan", Color.black, Color.white);
-        jbBack = new CButton(this, "terug naar hoofdmenu", Color.black, Color.white);
+        jtPassword = new JPasswordField(20);
+        jbSave = new CButton(this, "Profiel aanmaken", Color.black, Color.white);
+        jbBack = new CButton(this, "Terug naar hoofdmenu", Color.black, Color.white);
 
         jlUsernameLabel = new JLabel("Gebruikersnaam");
         jlPasswordLabel = new JLabel("Wachtwoord");
@@ -58,8 +59,8 @@ public class MakeProfileView extends SubPanel implements ActionListener {
         JPanel bottom = new JPanel();
         bottom.setPreferredSize(new Dimension(1000,40));
         bottom.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
-        bottom.add(jbBack);
         bottom.add(jbSave);
+        bottom.add(jbBack);
 
         add(top,BorderLayout.NORTH);
         add(UsernameLabel,BorderLayout.CENTER);
@@ -74,7 +75,8 @@ public class MakeProfileView extends SubPanel implements ActionListener {
         if (e.getSource() == jbBack) {
             changeFocus("ProfileView");
         } else if (e.getSource() == jbSave) {
-            JOptionPane.showMessageDialog(this, "Wow '" + jtUsername.getText() + "' is echt een coole naam.");
+            String usernameText = jtUsername.getText();
+            char[] passwordText = jtPassword.getPassword();
         }
         Audio.play("../resources/click.wav");
     }
