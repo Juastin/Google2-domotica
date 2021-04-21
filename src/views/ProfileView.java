@@ -19,6 +19,7 @@ public class ProfileView extends SubPanel implements ActionListener {
         setLayout(new BorderLayout());
         setVisible(false);
 
+        // GET PROFILES FROM DB
         ArrayList<ArrayList<String>> gebruikers = Database.query("SELECT username FROM Person");
 
         // TOP
