@@ -8,7 +8,6 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class ProfileView extends SubPanel implements ActionListener {
     private JButton jbNieuwProfiel;
@@ -20,9 +19,8 @@ public class ProfileView extends SubPanel implements ActionListener {
         setLayout(new BorderLayout());
         setVisible(false);
 
-        // Hier moet uiteindelijk de methode worden aangeroepen waarmee de gebruikers worden opgehaald
-        ArrayList<String> gebruikers = new ArrayList<String>();
-        Collections.addAll(gebruikers, "Bram", "Justin", "Cindy", "Jonathan", "Storm", "Camiel");
+        // GET PROFILES FROM DB
+        ArrayList<ArrayList<String>> gebruikers = Database.query("SELECT username FROM Person");
 
         // TOP
         JPanel top = new JPanel();
@@ -40,12 +38,12 @@ public class ProfileView extends SubPanel implements ActionListener {
         JPanel center = new JPanel();
         JPanel userGrid = new JPanel();
         userGrid.setPreferredSize(new Dimension(600, 20*gebruikers.size()));
-        GridLayout userGridLayout = new GridLayout(3, (gebruikers.size()/3));
+        GridLayout userGridLayout = new GridLayout((gebruikers.size()/3), 3);
         userGridLayout.setHgap(10); userGridLayout.setVgap(10);
         userGrid.setLayout(userGridLayout);
         userButtons = new ArrayList<CButton>();
-        for (String naam: gebruikers) {
-            CButton button = new CButton(this, naam, Color.black, Color.white);
+        for (ArrayList<String> row: gebruikers) {
+            CButton button = new CButton(this, row.get(0), Color.black, Color.white);
             button.setFont(new Font(button.getFont().getFamily(), Font.PLAIN, 16));
             userGrid.add(button);
             userButtons.add(button);
