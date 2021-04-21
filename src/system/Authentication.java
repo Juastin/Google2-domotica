@@ -1,4 +1,4 @@
-package src.models;
+package src.system;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
 

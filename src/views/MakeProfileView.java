@@ -2,7 +2,7 @@ package src.views;
 import at.favre.lib.crypto.bcrypt.BCrypt;
 import src.core.*;
 import src.components.*;
-import src.models.Authentication;
+import src.system.Authentication;
 
 import javax.swing.*;
 import java.awt.*;
