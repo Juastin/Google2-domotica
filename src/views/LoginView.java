@@ -104,6 +104,7 @@ public class LoginView extends SubPanel implements ActionListener{
                 ex.getMessage();
                 System.out.println("Error try 2");
             }
+            jbPassword.setText("");
         } else if (e.getSource() == jbTerug) {
             jbPassword.setText("");
             changeFocus("ProfileView");
