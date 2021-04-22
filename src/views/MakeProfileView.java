@@ -121,14 +121,8 @@ public class MakeProfileView extends SubPanel implements ActionListener {
                         options[0]);
             }
             else {
-
+                // queries to database
             }
-            System.out.println(usernameText+firstnameText+lastnameText+passwordText);
-
-//            String passwordTest = "1234";
-//            System.out.println("Check true if password is: "+passwordTest);
-//            BCrypt.Result result = Authentication.checkPassword(passwordTest.toCharArray(),encryptedPassword);
-//            System.out.println(result.verified);
         }
         Audio.play("../resources/click.wav");
     }
