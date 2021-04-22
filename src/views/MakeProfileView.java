@@ -110,6 +110,19 @@ public class MakeProfileView extends SubPanel implements ActionListener {
             String lastnameText = jtLastname.getText();
             String passwordText = Authentication.encryptPassword(jtPassword.getPassword());;
 
+            if (usernameText.equals("") || firstnameText.equals("") || lastnameText.equals("") || String.valueOf(jtPassword.getPassword()).equals("")){
+                Object[] options = {"OK"};
+                int n = JOptionPane.showOptionDialog(this,
+                        "Account kan niet worden aangemaakt want niet alle velden zijn ingevuld","Fout!",
+                        JOptionPane.PLAIN_MESSAGE,
+                        JOptionPane.QUESTION_MESSAGE,
+                        null,
+                        options,
+                        options[0]);
+            }
+            else {
+                
+            }
             System.out.println(usernameText+firstnameText+lastnameText+passwordText);
 
 //            String passwordTest = "1234";
