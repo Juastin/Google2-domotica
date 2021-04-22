@@ -11,9 +11,9 @@ import java.awt.event.ActionEvent;
 
 public class MakeProfileView extends SubPanel implements ActionListener {
     private JButton jbBack, jbSave;
-    private JTextField jtUsername;
+    private JTextField jtUsername, jtFirstname, jtLastname;
     private JPasswordField jtPassword;
-    private JLabel jlUsernameLabel, jlPasswordLabel, welcomeLabel;
+    private JLabel jlUsernameLabel, jlPasswordLabel, welcomeLabel, jlFirstnameLabel, jlLastnameLabel;
 
     public MakeProfileView(MainPanel parent, String panel_name) {
         super(parent, panel_name);
@@ -30,6 +30,8 @@ public class MakeProfileView extends SubPanel implements ActionListener {
 
         // CENTER
         jtUsername = new JTextField(20);
+        jtFirstname = new JTextField(20);
+        jtLastname = new JTextField(20);
         jtPassword = new JPasswordField(20);
 
         JPanel backLabelPanel = new JPanel();
@@ -41,36 +43,45 @@ public class MakeProfileView extends SubPanel implements ActionListener {
         jbBack.setFont(jbBack.getFont().deriveFont(24.0f));
         backLabelPanel.add(jbBack, BorderLayout.SOUTH);
 
-        JPanel savePanel = new JPanel();
         jbSave = new CButton(this, "Profiel aanmaken", Color.black, Color.white);
         jbSave.setFont(jbBack.getFont().deriveFont(20.0f));
 
 
         jlUsernameLabel = new JLabel("Gebruikersnaam");
         jlPasswordLabel = new JLabel("Wachtwoord");
+        jlFirstnameLabel = new JLabel("Voornaam");
+        jlLastnameLabel = new JLabel("Achternaam");
 
         jlUsernameLabel.setFont(jlUsernameLabel.getFont().deriveFont(15.0f));
         jlPasswordLabel.setFont(jlPasswordLabel.getFont().deriveFont(15.0f));
+        jlFirstnameLabel.setFont(jlFirstnameLabel.getFont().deriveFont(15.0f));
+        jlLastnameLabel.setFont(jlLastnameLabel.getFont().deriveFont(15.0f));
 
         // Panels to divide labels and textfields.
-        JPanel usernameLabel = new JPanel();
-        usernameLabel.setPreferredSize(new Dimension(1000,40));
-        usernameLabel.add(jlUsernameLabel);
 
         JPanel username = new JPanel();
-        username.setPreferredSize(new Dimension(1000,40));
+        username.setPreferredSize(new Dimension(1000,50));
+        username.add(jlUsernameLabel);
         username.add(jtUsername);
 
-        JPanel passwordLabel = new JPanel();
-        passwordLabel.setPreferredSize(new Dimension(1000,40));
-        passwordLabel.add(jlPasswordLabel);
+        JPanel firstname = new JPanel();
+        firstname.setPreferredSize(new Dimension(1000,50));
+        firstname.add(jlFirstnameLabel);
+        firstname.add(jtFirstname);
+
+        JPanel lastname = new JPanel();
+        lastname.setPreferredSize(new Dimension(1000,50));
+        lastname.add(jlLastnameLabel);
+        lastname.add(jtLastname);
+
 
         JPanel password = new JPanel();
-        password.setPreferredSize(new Dimension(1000,50));
+        password.setPreferredSize(new Dimension(1000,60));
+        password.add(jlPasswordLabel);
         password.add(jtPassword);
 
         JPanel save = new JPanel();
-        save.setPreferredSize(new Dimension(1000,100));
+        save.setPreferredSize(new Dimension(1000,60));
         save.add(jbSave);
 
         // BOTTOM
@@ -81,9 +92,9 @@ public class MakeProfileView extends SubPanel implements ActionListener {
 
 
         add(top,BorderLayout.NORTH);
-        add(usernameLabel,BorderLayout.CENTER);
         add(username,BorderLayout.CENTER);
-        add(passwordLabel,BorderLayout.CENTER);
+        add(firstname,BorderLayout.CENTER);
+        add(lastname,BorderLayout.CENTER);
         add(password,BorderLayout.CENTER);
         add(save,BorderLayout.CENTER);
         add(bottom,BorderLayout.SOUTH);
@@ -95,17 +106,16 @@ public class MakeProfileView extends SubPanel implements ActionListener {
             changeFocus("ProfileView");
         } else if (e.getSource() == jbSave) {
             String usernameText = jtUsername.getText();
-            char[] passwordText = jtPassword.getPassword();
-            System.out.println(usernameText+" "+passwordText);
+            String firstnameText = jtFirstname.getText();
+            String lastnameText = jtLastname.getText();
+            String passwordText = Authentication.encryptPassword(jtPassword.getPassword());;
 
-            String encryptedPassword = Authentication.encryptPassword(passwordText);
-            System.out.println("encrypted: "+passwordText +" "+ encryptedPassword);
+            System.out.println(usernameText+firstnameText+lastnameText+passwordText);
 
-            String passwordTest = "1234";
-            System.out.println("Check true if password is: "+passwordTest);
-
-            BCrypt.Result result = Authentication.decryptPassword(passwordTest.toCharArray(),encryptedPassword);
-            System.out.println(result.verified);
+//            String passwordTest = "1234";
+//            System.out.println("Check true if password is: "+passwordTest);
+//            BCrypt.Result result = Authentication.decryptPassword(passwordTest.toCharArray(),encryptedPassword);
+//            System.out.println(result.verified);
         }
         Audio.play("../resources/click.wav");
     }
