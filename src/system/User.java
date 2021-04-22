@@ -48,4 +48,12 @@ public class User {
     public static void setPlaylistID(int playlistID) {
         User.playlistID = playlistID;
     }
+
+    public static void logOut() {
+        setLoggedIn(false);
+        setUsername("");
+        setLight(0);
+        setTemperature(0);
+        setPlaylistID(0);
+    }
 }

@@ -1,14 +1,17 @@
 package src.views;
+import src.components.CButton;
 import src.core.*;
 import src.system.User;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 public class MainScreenView extends SubPanel implements ActionListener {
 
     private JLabel jlWelcomeMessage;
+    private JButton jbLogOut;
 
     public MainScreenView(MainPanel parent, String panel_name) {
         super(parent, panel_name);
@@ -16,16 +19,23 @@ public class MainScreenView extends SubPanel implements ActionListener {
 
         jlWelcomeMessage = new JLabel("", JLabel.CENTER);
         add(jlWelcomeMessage);
+
+        jbLogOut = new CButton(this, "Afmelden", Color.black, Color.white);
+        add(jbLogOut);
     }
 
     @Override
     public void actionPerformed (ActionEvent e){
-
+        if (e.getSource() == jbLogOut) {
+            User.logOut();
+            changeFocus("ProfileView");
+            JOptionPane.showMessageDialog(this, "U bent afgemeld");
+        }
     }
 
     @Override
     public void onFocus() {
-        jlWelcomeMessage.setText("Hello, Welcome " + User.getUsername());
+        jlWelcomeMessage.setText("Gebruiker: " + User.getUsername());
 
         System.out.println("Light: " + User.getLight());
         System.out.println("Temperature: " + User.getTemperature());
