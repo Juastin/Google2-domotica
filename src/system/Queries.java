@@ -44,4 +44,23 @@ public class Queries {
         }
     }
 
+    public static boolean makeNewProfile(String username, String firstname, String lastname, String password) {
+        // HIER MOET DE ENCRYPTIE KOMEN
+        String hashed_password = password;
+
+        try {
+            PreparedStatement myStmt_0 = verbinding.prepareStatement("INSERT INTO Person (Username, FirstName, LastName, PasswordHash) VALUES (?,?,?,?)");
+            myStmt_0.setString(1, username);
+            myStmt_0.setString(2, firstname);
+            myStmt_0.setString(3, lastname);
+            myStmt_0.setString(4, hashed_password);
+            Database.query(myStmt_0);
+        } catch (Exception ex) {
+            System.out.println(ex);
+            return false;
+        }
+
+        return true;
+    }
+
 }
