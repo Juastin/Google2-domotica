@@ -12,8 +12,8 @@ import java.awt.event.ActionEvent;
 public class LoginView extends SubPanel implements ActionListener{
 
     private JLabel jlUser, jlPassword;
-    private JPasswordField jbPassword;
-    private JButton jbOk, jbTerug;
+    private JPasswordField jpPassword;
+    private JButton jbOk, jbBack;
 
     public LoginView(MainPanel parent, String panel_name) {
         super(parent, panel_name);
@@ -24,7 +24,6 @@ public class LoginView extends SubPanel implements ActionListener{
         JPanel top = new JPanel();
         top.setBorder(BorderFactory.createEmptyBorder(20, 0, 10, 0));
 
-        // Username moet nog goed worden opgehaald
         JPanel gebruikerPanel = new JPanel();
         jlUser = new JLabel("", JLabel.CENTER);
         jlUser.setFont(jlUser.getFont().deriveFont(24.0f));
@@ -44,9 +43,9 @@ public class LoginView extends SubPanel implements ActionListener{
         jlPassword = new JLabel("Wachtwoord", JLabel.CENTER);
         jlPassword.setFont(jlPassword.getFont().deriveFont(20.0f));
         formGrid.add(jlPassword, BorderLayout.CENTER);
-        jbPassword = new JPasswordField(20);
-        jbPassword.addActionListener(this);
-        formGrid.add(jbPassword, BorderLayout.CENTER);
+        jpPassword = new JPasswordField(20);
+        jpPassword.addActionListener(this);
+        formGrid.add(jpPassword, BorderLayout.CENTER);
         jbOk = new CButton(this, "OK", Color.black, Color.white);
         formGrid.add(jbOk, BorderLayout.CENTER);
 
@@ -59,13 +58,13 @@ public class LoginView extends SubPanel implements ActionListener{
         bottom.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
 
         JPanel TerugLabelPanel = new JPanel();
-        jbTerug = new JButton("< Terug");
-        jbTerug.addActionListener(this);
-        jbTerug.setOpaque(false);
-        jbTerug.setContentAreaFilled(false);
-        jbTerug.setBorderPainted(false);
-        jbTerug.setFont(jbTerug.getFont().deriveFont(24.0f));
-        TerugLabelPanel.add(jbTerug, BorderLayout.SOUTH);
+        jbBack = new JButton("< Terug");
+        jbBack.addActionListener(this);
+        jbBack.setOpaque(false);
+        jbBack.setContentAreaFilled(false);
+        jbBack.setBorderPainted(false);
+        jbBack.setFont(jbBack.getFont().deriveFont(24.0f));
+        TerugLabelPanel.add(jbBack, BorderLayout.SOUTH);
         bottom.add(TerugLabelPanel, BorderLayout.SOUTH);
 
         add(bottom, BorderLayout.SOUTH);
@@ -74,8 +73,8 @@ public class LoginView extends SubPanel implements ActionListener{
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == jbOk || e.getSource() == jbPassword) {
-            String password = String.valueOf(jbPassword.getPassword());
+        if (e.getSource() == jbOk || e.getSource() == jpPassword) {
+            String password = String.valueOf(jpPassword.getPassword());
 
             try {
                 boolean result = Queries.isPasswordCorrect(User.getUsername(), password);
@@ -104,9 +103,9 @@ public class LoginView extends SubPanel implements ActionListener{
                 ex.getMessage();
                 System.out.println("Error try 2");
             }
-            jbPassword.setText("");
-        } else if (e.getSource() == jbTerug) {
-            jbPassword.setText("");
+            jpPassword.setText("");
+        } else if (e.getSource() == jbBack) {
+            jpPassword.setText("");
             changeFocus("ProfileView");
         }
         Audio.play("../resources/click.wav");
