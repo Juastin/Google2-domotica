@@ -107,7 +107,7 @@ public class MakeProfileView extends SubPanel implements ActionListener {
             boolean result = Authentication.checkPassword(passwordTest.toCharArray(),encryptedPassword);
             System.out.println(result);
         }
-        Audio.play("../resources/click.wav");
+        Audio.play("../../click.wav");
     }
 
     @Override
