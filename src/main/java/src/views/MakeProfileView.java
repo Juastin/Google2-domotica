@@ -104,7 +104,7 @@ public class MakeProfileView extends SubPanel implements ActionListener {
             String passwordTest = "1234";
             System.out.println("Check true if password is: "+passwordTest);
 
-            boolean result = Authentication.checkPassword(passwordTest.toCharArray(),encryptedPassword);
+            boolean result = Authentication.checkPassword(passwordTest,encryptedPassword);
             System.out.println(result);
         }
         Audio.play("../../click.wav");

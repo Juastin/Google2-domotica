@@ -14,13 +14,12 @@ public class Authentication {
     public static String encryptPassword(char[] password){
         return BCrypt.hashpw(String.valueOf(password), BCrypt.gensalt());
     }
-    // @param char[] password from loginForm.
+    // @param String password from loginForm.
     // @param String bcryptHashString from database
-    // @return BCrypt.Result
-    // Result{details=HashData{cost=12, version=$2a$, rawSalt=d63f56f9a7ddcd562a9b4d05f775a482, rawHash=dbf6f4d1311531d1f4822d2d6f1b53bebc4258544901ab}, validFormat=true, verified=true, formatErrorMessage='null'}
-    // To check result: result.verified (that returns true or false)
-    public static boolean checkPassword(char[] password, String bcryptHashString){
-        return BCrypt.checkpw(String.valueOf(password),bcryptHashString);
+    // @return boolean
+    // To check result: return function and check if true
+    public static boolean checkPassword(String password, String bcryptHashString){
+        return BCrypt.checkpw(password,bcryptHashString);
     }
 
 }
