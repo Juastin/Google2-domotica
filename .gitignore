@@ -1,9 +1,12 @@
 # Default ignored files
 /shelf/
 /.idea/
-log.txt
+<<<<<<< HEAD
 # Datasource local storage ignored files
 /dataSources.local.xml
+/Google2.domotica.iml
 # Editor-based HTTP Client requests
 /httpRequests/
+/target/
+log.txt
 /out/
