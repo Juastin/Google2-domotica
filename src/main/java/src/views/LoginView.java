@@ -95,6 +95,7 @@ public class LoginView extends SubPanel implements ActionListener{
                     }
                     changeFocus("MainScreenView");
                 } else {
+                    Audio.play("error.wav");
                     Logging.logThis("Failed login attempt for user " + User.getUsername());
                     if (password.equals("")) {
                         JOptionPane.showMessageDialog(this, "Try Again ");
