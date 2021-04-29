@@ -47,6 +47,8 @@ public class Database {
                 }
                 result.add(result_part);
             }
+        } catch (SQLNonTransientConnectionException ex) {
+            System.out.println("Client lost connection");
         } catch (Exception ex) {
             ex.printStackTrace();
             System.out.println(ex);

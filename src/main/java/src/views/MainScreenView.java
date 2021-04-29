@@ -15,7 +15,12 @@ public class MainScreenView extends SubPanel implements ActionListener {
 
     public MainScreenView(MainPanel parent, String panel_name) {
         super(parent, panel_name);
+        setLayout(new BorderLayout());
         setVisible(false);
+
+        // Main Panel
+        JPanel main = new JPanel();
+        main.setLayout(new GridLayout(2, 2));
 
         jlWelcomeMessage = new JLabel("", JLabel.CENTER);
         add(jlWelcomeMessage);
