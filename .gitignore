@@ -8,4 +8,7 @@
 /httpRequests/
 /target/
 log.txt
+.settings
+.project
+.classpath
 /out/
