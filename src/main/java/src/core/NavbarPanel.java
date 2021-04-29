@@ -8,14 +8,14 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class NavbarPanel extends SubPanel implements ActionListener {
+public class NavbarPanel extends JPanel implements ActionListener {
+    private SubPanel parent;
     private JButton jbLogOut, jbHome, jbMusic, jbSettings;
     private JLabel white, white2;
 
-    public NavbarPanel(MainPanel parent, String panel_name) {
-        super(parent, panel_name);
+    public NavbarPanel(SubPanel parent) {
+        this.parent = parent;
         setLayout(new BorderLayout());
-        setVisible(false);
 
         jbLogOut = new CButton(this, "Logout", Color.black, Color.white);
         jbHome = new CButton(this, "⌂", Color.black, Color.white);
@@ -60,20 +60,16 @@ public class NavbarPanel extends SubPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == jbLogOut) {
             User.logOut();
-            changeFocus("ProfileView");
+            parent.changeFocus("ProfileView");
             JOptionPane.showMessageDialog(this, "U bent afgemeld");
         } else if (e.getSource() == jbHome) {
-            changeFocus("MainScreenView");
+            parent.changeFocus("MainScreenView");
         } else if (e.getSource() == jbMusic) {
-            changeFocus("MusicPlayerView");
+            parent.changeFocus("MusicPlayerView");
         } else if (e.getSource() == jbSettings) {
-            changeFocus("PersonalSettingsView");
+            parent.changeFocus("PersonalSettingsView");
         }
         Audio.play("click.wav");
     }
 
-    @Override
-    public void onFocus() {
-
-    }
 }

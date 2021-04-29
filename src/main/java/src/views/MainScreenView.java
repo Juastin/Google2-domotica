@@ -1,5 +1,4 @@
 package src.views;
-import src.components.CButton;
 import src.core.*;
 import src.system.User;
 
@@ -21,10 +20,8 @@ public class MainScreenView extends SubPanel implements ActionListener {
         Border myborder = BorderFactory.createEtchedBorder(EtchedBorder.RAISED); // https://docs.oracle.com/javase/tutorial/uiswing/components/border.html
         setVisible(false);
 
-        // NAVBAR GOES HERE v
-        JPanel navbar = new JPanel();
-        navbar.setBackground(Color.gray);
-        navbar.add(new JLabel("navbar"));
+        // NAVBAR
+        NavbarPanel navbar = new NavbarPanel(this);
 
         // Main Panel
         JPanel main = new JPanel();
