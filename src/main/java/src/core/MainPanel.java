@@ -25,6 +25,7 @@ public class MainPanel extends JPanel {
 
         add(panels.get(0));
         panels.get(0).setVisible(true);
+        panels.get(0).onFocus();
 
         setVisible(true);
     }
