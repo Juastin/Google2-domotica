@@ -97,4 +97,10 @@ public class ProfileView extends SubPanel implements ActionListener {
         updateProfileList();
     }
 
+    @Override
+    public void onShadow() {}
+
+    @Override
+    public void onTick(long now) {}
+
 }

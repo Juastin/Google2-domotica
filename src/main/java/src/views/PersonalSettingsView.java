@@ -136,4 +136,11 @@ public class PersonalSettingsView extends SubPanel implements ActionListener {
         System.out.println("Temperature: " + User.getTemperature());
         System.out.println("PLaylistId: " + User.getPlaylistID());
     }
+
+    @Override
+    public void onShadow() {}
+
+    @Override
+    public void onTick(long now) {}
+    
 }
