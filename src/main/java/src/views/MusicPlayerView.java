@@ -1,21 +1,21 @@
 package src.views;
-import src.core.*;
-import src.core.MainPanel;
-import src.core.SubPanel;
+import src.core.Container;
+import src.core.View;
+import src.core.Navbar;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.BorderLayout;
 
-public class MusicPlayerView extends SubPanel {
+public class MusicPlayerView extends View {
 
-    public MusicPlayerView(MainPanel parent, String panel_name) {
-        super(parent, panel_name);
+    public MusicPlayerView(Container container, String name) {
+        super(container, name);
         setLayout(new BorderLayout());
         setVisible(false);
 
         // NAVBAR
-        NavbarPanel navbar = new NavbarPanel(this);
+        Navbar navbar = new Navbar(this);
 
         // Main Panel
         JPanel main = new JPanel();

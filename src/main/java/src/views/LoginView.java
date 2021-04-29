@@ -1,5 +1,8 @@
 package src.views;
-import src.core.*;
+import src.core.Audio;
+import src.core.Container;
+import src.core.View;
+import src.core.Logging;
 import src.components.*;
 import src.system.*;
 
@@ -9,14 +12,14 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 
-public class LoginView extends SubPanel implements ActionListener{
+public class LoginView extends View implements ActionListener{
 
     private JLabel jlUser, jlPassword;
     private JPasswordField jbPassword;
     private JButton jbOk, jbTerug;
 
-    public LoginView(MainPanel parent, String panel_name) {
-        super(parent, panel_name);
+    public LoginView(Container container, String name) {
+        super(container, name);
         setLayout(new BorderLayout());
         setVisible(false);
 

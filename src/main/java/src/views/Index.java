@@ -1,5 +1,7 @@
 package src.views;
-import src.core.*;
+import src.core.Audio;
+import src.core.Container;
+import src.core.View;
 import src.components.*;
 import src.system.*;
 
@@ -9,15 +11,15 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 
-public class ProfileView extends SubPanel implements ActionListener {
+public class Index extends View implements ActionListener {
     private JButton jbNewProfile;
     private JLabel jlKies, jlProfileAmount;
     private ArrayList<CButton> userButtons;
     private JPanel center, userGrid;
     private ArrayList<ArrayList<String>> users;
 
-    public ProfileView(MainPanel parent, String panel_name) {
-        super(parent, panel_name);
+    public Index(Container container, String name) {
+        super(container, name);
         setLayout(new BorderLayout());
         setVisible(false);
 

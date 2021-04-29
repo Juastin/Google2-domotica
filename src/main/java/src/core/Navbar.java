@@ -8,12 +8,12 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class NavbarPanel extends JPanel implements ActionListener {
-    private SubPanel parent;
+public class Navbar extends JPanel implements ActionListener {
+    private View parent;
     private JButton jbLogOut, jbHome, jbMusic, jbSettings;
     private JLabel white, white2;
 
-    public NavbarPanel(SubPanel parent) {
+    public Navbar(View parent) {
         this.parent = parent;
         setLayout(new BorderLayout());
 

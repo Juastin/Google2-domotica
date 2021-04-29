@@ -1,5 +1,7 @@
 package src.views;
-import src.core.*;
+import src.core.Audio;
+import src.core.Container;
+import src.core.View;
 import src.components.*;
 import src.system.Queries;
 
@@ -9,14 +11,14 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.util.Objects;
 
-public class MakeProfileView extends SubPanel implements ActionListener {
+public class MakeProfileView extends View implements ActionListener {
     private JButton jbBack, jbSave;
     private JTextField jtUsername, jtFirstname, jtLastname;
     private JPasswordField jtPassword;
     private JLabel jlUsernameLabel, jlPasswordLabel, jlFirstnameLabel, jlLastnameLabel, welcomeLabel;
 
-    public MakeProfileView(MainPanel parent, String panel_name) {
-        super(parent, panel_name);
+    public MakeProfileView(Container container, String name) {
+        super(container, name);
         setVisible(false);
 
         // TOP
