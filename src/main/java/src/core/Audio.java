@@ -10,7 +10,7 @@ public class Audio {
     public static void play(String file) {
         if (Main.enableAudio) {
             try {
-                Audio.playSound(file);
+                Audio.playSound("../../" + file);
             } catch (Exception e1) {
                 e1.printStackTrace();
             }

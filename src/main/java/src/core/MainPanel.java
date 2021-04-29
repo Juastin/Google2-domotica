@@ -19,12 +19,15 @@ public class MainPanel extends JPanel {
         panels.add(new MakeProfileView(this, "MakeProfileView"));
         panels.add(new LoginView(this, "LoginView"));
         panels.add(new MainScreenView(this, "MainScreenView"));
+        panels.add(new PersonalSettingsView(this, "PersonalSettingsView"));
+        panels.add(new MusicPlayerView(this, "MusicPlayerView"));
 
         Timer timer = new Timer();
         timer.schedule(new Worker(this), 0, 60000);
 
         add(panels.get(0));
         panels.get(0).setVisible(true);
+        panels.get(0).onFocus();
 
         setVisible(true);
     }

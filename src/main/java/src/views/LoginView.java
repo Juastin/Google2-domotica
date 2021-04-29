@@ -80,7 +80,8 @@ public class LoginView extends SubPanel implements ActionListener{
             try {
                 boolean result = Queries.isPasswordCorrect(User.getUsername(), password);
                 if (result) {
-                    Audio.play("../resources/success.wav");
+                    Logging.logThis("Successful login attempt for user " + User.getUsername());
+                    Audio.play("success.wav");
                     User.setLoggedIn(true);
 
                     try {
@@ -94,6 +95,7 @@ public class LoginView extends SubPanel implements ActionListener{
                     }
                     changeFocus("MainScreenView");
                 } else {
+                    Logging.logThis("Failed login attempt for user " + User.getUsername());
                     if (password.equals("")) {
                         JOptionPane.showMessageDialog(this, "Try Again ");
                     } else {
@@ -109,7 +111,7 @@ public class LoginView extends SubPanel implements ActionListener{
             jbPassword.setText("");
             changeFocus("ProfileView");
         }
-        Audio.play("../../click.wav");
+        Audio.play("click.wav");
     }
 
     @Override

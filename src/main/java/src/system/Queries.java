@@ -17,6 +17,7 @@ public class Queries {
             return Integer.parseInt(results.get(0).get(0))>0;
         } catch (Exception ex) {
             System.out.println(ex);
+            Logging.logThis("Failed login attempt for user " + username);
             return false;
         }
     }
@@ -37,9 +38,11 @@ public class Queries {
             PreparedStatement myStmt = verbinding.prepareStatement("SELECT ps.Light, ps.Temperature, ps.PlaylistID FROM PersonalSettings ps JOIN Person p ON ps.ProfileID = p.PersonID WHERE p.Username = ?");
             myStmt.setString(1, username);
             ArrayList<ArrayList<String>> results = Database.query(myStmt);
+            Logging.logThis("Retrieving personal settings for user " + username);
             return results;
         } catch (Exception ex) {
             System.out.println(ex);
+            Logging.logThis("Failed to retrieve personal settings for user " + username);
             return null;
         }
     }
@@ -56,9 +59,42 @@ public class Queries {
             Database.query(myStmt_0);
         } catch (Exception ex) {
             System.out.println(ex);
+            Logging.logThis("Failed to make a new profile: (" + username + ", " + firstname + ", " + lastname + ")");
             return false;
         }
 
+        Logging.logThis("New profile created for user " + username);
+        return true;
+    }
+
+    public static boolean setStandardProfileSettings(String username) {
+        int light = 30;
+        int heating = 15;
+
+        try {
+            PreparedStatement myStmt = verbinding.prepareStatement(" UPDATE PersonalSettings set Light = ?, Temperature = ? WHERE ProfileID = (SELECT PersonID FROM Person WHERE Username = ?)");
+            myStmt.setInt(1, light);
+            myStmt.setInt(2, heating);
+            myStmt.setString(3, username);
+            Database.query(myStmt);
+        } catch (Exception ex) {
+            System.out.println(ex);
+            return false;
+        }
+        return true;
+    }
+
+    public static boolean updatePersonalSettings(int light, int heating, String username) {
+        try {
+            PreparedStatement myStmt = verbinding.prepareStatement(" UPDATE PersonalSettings set Light = ?, Temperature = ? WHERE ProfileID = (SELECT PersonID FROM Person WHERE Username = ?)");
+            myStmt.setInt(1, light);
+            myStmt.setInt(2, heating);
+            myStmt.setString(3, username);
+            Database.query(myStmt);
+        } catch (Exception ex) {
+            System.out.println(ex);
+            return false;
+        }
         return true;
     }
 
