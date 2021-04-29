@@ -12,7 +12,7 @@ import java.util.Objects;
 public class MakeProfileView extends SubPanel implements ActionListener {
     private JButton jbBack, jbSave;
     private JTextField jtUsername, jtFirstname, jtLastname;
-    private JPasswordField jtPassword ;
+    private JPasswordField jtPassword;
     private JLabel jlUsernameLabel, jlPasswordLabel, jlFirstnameLabel, jlLastnameLabel, welcomeLabel;
 
     public MakeProfileView(MainPanel parent, String panel_name) {
