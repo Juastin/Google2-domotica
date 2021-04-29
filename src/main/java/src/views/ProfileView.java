@@ -11,43 +11,29 @@ import java.util.ArrayList;
 
 public class ProfileView extends SubPanel implements ActionListener {
     private JButton jbNieuwProfiel;
-    private JLabel jlKies;
+    private JLabel jlKies, jlAantalProfielen;
     private ArrayList<CButton> userButtons;
+    private JPanel center, userGrid;
+    private ArrayList<ArrayList<String>> gebruikers;
 
     public ProfileView(MainPanel parent, String panel_name) {
         super(parent, panel_name);
         setLayout(new BorderLayout());
         setVisible(false);
 
-        // GET PROFILES FROM DB
-        ArrayList<ArrayList<String>> gebruikers = Queries.getProfiles();
-
         // TOP
         JPanel top = new JPanel();
         top.setBorder(BorderFactory.createEmptyBorder(40, 0, 10, 0));
-
         jlKies = new JLabel("Kies uw profiel:");
         jlKies.setFont(jlKies.getFont().deriveFont(24.0f));
         jbNieuwProfiel = new CButton(this, "＋", Color.black, Color.white);
         jbNieuwProfiel.setFont(new Font(jbNieuwProfiel.getFont().getFamily(), Font.PLAIN, 24));
-
         top.add(jlKies);
         add(top, BorderLayout.NORTH);
 
         // CENTER
-        JPanel center = new JPanel();
-        JPanel userGrid = new JPanel();
-        userGrid.setPreferredSize(new Dimension(600, 20*gebruikers.size()));
-        GridLayout userGridLayout = new GridLayout((gebruikers.size()/3), 3);
-        userGridLayout.setHgap(10); userGridLayout.setVgap(10);
-        userGrid.setLayout(userGridLayout);
-        userButtons = new ArrayList<CButton>();
-        for (ArrayList<String> row: gebruikers) {
-            CButton button = new CButton(this, row.get(0), Color.black, Color.white);
-            button.setFont(new Font(button.getFont().getFamily(), Font.PLAIN, 16));
-            userGrid.add(button);
-            userButtons.add(button);
-        }
+        center = new JPanel();
+        userGrid = new JPanel();
         center.add(userGrid);
         add(center, BorderLayout.CENTER);
 
@@ -61,7 +47,8 @@ public class ProfileView extends SubPanel implements ActionListener {
         bottom.add(nieuwProfielButtonPanel, BorderLayout.NORTH);
 
         JPanel nieuwProfielLabelPanel = new JPanel();
-        nieuwProfielLabelPanel.add(new JLabel("Profiel toevoegen (" + gebruikers.size() + "/15)"), BorderLayout.SOUTH);
+        jlAantalProfielen = new JLabel();
+        nieuwProfielLabelPanel.add(jlAantalProfielen, BorderLayout.SOUTH);
         bottom.add(nieuwProfielLabelPanel, BorderLayout.SOUTH);
 
         add(bottom, BorderLayout.SOUTH);
@@ -85,7 +72,25 @@ public class ProfileView extends SubPanel implements ActionListener {
 
     @Override
     public void onFocus() {
-        
+        // GET PROFILES FROM DB
+        gebruikers = Queries.getProfiles();
+
+        userGrid.setPreferredSize(new Dimension(600, 20*gebruikers.size()));
+        GridLayout userGridLayout = new GridLayout((gebruikers.size()/3), 3);
+        userGridLayout.setHgap(10); userGridLayout.setVgap(10);
+        userGrid.setLayout(userGridLayout);
+
+        userGrid.removeAll();
+        userButtons = new ArrayList<CButton>();
+
+        for (ArrayList<String> row: gebruikers) {
+            CButton button = new CButton(this, row.get(0), Color.black, Color.white);
+            button.setFont(new Font(button.getFont().getFamily(), Font.PLAIN, 16));
+            userGrid.add(button);
+            userButtons.add(button);
+        }
+
+        jlAantalProfielen.setText("Profiel toevoegen (" + gebruikers.size() + "/15)");
     }
 
 }
