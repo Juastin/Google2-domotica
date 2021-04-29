@@ -1,7 +1,8 @@
 package src.views;
-
 import src.components.CButton;
-import src.core.*;
+import src.core.Audio;
+import src.core.Container;
+import src.core.View;
 import src.system.Queries;
 import src.system.User;
 
@@ -11,7 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Hashtable;
 
-public class PersonalSettingsView extends SubPanel implements ActionListener {
+public class PersonalSettingsView extends View implements ActionListener {
 
     private JLabel jlTitel, jlLightIntensity, jlHeating;
     private JButton jbCancel, jbSave, jbStandardSettings;
@@ -19,7 +20,7 @@ public class PersonalSettingsView extends SubPanel implements ActionListener {
     private SpinnerModel smHeatingValue;
     private JSpinner spinner;
 
-    public PersonalSettingsView(MainPanel parent, String panel_name) {
+    public PersonalSettingsView(Container parent, String panel_name) {
         super(parent, panel_name);
         setLayout(new BorderLayout(30, 20));
         setVisible(false);

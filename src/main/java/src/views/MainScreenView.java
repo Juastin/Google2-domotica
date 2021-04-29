@@ -1,5 +1,7 @@
 package src.views;
-import src.core.*;
+import src.core.Container;
+import src.core.View;
+import src.core.Navbar;
 import src.system.User;
 
 import javax.swing.*;
@@ -8,20 +10,20 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.border.*;
 
-public class MainScreenView extends SubPanel implements ActionListener {
+public class MainScreenView extends View implements ActionListener {
     private JLabel jlWelcomeMessage, jlHeating, jlTemperature, jlLight, jlLightSmall, jlHPA, jlHumidity;
     private JButton jbLogOut;
     // Names are based on position, left upper panel being jpLU, right bottom panel being jpRU
     private JPanel jpLU, jpRU, jpLB, jpRB;
 
-    public MainScreenView(MainPanel parent, String panel_name) {
+    public MainScreenView(Container parent, String panel_name) {
         super(parent, panel_name);
         setLayout(new BorderLayout());
         Border myborder = BorderFactory.createEtchedBorder(EtchedBorder.RAISED); // https://docs.oracle.com/javase/tutorial/uiswing/components/border.html
         setVisible(false);
 
         // NAVBAR
-        NavbarPanel navbar = new NavbarPanel(this);
+        Navbar navbar = new Navbar(this);
 
         // Main Panel
         JPanel main = new JPanel();
