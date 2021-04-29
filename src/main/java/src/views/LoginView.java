@@ -109,7 +109,7 @@ public class LoginView extends SubPanel implements ActionListener{
             jbPassword.setText("");
             changeFocus("ProfileView");
         }
-        Audio.play("../../click.wav");
+        Audio.play("click.wav");
     }
 
     @Override

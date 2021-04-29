@@ -110,6 +110,7 @@ public class MakeProfileView extends SubPanel implements ActionListener {
             } else {
                 boolean result = Queries.makeNewProfile(jtUsername.getText(),jtFirstname.getText(),jtLastname.getText(),jtPassword.getPassword());
                 if (result) {
+                    Audio.play("success.wav");
                     JOptionPane.showMessageDialog(this,"Account is aangemaakt!");
                     changeFocus("ProfileView");
                     jtPassword.setText("");
@@ -122,7 +123,7 @@ public class MakeProfileView extends SubPanel implements ActionListener {
                 }
             }
         }
-        Audio.play("../../click.wav");
+        Audio.play("click.wav");
     }
 
     @Override
