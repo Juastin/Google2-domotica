@@ -10,11 +10,11 @@ import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 
 public class ProfileView extends SubPanel implements ActionListener {
-    private JButton jbNieuwProfiel;
-    private JLabel jlKies, jlAantalProfielen;
+    private JButton jbNewProfile;
+    private JLabel jlKies, jlProfileAmount;
     private ArrayList<CButton> userButtons;
     private JPanel center, userGrid;
-    private ArrayList<ArrayList<String>> gebruikers;
+    private ArrayList<ArrayList<String>> users;
 
     public ProfileView(MainPanel parent, String panel_name) {
         super(parent, panel_name);
@@ -26,8 +26,8 @@ public class ProfileView extends SubPanel implements ActionListener {
         top.setBorder(BorderFactory.createEmptyBorder(40, 0, 10, 0));
         jlKies = new JLabel("Kies uw profiel:");
         jlKies.setFont(jlKies.getFont().deriveFont(24.0f));
-        jbNieuwProfiel = new CButton(this, "＋", Color.black, Color.white);
-        jbNieuwProfiel.setFont(new Font(jbNieuwProfiel.getFont().getFamily(), Font.PLAIN, 24));
+        jbNewProfile = new CButton(this, "＋", Color.black, Color.white);
+        jbNewProfile.setFont(new Font(jbNewProfile.getFont().getFamily(), Font.PLAIN, 24));
         top.add(jlKies);
         add(top, BorderLayout.NORTH);
 
@@ -43,20 +43,42 @@ public class ProfileView extends SubPanel implements ActionListener {
         bottom.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
 
         JPanel nieuwProfielButtonPanel = new JPanel();
-        nieuwProfielButtonPanel.add(jbNieuwProfiel);
+        nieuwProfielButtonPanel.add(jbNewProfile);
         bottom.add(nieuwProfielButtonPanel, BorderLayout.NORTH);
 
         JPanel nieuwProfielLabelPanel = new JPanel();
-        jlAantalProfielen = new JLabel();
-        nieuwProfielLabelPanel.add(jlAantalProfielen, BorderLayout.SOUTH);
+        jlProfileAmount = new JLabel();
+        nieuwProfielLabelPanel.add(jlProfileAmount, BorderLayout.SOUTH);
         bottom.add(nieuwProfielLabelPanel, BorderLayout.SOUTH);
 
         add(bottom, BorderLayout.SOUTH);
     }
 
+    public void updateProfileList() {
+        // GET PROFILES FROM DB
+        users = Queries.getProfiles();
+
+        userGrid.setPreferredSize(new Dimension(600, 20*users.size()));
+        GridLayout userGridLayout = new GridLayout((users.size()/3), 3);
+        userGridLayout.setHgap(10); userGridLayout.setVgap(10);
+        userGrid.setLayout(userGridLayout);
+
+        userGrid.removeAll();
+        userButtons = new ArrayList<CButton>();
+
+        for (ArrayList<String> row: users) {
+            CButton button = new CButton(this, row.get(0), Color.black, Color.white);
+            button.setFont(new Font(button.getFont().getFamily(), Font.PLAIN, 16));
+            userGrid.add(button);
+            userButtons.add(button);
+        }
+
+        jlProfileAmount.setText("Profiel toevoegen (" + users.size() + "/15)");
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == jbNieuwProfiel) {
+        if (e.getSource() == jbNewProfile) {
             changeFocus("MakeProfileView");
         }
 
@@ -72,25 +94,7 @@ public class ProfileView extends SubPanel implements ActionListener {
 
     @Override
     public void onFocus() {
-        // GET PROFILES FROM DB
-        gebruikers = Queries.getProfiles();
-
-        userGrid.setPreferredSize(new Dimension(600, 20*gebruikers.size()));
-        GridLayout userGridLayout = new GridLayout((gebruikers.size()/3), 3);
-        userGridLayout.setHgap(10); userGridLayout.setVgap(10);
-        userGrid.setLayout(userGridLayout);
-
-        userGrid.removeAll();
-        userButtons = new ArrayList<CButton>();
-
-        for (ArrayList<String> row: gebruikers) {
-            CButton button = new CButton(this, row.get(0), Color.black, Color.white);
-            button.setFont(new Font(button.getFont().getFamily(), Font.PLAIN, 16));
-            userGrid.add(button);
-            userButtons.add(button);
-        }
-
-        jlAantalProfielen.setText("Profiel toevoegen (" + gebruikers.size() + "/15)");
+        updateProfileList();
     }
 
 }
