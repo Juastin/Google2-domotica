@@ -81,7 +81,7 @@ public class LoginView extends SubPanel implements ActionListener{
                 boolean result = Queries.isPasswordCorrect(User.getUsername(), password);
                 if (result) {
                     Logging.logThis("Successful login attempt for user " + User.getUsername());
-                    Audio.play("success.wav");
+                    Audio.play("success_0.wav");
                     User.setLoggedIn(true);
 
                     try {
