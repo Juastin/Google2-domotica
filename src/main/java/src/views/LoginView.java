@@ -88,7 +88,7 @@ public class LoginView extends SubPanel implements ActionListener{
                         ArrayList<ArrayList<String>> resultPersonalSettings = Queries.getPersonalSettings(User.getUsername());
                         User.setLight(Integer.parseInt(resultPersonalSettings.get(0).get(0)));
                         User.setTemperature(Integer.parseInt(resultPersonalSettings.get(0).get(1)));
-                        if (!(resultPersonalSettings.get(0).get(2) == null)){
+                        if (resultPersonalSettings.get(0).get(2) != null){
                             User.setPlaylistID(Integer.parseInt(resultPersonalSettings.get(0).get(2)));
                             // if null -> PlaylistID = 0;
                         }
