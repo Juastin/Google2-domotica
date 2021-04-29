@@ -67,4 +67,35 @@ public class Queries {
         return true;
     }
 
+    public static boolean setStandardProfileSettings(String username) {
+        int light = 30;
+        int heating = 15;
+
+        try {
+            PreparedStatement myStmt = verbinding.prepareStatement(" UPDATE PersonalSettings set Light = ?, Temperature = ? WHERE ProfileID = (SELECT PersonID FROM Person WHERE Username = ?)");
+            myStmt.setInt(1, light);
+            myStmt.setInt(2, heating);
+            myStmt.setString(3, username);
+            Database.query(myStmt);
+        } catch (Exception ex) {
+            System.out.println(ex);
+            return false;
+        }
+        return true;
+    }
+
+    public static boolean updatePersonalSettings(int light, int heating, String username) {
+        try {
+            PreparedStatement myStmt = verbinding.prepareStatement(" UPDATE PersonalSettings set Light = ?, Temperature = ? WHERE ProfileID = (SELECT PersonID FROM Person WHERE Username = ?)");
+            myStmt.setInt(1, light);
+            myStmt.setInt(2, heating);
+            myStmt.setString(3, username);
+            Database.query(myStmt);
+        } catch (Exception ex) {
+            System.out.println(ex);
+            return false;
+        }
+        return true;
+    }
+
 }
