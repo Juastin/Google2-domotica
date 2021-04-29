@@ -127,7 +127,12 @@ public class MakeProfileView extends SubPanel implements ActionListener {
     }
 
     @Override
-    public void onFocus() {
+    public void onFocus() {}
 
-    }
+    @Override
+    public void onShadow() {}
+
+    @Override
+    public void onTick(long now) {}
+    
 }

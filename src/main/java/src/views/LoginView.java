@@ -122,5 +122,11 @@ public class LoginView extends SubPanel implements ActionListener{
         jlUser.setText("Naam: " + User.getUsername());
     }
 
+    @Override
+    public void onShadow() {}
+
+    @Override
+    public void onTick(long now) {}
+
 }
 

@@ -23,5 +23,12 @@ public abstract class SubPanel extends JPanel {
 
     public abstract void actionPerformed(ActionEvent e);
 
+    // Is triggered when this Panel is focussed
     public abstract void onFocus();
+
+    // Is triggered when this Panel is unfocussed
+    public abstract void onShadow();
+
+    // Is triggered every x seconds by Worker.java
+    public abstract void onTick(long now);
 }

@@ -31,7 +31,12 @@ public class MusicPlayerView extends SubPanel {
     }
 
     @Override
-    public void onFocus() {
+    public void onFocus() {}
 
-    }
+    @Override
+    public void onShadow() {}
+
+    @Override
+    public void onTick(long now) {}
+    
 }

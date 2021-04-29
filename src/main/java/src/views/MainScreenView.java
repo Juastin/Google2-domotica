@@ -100,5 +100,11 @@ public class MainScreenView extends SubPanel implements ActionListener {
         System.out.println("PLaylistId: " + User.getPlaylistID());
     }
 
+    @Override
+    public void onShadow() {}
+
+    @Override
+    public void onTick(long now) {}
+
 }
 

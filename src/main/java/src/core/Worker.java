@@ -11,7 +11,8 @@ public class Worker extends TimerTask {
 
     @Override
     public void run() {
-        System.out.println("Worker is working");
+        long now = System.currentTimeMillis() / 1000L;
+        parent.getPanel().onTick(now);
     }
     
 }
