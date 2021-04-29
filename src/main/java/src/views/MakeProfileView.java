@@ -117,7 +117,7 @@ public class MakeProfileView extends SubPanel implements ActionListener {
                     jtLastname.setText("");
                     jtUsername.setText("");
                 }
-                if (!result) {
+                else {
                     JOptionPane.showMessageDialog(this,"Fout! Het account kon niet aangemaakt worden.");
                 }
             }
