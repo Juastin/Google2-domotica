@@ -14,10 +14,12 @@ public class MainPanel extends JPanel {
         this.parent = parent;
         setBackground(Color.black);
         setLayout(new GridLayout(0, 1));
-        
-        panels.add(new MenuView(this, "MenuView"));
-        panels.add(new ImageView(this, "ImageView"));
-        
+
+        panels.add(new ProfileView(this, "ProfileView"));
+        panels.add(new MakeProfileView(this, "MakeProfileView"));
+        panels.add(new LoginView(this, "LoginView"));
+        panels.add(new MainScreenView(this, "MainScreenView"));
+
         Timer timer = new Timer();
         timer.schedule(new Worker(this), 0, 60000);
 
@@ -33,6 +35,7 @@ public class MainPanel extends JPanel {
             if (panel.getName().equals(panel_name)) {
                 add(panel);
                 panel.setVisible(true);
+                panel.onFocus();
             }
         }
     }
