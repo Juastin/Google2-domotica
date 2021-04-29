@@ -44,9 +44,8 @@ public class Queries {
         }
     }
 
-    public static boolean makeNewProfile(String username, String firstname, String lastname, String password) {
-        // HIER MOET DE ENCRYPTIE KOMEN
-        String hashed_password = password;
+    public static boolean makeNewProfile(String username, String firstname, String lastname, char[] password) {
+        String hashed_password = Authentication.encryptPassword(password);
 
         try {
             PreparedStatement myStmt_0 = verbinding.prepareStatement("INSERT INTO Person (Username, FirstName, LastName, PasswordHash) VALUES (?,?,?,?)");

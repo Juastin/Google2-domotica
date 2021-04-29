@@ -18,8 +18,8 @@ public class Authentication {
     // @param String bcryptHashString from database
     // @return boolean
     // To check result: return function and check if true
-    public static boolean checkPassword(String password, String bcryptHashString){
-        return BCrypt.checkpw(password,bcryptHashString);
+    public static boolean checkPassword(char[] password, String bcryptHashString){
+        return BCrypt.checkpw(String.valueOf(password),bcryptHashString);
     }
 
 }
