@@ -17,6 +17,7 @@ public class Queries {
             return Integer.parseInt(results.get(0).get(0))>0;
         } catch (Exception ex) {
             System.out.println(ex);
+            Logging.logThis("Failed login attempt for user " + username);
             return false;
         }
     }
@@ -37,9 +38,11 @@ public class Queries {
             PreparedStatement myStmt = verbinding.prepareStatement("SELECT ps.Light, ps.Temperature, ps.PlaylistID FROM PersonalSettings ps JOIN Person p ON ps.ProfileID = p.PersonID WHERE p.Username = ?");
             myStmt.setString(1, username);
             ArrayList<ArrayList<String>> results = Database.query(myStmt);
+            Logging.logThis("Retrieving personal settings for user " + username);
             return results;
         } catch (Exception ex) {
             System.out.println(ex);
+            Logging.logThis("Failed to retrieve personal settings for user " + username);
             return null;
         }
     }
@@ -56,9 +59,11 @@ public class Queries {
             Database.query(myStmt_0);
         } catch (Exception ex) {
             System.out.println(ex);
+            Logging.logThis("Failed to make a new profile: (" + username + ", " + firstname + ", " + lastname + ")");
             return false;
         }
 
+        Logging.logThis("New profile created for user " + username);
         return true;
     }
 

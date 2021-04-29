@@ -37,7 +37,7 @@ public class Logging {
             // LOG ONLINE - IF CONNECTED
             try {
                 Connection verbinding = Database.maakVerbinding();
-                PreparedStatement myStmt = verbinding.prepareStatement("INSERT INTO Logging (datetime, description) VALUES (?, ?)");
+                PreparedStatement myStmt = verbinding.prepareStatement("INSERT INTO Logging (TimeInfo, Description) VALUES (?, ?)");
                 myStmt.setString(1, time);
                 myStmt.setString(2, description);
                 Database.query(myStmt);
