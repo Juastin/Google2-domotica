@@ -18,8 +18,8 @@ public class Index extends View implements ActionListener {
     private JPanel center, userGrid;
     private ArrayList<ArrayList<String>> users;
 
-    public Index(Container parent, String panel_name) {
-        super(parent, panel_name);
+    public Index(Container container, String name) {
+        super(container, name);
         setLayout(new BorderLayout());
         setVisible(false);
 

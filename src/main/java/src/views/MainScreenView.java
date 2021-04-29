@@ -16,8 +16,8 @@ public class MainScreenView extends View implements ActionListener {
     // Names are based on position, left upper panel being jpLU, right bottom panel being jpRU
     private JPanel jpLU, jpRU, jpLB, jpRB;
 
-    public MainScreenView(Container parent, String panel_name) {
-        super(parent, panel_name);
+    public MainScreenView(Container container, String name) {
+        super(container, name);
         setLayout(new BorderLayout());
         Border myborder = BorderFactory.createEtchedBorder(EtchedBorder.RAISED); // https://docs.oracle.com/javase/tutorial/uiswing/components/border.html
         setVisible(false);

@@ -17,8 +17,8 @@ public class MakeProfileView extends View implements ActionListener {
     private JPasswordField jtPassword;
     private JLabel jlUsernameLabel, jlPasswordLabel, jlFirstnameLabel, jlLastnameLabel, welcomeLabel;
 
-    public MakeProfileView(Container parent, String panel_name) {
-        super(parent, panel_name);
+    public MakeProfileView(Container container, String name) {
+        super(container, name);
         setVisible(false);
 
         // TOP

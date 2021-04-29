@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Frame extends JFrame {
-    private Container mainPanel;
+    private Container container;
     
     public Frame() {
         setSize(946, 540);
@@ -13,17 +13,17 @@ public class Frame extends JFrame {
         setResizable(false);
         setLayout(new GridLayout(0, 1));
 
-        mainPanel = new Container(this);
+        container = new Container(this);
 
-        add(mainPanel);
+        add(container);
         setVisible(true);
     }
 
-    public void addPanel(Object panel) {
-        mainPanel.addPanel((View)panel);
+    public void addView(Object view) {
+        container.addView((View)view);
     }
 
-    public Container getMainPanel() {
-        return mainPanel;
+    public Container getContainer() {
+        return container;
     }
 }

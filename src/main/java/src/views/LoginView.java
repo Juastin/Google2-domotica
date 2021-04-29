@@ -18,8 +18,8 @@ public class LoginView extends View implements ActionListener{
     private JPasswordField jbPassword;
     private JButton jbOk, jbTerug;
 
-    public LoginView(Container parent, String panel_name) {
-        super(parent, panel_name);
+    public LoginView(Container container, String name) {
+        super(container, name);
         setLayout(new BorderLayout());
         setVisible(false);
 

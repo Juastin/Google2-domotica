@@ -10,10 +10,10 @@ public class Main {
         Frame frame = new Frame();
 
         // Add custom views here
-        frame.addPanel(new MakeProfileView(frame.getMainPanel(), "MakeProfileView"));
-        frame.addPanel(new LoginView(frame.getMainPanel(), "LoginView"));
-        frame.addPanel(new MainScreenView(frame.getMainPanel(), "MainScreenView"));
-        frame.addPanel(new PersonalSettingsView(frame.getMainPanel(), "PersonalSettingsView"));
-        frame.addPanel(new MusicPlayerView(frame.getMainPanel(), "MusicPlayerView"));
+        frame.addView(new MakeProfileView(frame.getContainer(), "MakeProfileView"));
+        frame.addView(new LoginView(frame.getContainer(), "LoginView"));
+        frame.addView(new MainScreenView(frame.getContainer(), "MainScreenView"));
+        frame.addView(new PersonalSettingsView(frame.getContainer(), "PersonalSettingsView"));
+        frame.addView(new MusicPlayerView(frame.getContainer(), "MusicPlayerView"));
     }
 }

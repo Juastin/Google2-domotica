@@ -12,7 +12,7 @@ public class Worker extends TimerTask {
     @Override
     public void run() {
         long now = System.currentTimeMillis() / 1000L;
-        parent.getCurrentPanel().onTick(now);
+        parent.getCurrentView().onTick(now);
     }
     
 }

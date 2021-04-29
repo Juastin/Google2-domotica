@@ -9,8 +9,8 @@ import java.awt.BorderLayout;
 
 public class MusicPlayerView extends View {
 
-    public MusicPlayerView(Container parent, String panel_name) {
-        super(parent, panel_name);
+    public MusicPlayerView(Container container, String name) {
+        super(container, name);
         setLayout(new BorderLayout());
         setVisible(false);
 

@@ -20,8 +20,8 @@ public class PersonalSettingsView extends View implements ActionListener {
     private SpinnerModel smHeatingValue;
     private JSpinner spinner;
 
-    public PersonalSettingsView(Container parent, String panel_name) {
-        super(parent, panel_name);
+    public PersonalSettingsView(Container container, String name) {
+        super(container, name);
         setLayout(new BorderLayout(30, 20));
         setVisible(false);
 
