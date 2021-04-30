@@ -98,4 +98,15 @@ public class Queries {
         return true;
     }
 
+    public static ArrayList<ArrayList<String>> getSensorData() {
+        try {
+            PreparedStatement myStmt = verbinding.prepareStatement("SELECT Temperature, AirPressure, Humidity, Light FROM DataCollection ORDER BY DataCollectionID DESC LIMIT 1");
+            ArrayList<ArrayList<String>> results = Database.query(myStmt);
+            return results;
+        } catch (Exception ex) {
+            System.out.println(ex);
+            return null;
+        }
+    }
+
 }
