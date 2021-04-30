@@ -17,22 +17,22 @@ public class Navbar extends JPanel implements ActionListener {
         this.parent = parent;
         setLayout(new BorderLayout());
 
-        jbLogOut = new CButton(this, "Logout", Color.black, Color.white);
+        // Log out button must be fixed
+        jbLogOut = new CButton(this, "⊏→", Color.black, Color.white);
         jbHome = new CButton(this, "⌂", Color.black, Color.white);
         jbMusic = new CButton(this, "♫", Color.black, Color.white);
         jbSettings = new CButton(this, "⛭", Color.black, Color.white);
 
-//        jbLogOut.setFont(new Font("Arial", Font.PLAIN, 40));
-        jbHome.setFont(new Font("Arial", Font.PLAIN, 40));
-        jbMusic.setFont(new Font("Arial", Font.PLAIN, 40));
-//        jbSettings.setFont(new Font("Arial", Font.PLAIN, 40));
+        jbLogOut.setFont(new Font(jbLogOut.getFont().getFamily(), Font.PLAIN, 40));
+        jbHome.setFont(new Font(jbHome.getFont().getFamily(), Font.PLAIN, 40));
+        jbMusic.setFont(new Font(jbMusic.getFont().getFamily(), Font.PLAIN, 40));
+        jbSettings.setFont(new Font(jbSettings.getFont().getFamily(), Font.PLAIN, 40));
 
-        // Nog netter maken
+        // Looking how to make empty space in GridLayout
         white = new JLabel(".");
         white.setForeground(new Color(255, 255, 255));
         white2 = new JLabel(".");
         white2.setForeground(new Color(255, 255, 255));
-        //................
 
         JPanel menuBar = new JPanel();
         menuBar.setLayout(new BorderLayout(0, 0));

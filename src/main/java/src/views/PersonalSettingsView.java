@@ -36,14 +36,13 @@ public class PersonalSettingsView extends View implements ActionListener {
         // CENTER
         JPanel center = new JPanel();
 //        center.setLayout(new BorderLayout());
-        center.setLayout(new GridLayout(2, 1));
         center.setLayout(new GridLayout(2, 1, 15, 30));
 
         // LightIntensity
         JPanel lightIntensityPanel = new JPanel();
         // Coming soon: Picture light
         jlLightIntensity = new JLabel("Licht aan vanaf lichtintensiteit: ");
-        jsLightIntensity = new JSlider(JSlider.HORIZONTAL, 0, 100, 38);
+        jsLightIntensity = new JSlider(JSlider.HORIZONTAL, 0, 100, 0);
         jsLightIntensity.setMajorTickSpacing(25);
         jsLightIntensity.setMinorTickSpacing(10);
 //        jsLightIntensity.setPaintTicks(true);
@@ -63,14 +62,13 @@ public class PersonalSettingsView extends View implements ActionListener {
         JPanel heatingPanel = new JPanel();
         // Coming soon: Picture heating
         jlHeating = new JLabel("Verwarming aan bij: ");
-        smHeatingValue = new SpinnerNumberModel(15, 0, 30, 1);
+        smHeatingValue = new SpinnerNumberModel(0, 0, 30, 1);
         spinner = new JSpinner(smHeatingValue);
 //        spinner.setBounds(100,100,50,30);
 
         heatingPanel.add(jlHeating);
         heatingPanel.add(spinner);
         heatingPanel.add(new JLabel(" °C"));
-//        heatingPanel.setSize(300,300);
         center.add(lightIntensityPanel);
         center.add(heatingPanel);
 
@@ -110,10 +108,11 @@ public class PersonalSettingsView extends View implements ActionListener {
             if(choice == JOptionPane.YES_OPTION){
                 // UPDATE SETTINGS
                 System.out.println("INSERT NEW SETTINGS");
-                int light = 50;
-                int heating = 50;
+                int heating = (int) spinner.getValue();
+                int light = jsLightIntensity.getValue();
                 boolean result = Queries.updatePersonalSettings(light, heating, User.getUsername());
                 if (result) {
+                    User.setPersonalSettings(light, heating);
                     JOptionPane.showMessageDialog(this, "Instelling geüpdated");
                 }
             }
@@ -124,18 +123,19 @@ public class PersonalSettingsView extends View implements ActionListener {
                 System.out.println("STANDARD SETTINGS");
                 boolean result = Queries.setStandardProfileSettings(User.getUsername());
                 if (result) {
+                    User.setStandardPersonalSettings();
                     JOptionPane.showMessageDialog(this, "Instelling naar Standaardinstellingen gezet");
                 }
             }
         }
+        onFocus();
         Audio.play("click.wav");
     }
 
     @Override
     public void onFocus() {
-        System.out.println("Light: " + User.getLight());
-        System.out.println("Temperature: " + User.getTemperature());
-        System.out.println("PLaylistId: " + User.getPlaylistID());
+        jsLightIntensity.setValue(User.getLight());
+        smHeatingValue.setValue(User.getTemperature());
     }
 
     @Override
@@ -143,5 +143,5 @@ public class PersonalSettingsView extends View implements ActionListener {
 
     @Override
     public void onTick(long now) {}
-    
+
 }

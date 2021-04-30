@@ -68,8 +68,8 @@ public class Queries {
     }
 
     public static boolean setStandardProfileSettings(String username) {
-        int light = 30;
-        int heating = 15;
+        int light = 25;
+        int heating = 16;
 
         try {
             PreparedStatement myStmt = verbinding.prepareStatement(" UPDATE PersonalSettings set Light = ?, Temperature = ? WHERE ProfileID = (SELECT PersonID FROM Person WHERE Username = ?)");

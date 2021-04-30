@@ -29,16 +29,8 @@ public class User {
         return light;
     }
 
-    public static void setLight(int light) {
-        User.light = light;
-    }
-
     public static int getTemperature() {
         return temperature;
-    }
-
-    public static void setTemperature(int temperature) {
-        User.temperature = temperature;
     }
 
     public static int getPlaylistID() {
@@ -49,11 +41,20 @@ public class User {
         User.playlistID = playlistID;
     }
 
+    public static void setPersonalSettings(int light, int temperature) {
+        User.light = light;
+        User.temperature = temperature;
+    }
+
+    public static void setStandardPersonalSettings() {
+        User.light = 25;
+        User.temperature = 16;
+    }
+
     public static void logOut() {
         setLoggedIn(false);
         setUsername("");
-        setLight(0);
-        setTemperature(0);
+        setPersonalSettings(0, 0);
         setPlaylistID(0);
     }
 }

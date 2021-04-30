@@ -89,8 +89,7 @@ public class LoginView extends View implements ActionListener{
 
                     try {
                         ArrayList<ArrayList<String>> resultPersonalSettings = Queries.getPersonalSettings(User.getUsername());
-                        User.setLight(Integer.parseInt(resultPersonalSettings.get(0).get(0)));
-                        User.setTemperature(Integer.parseInt(resultPersonalSettings.get(0).get(1)));
+                        User.setPersonalSettings(Integer.parseInt(resultPersonalSettings.get(0).get(0)), Integer.parseInt(resultPersonalSettings.get(0).get(1)));
                         if (resultPersonalSettings.get(0).get(2) != null){
                             User.setPlaylistID(Integer.parseInt(resultPersonalSettings.get(0).get(2)));
                             // if null -> PlaylistID = 0;
@@ -112,11 +111,10 @@ public class LoginView extends View implements ActionListener{
                 ex.getMessage();
                 System.out.println("Error try 2");
             }
-            jbPassword.setText("");
         } else if (e.getSource() == jbTerug) {
-            jbPassword.setText("");
             changeFocus("ProfileView");
         }
+        jbPassword.setText("");
         Audio.play("click.wav");
     }
 
