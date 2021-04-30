@@ -2,6 +2,7 @@ package src.views;
 import src.components.CButton;
 import src.core.Audio;
 import src.core.Container;
+import src.core.Navbar;
 import src.core.View;
 import src.system.Queries;
 import src.system.User;
@@ -25,13 +26,21 @@ public class PersonalSettingsView extends View implements ActionListener {
         setLayout(new BorderLayout(30, 20));
         setVisible(false);
 
+        // NAVBAR
+        Navbar navbar = new Navbar(this);
+        add(navbar, BorderLayout.EAST);
+
+        // MAIN
+        JPanel main = new JPanel();
+        main.setLayout(new BorderLayout());
+
         // TOP
         JPanel top = new JPanel();
         top.setLayout(new BorderLayout());
         jlTitel = new JLabel("Persoonlijke instellingen");
         jlTitel.setFont(jlTitel.getFont().deriveFont(20.0f));
         top.add(jlTitel, BorderLayout.WEST);
-        add(top, BorderLayout.NORTH);
+        main.add(top, BorderLayout.NORTH);
 
         // CENTER
         JPanel center = new JPanel();
@@ -72,7 +81,7 @@ public class PersonalSettingsView extends View implements ActionListener {
         center.add(lightIntensityPanel);
         center.add(heatingPanel);
 
-        add(center, BorderLayout.WEST);
+        main.add(center, BorderLayout.WEST);
 
         // BOTTOM
         JPanel bottom = new JPanel();
@@ -91,7 +100,8 @@ public class PersonalSettingsView extends View implements ActionListener {
         bottom.add(leftBottomPanel, BorderLayout.WEST);
         bottom.add(rightBottomPanel, BorderLayout.EAST);
 
-        add(bottom, BorderLayout.SOUTH);
+        main.add(bottom, BorderLayout.SOUTH);
+        add(main);
     }
 
     @Override
