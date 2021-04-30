@@ -13,7 +13,6 @@ import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.time.chrono.IsoEra;
 import java.util.Hashtable;
 
 public class PersonalSettingsView extends View implements ActionListener, ChangeListener {
