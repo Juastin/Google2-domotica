@@ -80,36 +80,31 @@ public class LoginView extends View implements ActionListener{
         if (e.getSource() == jbOk || e.getSource() == jbPassword) {
             String password = String.valueOf(jbPassword.getPassword());
 
-            try {
-                boolean result = Queries.isPasswordCorrect(User.getUsername(), password);
-                if (result) {
-                    Logging.logThis("Successful login attempt for user " + User.getUsername());
-                    Audio.play("success_0.wav");
-                    User.setLoggedIn(true);
+            boolean result = Queries.isPasswordCorrect(User.getUsername(), password);
+            if (result) {
+                Logging.logThis("Successful login attempt for user " + User.getUsername());
+                Audio.play("success_0.wav");
+                User.setLoggedIn(true);
 
-                    try {
-                        ArrayList<ArrayList<String>> resultPersonalSettings = Queries.getPersonalSettings(User.getUsername());
-                        User.setPersonalSettings(Integer.parseInt(resultPersonalSettings.get(0).get(0)), Integer.parseInt(resultPersonalSettings.get(0).get(1)));
-                        if (resultPersonalSettings.get(0).get(2) != null){
-                            User.setPlaylistID(Integer.parseInt(resultPersonalSettings.get(0).get(2)));
-                            // if null -> PlaylistID = 0;
-                        }
-                    } catch (Exception ex) {
-                        System.out.println(ex.getMessage());
+                try {
+                    ArrayList<ArrayList<String>> resultPersonalSettings = Queries.getPersonalSettings(User.getUsername());
+                    User.setPersonalSettings(Integer.parseInt(resultPersonalSettings.get(0).get(0)), Integer.parseInt(resultPersonalSettings.get(0).get(1)));
+                    if (resultPersonalSettings.get(0).get(2) != null){
+                        User.setPlaylistID(Integer.parseInt(resultPersonalSettings.get(0).get(2)));
+                        // if null -> PlaylistID = 0;
                     }
-                    changeFocus("MainScreenView");
-                } else {
-                    Audio.play("error.wav");
-                    Logging.logThis("Failed login attempt for user " + User.getUsername());
-                    if (password.equals("")) {
-                        JOptionPane.showMessageDialog(this, "Try Again ");
-                    } else {
-                        JOptionPane.showMessageDialog(this, "Incorrect Password. Do you understand " + User.getUsername() + "?", "Login Failed", 2);
-                    }
+                } catch (Exception ex) {
+                    System.out.println(ex.getMessage());
                 }
-            } catch (Exception ex) {
-                ex.getMessage();
-                System.out.println("Error try 2");
+                changeFocus("MainScreenView");
+            } else {
+                Audio.play("error.wav");
+                Logging.logThis("Failed login attempt for user " + User.getUsername());
+                if (password.equals("")) {
+                    JOptionPane.showMessageDialog(this, "Try again ");
+                } else {
+                    JOptionPane.showMessageDialog(this, "Incorrect password. Try Again", "Login Failed", 2);
+                }
             }
         } else if (e.getSource() == jbTerug) {
             changeFocus("ProfileView");
