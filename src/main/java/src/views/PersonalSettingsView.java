@@ -96,18 +96,16 @@ public class PersonalSettingsView extends View implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        boolean change = true;
         if (e.getSource() == jbCancel) {
             int choice = JOptionPane.showConfirmDialog(this, "Weet u het zeker?", "Bevestiging", JOptionPane.YES_NO_OPTION);
-            if(choice == JOptionPane.YES_OPTION){
-                // CANCEL
-                smHeatingValue.setValue(15);
-                changeFocus("MainScreenView");
+            if(choice == JOptionPane.NO_OPTION){
+                // Don't set the values with the user PersonalSettings
+                change = false;
             }
         } else if (e.getSource() == jbSave) {
             int choice = JOptionPane.showConfirmDialog(this, "Weet u het zeker?", "Bevestiging", JOptionPane.YES_NO_OPTION);
             if(choice == JOptionPane.YES_OPTION){
-                // UPDATE SETTINGS
-                System.out.println("INSERT NEW SETTINGS");
                 int heating = (int) spinner.getValue();
                 int light = jsLightIntensity.getValue();
                 boolean result = Queries.updatePersonalSettings(light, heating, User.getUsername());
@@ -119,8 +117,6 @@ public class PersonalSettingsView extends View implements ActionListener {
         } else if (e.getSource() == jbStandardSettings) {
             int choice = JOptionPane.showConfirmDialog(this, "Weet u het zeker?", "Bevestiging", JOptionPane.YES_NO_OPTION);
             if(choice == JOptionPane.YES_OPTION){
-                // UPDATE TO STANDARD SETTINGS
-                System.out.println("STANDARD SETTINGS");
                 boolean result = Queries.setStandardProfileSettings(User.getUsername());
                 if (result) {
                     User.setStandardPersonalSettings();
@@ -128,7 +124,10 @@ public class PersonalSettingsView extends View implements ActionListener {
                 }
             }
         }
-        onFocus();
+        if (change) {
+            // Change the values with the (new) user PersonalSettings
+            onFocus();
+        }
         Audio.play("click.wav");
     }
 
