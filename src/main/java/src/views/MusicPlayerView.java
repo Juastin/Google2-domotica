@@ -7,6 +7,8 @@ import src.core.View;
 import src.core.Navbar;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -15,6 +17,8 @@ public class MusicPlayerView extends View implements ActionListener {
     private JPanel jpTop, jpSubBottom, jpBottom, jpLeft, jpMiddle, jpRight;
     private JButton jbList, jbPrevious, jbPlay, jbNext;
     private JSlider jsPlayTime;
+    private JLabel jlCurrentPlayTime, jlMelodyLength;
+    private String currentPlayTime, melodyLength;
 
     public MusicPlayerView(Container container, String name) {
         super(container, name);
@@ -33,22 +37,35 @@ public class MusicPlayerView extends View implements ActionListener {
         jpTop.setLayout(new BorderLayout());
         jpTop.setPreferredSize(new Dimension(jpTop.getWidth(), 400));
         //COMPONENTS
+        /* Top components */
         JLabel jlTitel = new JLabel("Titel melodie", JLabel.CENTER);
         jlTitel.setFont(jlTitel.getFont().deriveFont(20.0f));
         /* SubBottom in panel of Top */
         jpSubBottom = new JPanel();
-        jpSubBottom.setBorder(BorderFactory.createEmptyBorder(0, 50, 0, 50));
+        jpSubBottom.setBorder(BorderFactory.createEmptyBorder(0, 60, 0, 60));
         jpSubBottom.setLayout(new BorderLayout());
         jpSubBottom.setPreferredSize(new Dimension(jpSubBottom.getWidth(), 70));
+        /* SubBottom components */
         jsPlayTime = new JSlider(JSlider.HORIZONTAL, 0, 168, 51);
         jsPlayTime.setMinorTickSpacing(1);
         jsPlayTime.setSnapToTicks(true);
+//        jsPlayTime.setEnabled(false);
+        jsPlayTime.addChangeListener(e -> {
+            currentPlayTime = String.format("%02d:%02d", (int) Math.floor(jsPlayTime.getValue() / 60), jsPlayTime.getValue() - (int) Math.floor(jsPlayTime.getValue() / 60) * 60);
+            jlCurrentPlayTime.setText(currentPlayTime);
+        });
+        melodyLength = String.format("%02d:%02d", (int) Math.floor(jsPlayTime.getMaximum() / 60), jsPlayTime.getMaximum() - (int) Math.floor(jsPlayTime.getMaximum() / 60) * 60);
+        currentPlayTime = String.format("%02d:%02d", (int) Math.floor(jsPlayTime.getValue() / 60), jsPlayTime.getValue() - (int) Math.floor(jsPlayTime.getValue() / 60) * 60);
+        jlCurrentPlayTime = new JLabel(String.valueOf(currentPlayTime));
+        jlMelodyLength = new JLabel(melodyLength);
+        jlCurrentPlayTime.setPreferredSize(new Dimension(30,0));
+        jlMelodyLength.setPreferredSize(new Dimension(30,0));
         /* Add */
         jpTop.add(jlTitel, BorderLayout.CENTER);
-        jpSubBottom.add(new JLabel("0:51"), BorderLayout.WEST);
+        jpSubBottom.add(jlCurrentPlayTime, BorderLayout.WEST);
         jpSubBottom.add(jsPlayTime, BorderLayout.CENTER);
-        jpSubBottom.add(new JLabel("2:48"), BorderLayout.EAST);
-        /* Added panel s*/
+        jpSubBottom.add(jlMelodyLength, BorderLayout.EAST);
+        /* Added panels */
         jpTop.add(jpSubBottom, BorderLayout.SOUTH);
 
 
