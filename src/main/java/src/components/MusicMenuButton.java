@@ -4,23 +4,22 @@ import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseListener;
 
-/* MusicButton
+/* MusicMenuButton
 
-An extension of JButton, created for the MusicPlayerView to:
+An extension of JButton, created for the MusicPlayerMenuView to:
 + Immediately give style
 + Immediately give an ActionListener
 + Customize your button style in different states
 
 */
 
-public class MusicButton extends JButton implements ChangeListener {
-    private Color buttonChange = new Color(80, 80, 80);
+public class MusicMenuButton extends JButton{
+    private Color defaultColor = new Color(250, 250, 250);
+    private Color buttonChange = new Color(240, 240, 240);
 
-    public MusicButton(ActionListener parent, String text, int fontSize) {
+    public MusicMenuButton(ActionListener parent, String text, int fontSize) {
         super(text);
         setForeground(Color.BLACK);
         setFont(new Font(this.getFont().getFamily(), Font.PLAIN, fontSize));
@@ -28,21 +27,21 @@ public class MusicButton extends JButton implements ChangeListener {
         setBorderPainted(false);
         setFocusPainted(false);
         setContentAreaFilled(false);
-        setOpaque(false);
         addActionListener(parent);
-        addChangeListener(this);
+        setBackground(defaultColor);
     }
 
     @Override
-    public void stateChanged(ChangeEvent e) {
+    protected void paintComponent(Graphics g) {
         if (this.model.isPressed()) {
-            this.setForeground(Color.BLACK);
-        }
-        else if (this.model.isRollover()) {
-            this.setForeground(buttonChange);
+            g.setColor(defaultColor);
+        }else if (this.model.isRollover()) {
+            g.setColor(buttonChange);
         }
         else {
-            this.setForeground(Color.BLACK);
+            g.setColor(defaultColor);
         }
+        g.fillRect(0, 0, getWidth(), getHeight());
+        super.paintComponent(g);
     }
 }

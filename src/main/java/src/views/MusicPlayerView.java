@@ -76,12 +76,12 @@ public class MusicPlayerView extends View implements ActionListener {
         jpLeft = new JPanel();
         jpMiddle = new JPanel();
         jpRight = new JPanel();
-        jpRight.setPreferredSize(new Dimension(50, 0));
+        jpRight.setPreferredSize(new Dimension(60, 0));
         /* Buttons */
-        jbList = new MusicButton(this, "⋮☰");
-        jbPrevious = new MusicButton(this, "⏮");
-        jbPlay = new MusicButton(this, "⏵");
-        jbNext = new MusicButton(this, "⏭");
+        jbList = new MusicButton(this, "⋮☰", 40);
+        jbPrevious = new MusicButton(this, "⏮", 40);
+        jbPlay = new MusicButton(this, "⏵", 40);
+        jbNext = new MusicButton(this, "⏭", 40);
         /* Add */
         jpLeft.add(jbList);
         jpMiddle.add(jbPrevious);
@@ -92,7 +92,7 @@ public class MusicPlayerView extends View implements ActionListener {
         jpBottom.add(jpMiddle, BorderLayout.CENTER);
         jpBottom.add(jpRight, BorderLayout.EAST);
 
-        //DEFAULT LAYOUT
+        //LAYOUT
         main.add(jpTop, BorderLayout.NORTH);
         main.add(jpCenter, BorderLayout.CENTER);
         main.add(jpBottom, BorderLayout.SOUTH);
@@ -103,10 +103,9 @@ public class MusicPlayerView extends View implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == jbList) {
-
+            this.changeFocus("MusicMenuView");
         }
         if (e.getSource() == jbPrevious) {
-
         }
         if (e.getSource() == jbPlay) {
             if (jbPlay.getText().equals("⏸")) {
