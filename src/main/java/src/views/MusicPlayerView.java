@@ -60,8 +60,6 @@ public class MusicPlayerView extends View implements ActionListener {
         currentPlayTime = String.format("%02d:%02d", (int) Math.floor(jsPlayTime.getValue() / 60), jsPlayTime.getValue() - (int) Math.floor(jsPlayTime.getValue() / 60) * 60);
         jlCurrentPlayTime = new JLabel(String.valueOf(currentPlayTime));
         jlMelodyLength = new JLabel(melodyLength);
-        jlCurrentPlayTime.setPreferredSize(new Dimension(30,0));
-        jlMelodyLength.setPreferredSize(new Dimension(30,0));
         /* Add */
         jpCenter.add(jlCurrentPlayTime, BorderLayout.WEST);
         jpCenter.add(jsPlayTime, BorderLayout.CENTER);
@@ -69,7 +67,7 @@ public class MusicPlayerView extends View implements ActionListener {
 
         // BOTTOM
         jpBottom = new JPanel();
-        jpBottom.setBorder(BorderFactory.createEmptyBorder(15, 50, 15, 50));
+        jpBottom.setBorder(BorderFactory.createEmptyBorder(10, 50, 10, 50));
         jpBottom.setLayout(new BorderLayout());
         // COMPONENTS
         /* Panels */
@@ -78,7 +76,8 @@ public class MusicPlayerView extends View implements ActionListener {
         jpRight = new JPanel();
         jpRight.setPreferredSize(new Dimension(60, 0));
         /* Buttons */
-        jbList = new MusicButton(this, "⋮☰", 40);
+        jbList = new MusicButton(this, "⋮☰", 30);
+        jbList.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
         jbPrevious = new MusicButton(this, "⏮", 40);
         jbPlay = new MusicButton(this, "⏵", 40);
         jbNext = new MusicButton(this, "⏭", 40);
