@@ -14,10 +14,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class MusicPlayerView extends View implements ActionListener {
-    private JPanel jpTop, jpSubBottom, jpBottom, jpLeft, jpMiddle, jpRight;
+    private JPanel jpTop, jpCenter, jpBottom, jpLeft, jpMiddle, jpRight;
     private JButton jbList, jbPrevious, jbPlay, jbNext;
     private JSlider jsPlayTime;
-    private JLabel jlCurrentPlayTime, jlMelodyLength;
+    private JLabel jlTitle, jlCurrentPlayTime, jlMelodyLength;
     private String currentPlayTime, melodyLength;
 
     public MusicPlayerView(Container container, String name) {
@@ -38,14 +38,16 @@ public class MusicPlayerView extends View implements ActionListener {
         jpTop.setPreferredSize(new Dimension(jpTop.getWidth(), 400));
         //COMPONENTS
         /* Top components */
-        JLabel jlTitel = new JLabel("Titel melodie", JLabel.CENTER);
-        jlTitel.setFont(jlTitel.getFont().deriveFont(20.0f));
-        /* SubBottom in panel of Top */
-        jpSubBottom = new JPanel();
-        jpSubBottom.setBorder(BorderFactory.createEmptyBorder(0, 60, 0, 60));
-        jpSubBottom.setLayout(new BorderLayout());
-        jpSubBottom.setPreferredSize(new Dimension(jpSubBottom.getWidth(), 70));
-        /* SubBottom components */
+        jlTitle = new JLabel("<html><div style='text-align:center;'><p style='margin: 0; font-size: 4em'>♫</p><p style='margin: 0;font-size: 1.5em'>Titel melodie</p></div></html>", JLabel.CENTER);
+        /* Add */
+        jpTop.add(jlTitle, BorderLayout.CENTER);
+
+        //MIDDLE
+        jpCenter = new JPanel();
+        jpCenter.setBorder(BorderFactory.createEmptyBorder(0, 60, 0, 60));
+        jpCenter.setLayout(new BorderLayout());
+        jpCenter.setPreferredSize(new Dimension(jpCenter.getWidth(), 70));
+        // COMPONENTS
         jsPlayTime = new JSlider(JSlider.HORIZONTAL, 0, 168, 51);
         jsPlayTime.setMinorTickSpacing(1);
         jsPlayTime.setSnapToTicks(true);
@@ -61,13 +63,9 @@ public class MusicPlayerView extends View implements ActionListener {
         jlCurrentPlayTime.setPreferredSize(new Dimension(30,0));
         jlMelodyLength.setPreferredSize(new Dimension(30,0));
         /* Add */
-        jpTop.add(jlTitel, BorderLayout.CENTER);
-        jpSubBottom.add(jlCurrentPlayTime, BorderLayout.WEST);
-        jpSubBottom.add(jsPlayTime, BorderLayout.CENTER);
-        jpSubBottom.add(jlMelodyLength, BorderLayout.EAST);
-        /* Added panels */
-        jpTop.add(jpSubBottom, BorderLayout.SOUTH);
-
+        jpCenter.add(jlCurrentPlayTime, BorderLayout.WEST);
+        jpCenter.add(jsPlayTime, BorderLayout.CENTER);
+        jpCenter.add(jlMelodyLength, BorderLayout.EAST);
 
         // BOTTOM
         jpBottom = new JPanel();
@@ -96,6 +94,7 @@ public class MusicPlayerView extends View implements ActionListener {
 
         //DEFAULT LAYOUT
         main.add(jpTop, BorderLayout.NORTH);
+        main.add(jpCenter, BorderLayout.CENTER);
         main.add(jpBottom, BorderLayout.SOUTH);
         add(main, BorderLayout.CENTER);
         add(navbar, BorderLayout.EAST);
