@@ -156,6 +156,18 @@ public class MusicMenuView extends View implements ActionListener {
         if (e.getSource() == jbNext) {
 
         }
+        if (e.getSource() == jbSongs) {
+
+        }
+        if (e.getSource() == jbPlaylist) {
+
+        }
+        if (e.getSource() == jbQueue) {
+
+        }
+        if (e.getSource() == jbNewPlaylist) {
+
+        }
         Audio.play("click.wav");
     }
 
