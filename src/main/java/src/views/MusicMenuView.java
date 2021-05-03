@@ -17,7 +17,7 @@ import java.awt.event.ActionListener;
 public class MusicMenuView extends View implements ActionListener {
     private JPanel
             jpTop,
-            jpCenter,
+            jpCenter, jpSongs, jpPlaylist, jpQueue, jpNewPlaylist,
             jpBottom, jpMiddle, jpMiddleTop, jpMiddleBottom, jpRight;
     private JButton jbList, jbPrevious, jbPlay, jbNext, jbSongs, jbPlaylist, jbQueue, jbNewPlaylist;
     private JSlider jsPlayTime;
@@ -57,9 +57,17 @@ public class MusicMenuView extends View implements ActionListener {
         jpTop.add(jbQueue);
         jpTop.add(jbNewPlaylist);
 
-        // Center  panel
+        // Center panel (changeable panels with the buttons in top bar panel)
         jpCenter = new JPanel();
         jpCenter.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, customGray2));
+        jpCenter.setLayout(new BorderLayout());
+        // COMPONENTS
+        jpSongs = new MusicMenuSongs();
+        jpPlaylist = new MusicMenuPlaylist();
+        jpQueue = new MusicMenuQueue();
+        jpNewPlaylist = new MusicMenuNewPlaylist();
+        /* Add default visible panel */
+        changeMusicPanel(jpSongs);
 
 
         // Bottom bar panel
@@ -157,16 +165,16 @@ public class MusicMenuView extends View implements ActionListener {
 
         }
         if (e.getSource() == jbSongs) {
-
+            changeMusicPanel(jpSongs);
         }
         if (e.getSource() == jbPlaylist) {
-
+            changeMusicPanel(jpPlaylist);
         }
         if (e.getSource() == jbQueue) {
-
+            changeMusicPanel(jpQueue);
         }
         if (e.getSource() == jbNewPlaylist) {
-
+            changeMusicPanel(jpNewPlaylist);
         }
         Audio.play("click.wav");
     }
@@ -180,4 +188,13 @@ public class MusicMenuView extends View implements ActionListener {
     @Override
     public void onTick(long now) {}
 
+    public void changeMusicPanel(JPanel changeToPanel) {
+        try {
+            jpCenter.getComponent(0).setVisible(false);
+            jpCenter.remove(0);
+        } catch (ArrayIndexOutOfBoundsException ignored) {}
+        jpCenter.add(changeToPanel, BorderLayout.CENTER);
+        changeToPanel.setVisible(true);
+        repaint();
+    }
 }
