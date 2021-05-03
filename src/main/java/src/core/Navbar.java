@@ -11,14 +11,12 @@ import java.awt.event.ActionListener;
 public class Navbar extends JPanel implements ActionListener {
     private View parent;
     private JButton jbLogOut, jbHome, jbMusic, jbSettings;
-    private JLabel white, white2;
 
     public Navbar(View parent) {
         this.parent = parent;
         setLayout(new BorderLayout());
 
-        // Log out button must be fixed
-        jbLogOut = new CButton(this, "⊏→", Color.black, Color.white);
+        jbLogOut = new CButton(this, "⮊", Color.black, Color.white);
         jbHome = new CButton(this, "⌂", Color.black, Color.white);
         jbMusic = new CButton(this, "♫", Color.black, Color.white);
         jbSettings = new CButton(this, "⛭", Color.black, Color.white);
@@ -27,12 +25,6 @@ public class Navbar extends JPanel implements ActionListener {
         jbHome.setFont(new Font(jbHome.getFont().getFamily(), Font.PLAIN, 40));
         jbMusic.setFont(new Font(jbMusic.getFont().getFamily(), Font.PLAIN, 40));
         jbSettings.setFont(new Font(jbSettings.getFont().getFamily(), Font.PLAIN, 40));
-
-        // Looking how to make empty space in GridLayout
-        white = new JLabel(".");
-        white.setForeground(new Color(255, 255, 255));
-        white2 = new JLabel(".");
-        white2.setForeground(new Color(255, 255, 255));
 
         JPanel menuBar = new JPanel();
         menuBar.setLayout(new BorderLayout(0, 0));
@@ -48,8 +40,8 @@ public class Navbar extends JPanel implements ActionListener {
         formGrid.add(jbLogOut);
         formGrid.add(jbHome);
         formGrid.add(jbMusic);
-        formGrid.add(white);
-        formGrid.add(white2);
+        formGrid.add(new JLabel(""));
+        formGrid.add(new JLabel(""));
         formGrid.add(jbSettings);
 
         menuBar.add(formGrid);

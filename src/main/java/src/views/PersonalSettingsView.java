@@ -8,14 +8,16 @@ import src.system.Queries;
 import src.system.User;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Hashtable;
 
-public class PersonalSettingsView extends View implements ActionListener {
+public class PersonalSettingsView extends View implements ActionListener, ChangeListener {
 
-    private JLabel jlTitel, jlLightIntensity, jlHeating;
+    private JLabel jlTitel, jlLightIntensity, jlHeating, jlCurrenLightValue, jlLightIcon, jlHeatingIcon;
     private JButton jbCancel, jbSave, jbStandardSettings;
     private JSlider jsLightIntensity;
     private SpinnerModel smHeatingValue;
@@ -23,7 +25,7 @@ public class PersonalSettingsView extends View implements ActionListener {
 
     public PersonalSettingsView(Container container, String name) {
         super(container, name);
-        setLayout(new BorderLayout(30, 20));
+        setLayout(new BorderLayout());
         setVisible(false);
 
         // NAVBAR
@@ -40,21 +42,22 @@ public class PersonalSettingsView extends View implements ActionListener {
         jlTitel = new JLabel("Persoonlijke instellingen");
         jlTitel.setFont(jlTitel.getFont().deriveFont(20.0f));
         top.add(jlTitel, BorderLayout.WEST);
-        main.add(top, BorderLayout.NORTH);
 
         // CENTER
         JPanel center = new JPanel();
-//        center.setLayout(new BorderLayout());
-        center.setLayout(new GridLayout(2, 1, 15, 30));
+        center.setLayout(new GridLayout(2, 1));
 
         // LightIntensity
         JPanel lightIntensityPanel = new JPanel();
-        // Coming soon: Picture light
-        jlLightIntensity = new JLabel("Licht aan vanaf lichtintensiteit: ");
+        jlLightIcon = new JLabel("\uD83D\uDCA1");
+        jlLightIntensity = new JLabel(" Licht aan vanaf lichtintensiteit: ");
+        jlLightIntensity.setFont(new Font(jlLightIntensity.getFont().getFamily(), Font.PLAIN, 13));
+        jlLightIcon.setFont(new Font(jlLightIcon.getFont().getFamily(), Font.PLAIN, 30));
+
         jsLightIntensity = new JSlider(JSlider.HORIZONTAL, 0, 100, 0);
         jsLightIntensity.setMajorTickSpacing(25);
         jsLightIntensity.setMinorTickSpacing(10);
-//        jsLightIntensity.setPaintTicks(true);
+        jsLightIntensity.setPaintTicks(true);
         jsLightIntensity.setPaintLabels(true);
 
         Hashtable position = new Hashtable();
@@ -62,26 +65,31 @@ public class PersonalSettingsView extends View implements ActionListener {
         position.put(50, new JLabel("50"));
         position.put(100, new JLabel("100"));
         jsLightIntensity.setLabelTable(position);
+        jsLightIntensity.addChangeListener(this);
 
+        jlCurrenLightValue = new JLabel("");
+
+        lightIntensityPanel.add(jlLightIcon);
         lightIntensityPanel.add(jlLightIntensity);
         lightIntensityPanel.add(jsLightIntensity);
-        lightIntensityPanel.add(new JLabel(" %"));
+        lightIntensityPanel.add(jlCurrenLightValue);
 
         // Heating
         JPanel heatingPanel = new JPanel();
-        // Coming soon: Picture heating
-        jlHeating = new JLabel("Verwarming aan bij: ");
+        jlHeatingIcon = new JLabel("♨");
+        jlHeating = new JLabel(" Verwarming aan bij: ");
+        jlHeating.setFont(new Font(jlHeating.getFont().getFamily(), Font.PLAIN, 13));
+        jlHeatingIcon.setFont(new Font(jlHeatingIcon.getFont().getFamily(), Font.PLAIN, 30));
         smHeatingValue = new SpinnerNumberModel(0, 0, 30, 1);
         spinner = new JSpinner(smHeatingValue);
-//        spinner.setBounds(100,100,50,30);
 
+        heatingPanel.add(jlHeatingIcon);
         heatingPanel.add(jlHeating);
         heatingPanel.add(spinner);
         heatingPanel.add(new JLabel(" °C"));
+
         center.add(lightIntensityPanel);
         center.add(heatingPanel);
-
-        main.add(center, BorderLayout.WEST);
 
         // BOTTOM
         JPanel bottom = new JPanel();
@@ -100,21 +108,22 @@ public class PersonalSettingsView extends View implements ActionListener {
         bottom.add(leftBottomPanel, BorderLayout.WEST);
         bottom.add(rightBottomPanel, BorderLayout.EAST);
 
+        main.add(top, BorderLayout.NORTH);
+        main.add(center, BorderLayout.WEST);
         main.add(bottom, BorderLayout.SOUTH);
         add(main);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        boolean change = true;
+        boolean change = true; // Change the values with the (new) user PersonalSettings
         if (e.getSource() == jbCancel) {
-            int choice = JOptionPane.showConfirmDialog(this, "Weet u het zeker?", "Bevestiging", JOptionPane.YES_NO_OPTION);
+            int choice = JOptionPane.showConfirmDialog(this, "Weet u het zeker?", "Bevestiging annuleren", JOptionPane.YES_NO_OPTION);
             if(choice == JOptionPane.NO_OPTION){
-                // Don't set the values with the user PersonalSettings
-                change = false;
+                change = false; // Don't set the values with the user PersonalSettings
             }
         } else if (e.getSource() == jbSave) {
-            int choice = JOptionPane.showConfirmDialog(this, "Weet u het zeker?", "Bevestiging", JOptionPane.YES_NO_OPTION);
+            int choice = JOptionPane.showConfirmDialog(this, "Weet u het zeker?", "Bevestiging opslaan", JOptionPane.YES_NO_OPTION);
             if(choice == JOptionPane.YES_OPTION){
                 int heating = (int) spinner.getValue();
                 int light = jsLightIntensity.getValue();
@@ -125,7 +134,7 @@ public class PersonalSettingsView extends View implements ActionListener {
                 }
             }
         } else if (e.getSource() == jbStandardSettings) {
-            int choice = JOptionPane.showConfirmDialog(this, "Weet u het zeker?", "Bevestiging", JOptionPane.YES_NO_OPTION);
+            int choice = JOptionPane.showConfirmDialog(this, "Weet u het zeker?", "Bevestiging naar standaardinstellingen", JOptionPane.YES_NO_OPTION);
             if(choice == JOptionPane.YES_OPTION){
                 boolean result = Queries.setStandardProfileSettings(User.getUsername());
                 if (result) {
@@ -135,7 +144,6 @@ public class PersonalSettingsView extends View implements ActionListener {
             }
         }
         if (change) {
-            // Change the values with the (new) user PersonalSettings
             onFocus();
         }
         Audio.play("click.wav");
@@ -153,4 +161,12 @@ public class PersonalSettingsView extends View implements ActionListener {
     @Override
     public void onTick(long now) {}
 
+    @Override
+    public void stateChanged(ChangeEvent e) {
+        if (e.getSource() == jsLightIntensity) {
+            // update text field when the value of the slider changes
+            JSlider source = (JSlider) e.getSource();
+            jlCurrenLightValue.setText(source.getValue() + " %");
+        }
+    }
 }
