@@ -6,7 +6,7 @@ import java.awt.event.ActionListener;
 
 /* CButton
 
-An extention of JButton, created to:
+An extension of JButton, created to:
 + Immediately give style
 + Immediately give an ActionListener
 
