@@ -136,7 +136,7 @@ public class PersonalSettingsView extends View implements ActionListener, Change
         } else if (e.getSource() == jbStandardSettings) {
             int choice = JOptionPane.showConfirmDialog(this, "Weet u het zeker?", "Bevestiging naar standaardinstellingen", JOptionPane.YES_NO_OPTION);
             if(choice == JOptionPane.YES_OPTION){
-                boolean result = Queries.setStandardProfileSettings(User.getUsername());
+                boolean result = Queries.updatePersonalSettings(25 ,16, User.getUsername());
                 if (result) {
                     User.setStandardPersonalSettings();
                     JOptionPane.showMessageDialog(this, "Instelling naar Standaardinstellingen gezet");
