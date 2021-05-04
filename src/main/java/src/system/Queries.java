@@ -67,23 +67,7 @@ public class Queries {
         return true;
     }
 
-    public static boolean setStandardProfileSettings(String username) {
-        int light = 25;
-        int heating = 16;
-
-        try {
-            PreparedStatement myStmt = connection.prepareStatement(" UPDATE PersonalSettings set Light = ?, Temperature = ? WHERE ProfileID = (SELECT PersonID FROM Person WHERE Username = ?)");
-            myStmt.setInt(1, light);
-            myStmt.setInt(2, heating);
-            myStmt.setString(3, username);
-            Database.query(myStmt);
-        } catch (Exception ex) {
-            System.out.println(ex);
-            return false;
-        }
-        return true;
-    }
-
+    // Standard values for function are: light 25, heating 16
     public static boolean updatePersonalSettings(int light, int heating, String username) {
         try {
             PreparedStatement myStmt = connection.prepareStatement(" UPDATE PersonalSettings set Light = ?, Temperature = ? WHERE ProfileID = (SELECT PersonID FROM Person WHERE Username = ?)");
