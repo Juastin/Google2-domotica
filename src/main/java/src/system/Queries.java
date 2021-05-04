@@ -6,11 +6,11 @@ import java.sql.PreparedStatement;
 import java.util.ArrayList;
 
 public class Queries {
-    static Connection verbinding = Database.maakVerbinding();
+    static Connection connection = Database.maakVerbinding();
 
     public static boolean isPasswordCorrect(String username, String password) {
         try {
-            PreparedStatement myStmt = verbinding.prepareStatement("SELECT COUNT(Username) FROM Person WHERE Username = ? AND PasswordHash = ?");
+            PreparedStatement myStmt = connection.prepareStatement("SELECT COUNT(Username) FROM Person WHERE Username = ? AND PasswordHash = ?");
             myStmt.setString(1, username);
             myStmt.setString(2, password);
             ArrayList<ArrayList<String>> results = Database.query(myStmt);
@@ -24,7 +24,7 @@ public class Queries {
 
     public static ArrayList<ArrayList<String>> getProfiles() {
         try {
-            PreparedStatement myStmt = verbinding.prepareStatement("SELECT username FROM Person");
+            PreparedStatement myStmt = connection.prepareStatement("SELECT username FROM Person");
             ArrayList<ArrayList<String>> results = Database.query(myStmt);
             return results;
         } catch (Exception ex) {
@@ -35,7 +35,7 @@ public class Queries {
 
     public static ArrayList<ArrayList<String>> getPersonalSettings(String username) {
         try {
-            PreparedStatement myStmt = verbinding.prepareStatement("SELECT ps.Light, ps.Temperature, ps.PlaylistID FROM PersonalSettings ps JOIN Person p ON ps.ProfileID = p.PersonID WHERE p.Username = ?");
+            PreparedStatement myStmt = connection.prepareStatement("SELECT ps.Light, ps.Temperature, ps.PlaylistID FROM PersonalSettings ps JOIN Person p ON ps.ProfileID = p.PersonID WHERE p.Username = ?");
             myStmt.setString(1, username);
             ArrayList<ArrayList<String>> results = Database.query(myStmt);
             Logging.logThis("Retrieving personal settings for user " + username);
@@ -51,7 +51,7 @@ public class Queries {
         String hashed_password = Authentication.encryptPassword(password);
 
         try {
-            PreparedStatement myStmt_0 = verbinding.prepareStatement("INSERT INTO Person (Username, FirstName, LastName, PasswordHash) VALUES (?,?,?,?)");
+            PreparedStatement myStmt_0 = connection.prepareStatement("INSERT INTO Person (Username, FirstName, LastName, PasswordHash) VALUES (?,?,?,?)");
             myStmt_0.setString(1, username);
             myStmt_0.setString(2, firstname);
             myStmt_0.setString(3, lastname);
@@ -70,7 +70,7 @@ public class Queries {
     // Standard values for function are: light 25, heating 16
     public static boolean updatePersonalSettings(int light, int heating, String username) {
         try {
-            PreparedStatement myStmt = verbinding.prepareStatement(" UPDATE PersonalSettings set Light = ?, Temperature = ? WHERE ProfileID = (SELECT PersonID FROM Person WHERE Username = ?)");
+            PreparedStatement myStmt = connection.prepareStatement(" UPDATE PersonalSettings set Light = ?, Temperature = ? WHERE ProfileID = (SELECT PersonID FROM Person WHERE Username = ?)");
             myStmt.setInt(1, light);
             myStmt.setInt(2, heating);
             myStmt.setString(3, username);
@@ -84,7 +84,7 @@ public class Queries {
 
     public static ArrayList<ArrayList<String>> getSensorData() {
         try {
-            PreparedStatement myStmt = verbinding.prepareStatement("SELECT Temperature, AirPressure, Humidity, Light FROM DataCollection ORDER BY DataCollectionID DESC LIMIT 1");
+            PreparedStatement myStmt = connection.prepareStatement("SELECT Temperature, AirPressure, Humidity, Light FROM DataCollection ORDER BY DataCollectionID DESC LIMIT 1");
             ArrayList<ArrayList<String>> results = Database.query(myStmt);
             return results;
         } catch (Exception ex) {
