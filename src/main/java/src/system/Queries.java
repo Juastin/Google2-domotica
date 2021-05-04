@@ -3,6 +3,7 @@ import src.core.*;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class Queries {
@@ -19,6 +20,15 @@ public class Queries {
             System.out.println(ex);
             Logging.logThis("Failed login attempt for user " + username);
             return false;
+        } finally {
+            if (connection != null){
+                try {
+                    connection.close();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                    Logging.logThis("SQLException in isPasswordCorrect(): "+throwables);
+                }
+            }
         }
     }
 
@@ -30,6 +40,15 @@ public class Queries {
         } catch (Exception ex) {
             System.out.println(ex);
             return null;
+        } finally {
+            if (connection != null){
+                try {
+                    connection.close();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                    Logging.logThis("SQLException in getProfiles(): "+throwables);
+                }
+            }
         }
     }
 
@@ -44,6 +63,15 @@ public class Queries {
             System.out.println(ex);
             Logging.logThis("Failed to retrieve personal settings for user " + username);
             return null;
+        } finally {
+            if (connection != null){
+                try {
+                    connection.close();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                    Logging.logThis("SQLException in getPersonalSettings(): "+throwables);
+                }
+            }
         }
     }
 
