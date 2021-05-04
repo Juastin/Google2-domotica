@@ -85,14 +85,22 @@ public class Queries {
             myStmt_0.setString(3, lastname);
             myStmt_0.setString(4, hashed_password);
             Database.query(myStmt_0);
+            Logging.logThis("New profile created for user " + username);
+            return true;
         } catch (Exception ex) {
             System.out.println(ex);
             Logging.logThis("Failed to make a new profile: (" + username + ", " + firstname + ", " + lastname + ")");
             return false;
+        } finally {
+            if (connection != null){
+                try {
+                    connection.close();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                    Logging.logThis("SQLException in makeNewProfile(): "+throwables);
+                }
+            }
         }
-
-        Logging.logThis("New profile created for user " + username);
-        return true;
     }
 
     public static boolean setStandardProfileSettings(String username) {
@@ -105,11 +113,20 @@ public class Queries {
             myStmt.setInt(2, heating);
             myStmt.setString(3, username);
             Database.query(myStmt);
+            return true;
         } catch (Exception ex) {
             System.out.println(ex);
             return false;
+        } finally {
+            if (connection != null){
+                try {
+                    connection.close();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                    Logging.logThis("SQLException in setStandardProfileSettings(): "+throwables);
+                }
+            }
         }
-        return true;
     }
 
     public static boolean updatePersonalSettings(int light, int heating, String username) {
@@ -119,11 +136,20 @@ public class Queries {
             myStmt.setInt(2, heating);
             myStmt.setString(3, username);
             Database.query(myStmt);
+            return true;
         } catch (Exception ex) {
             System.out.println(ex);
             return false;
+        } finally {
+            if (connection != null){
+                try {
+                    connection.close();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                    Logging.logThis("SQLException in updatePersonalSettings(): "+throwables);
+                }
+            }
         }
-        return true;
     }
 
     public static ArrayList<ArrayList<String>> getSensorData() {
@@ -134,6 +160,15 @@ public class Queries {
         } catch (Exception ex) {
             System.out.println(ex);
             return null;
+        } finally {
+            if (connection != null){
+                try {
+                    connection.close();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                    Logging.logThis("SQLException in getSensorData(): "+throwables);
+                }
+            }
         }
     }
 
