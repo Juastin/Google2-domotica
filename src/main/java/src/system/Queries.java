@@ -82,6 +82,20 @@ public class Queries {
         return true;
     }
 
+    public static boolean deleteProfile(String username) {
+        try {
+            PreparedStatement myStmt = connection.prepareStatement("DELETE FROM Person WHERE username = ?");
+            myStmt.setString(1, username);
+            Database.query(myStmt);
+            Logging.logThis("Profile deleted for " + username);
+        } catch (Exception ex) {
+            System.out.println(ex);
+            Logging.logThis("Could not delete profile for " + username);
+            return false;
+        }
+        return true;
+    }
+
     public static ArrayList<ArrayList<String>> getSensorData() {
         try {
             PreparedStatement myStmt = connection.prepareStatement("SELECT Temperature, AirPressure, Humidity, Light FROM DataCollection ORDER BY DataCollectionID DESC LIMIT 1");

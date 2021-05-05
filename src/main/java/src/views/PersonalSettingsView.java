@@ -18,7 +18,7 @@ import java.util.Hashtable;
 public class PersonalSettingsView extends View implements ActionListener, ChangeListener {
 
     private JLabel jlTitel, jlLightIntensity, jlHeating, jlCurrenLightValue, jlLightIcon, jlHeatingIcon;
-    private JButton jbCancel, jbSave, jbStandardSettings;
+    private JButton jbCancel, jbSave, jbStandardSettings, jbDeleteProfile;
     private JSlider jsLightIntensity;
     private SpinnerModel smHeatingValue;
     private JSpinner spinner;
@@ -97,8 +97,11 @@ public class PersonalSettingsView extends View implements ActionListener, Change
         bottom.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
 
         JPanel leftBottomPanel = new JPanel();
+        jbDeleteProfile = new CButton(this, "Verwijderen profiel", Color.black, Color.red);
+        leftBottomPanel.add(jbDeleteProfile);
         jbStandardSettings = new CButton(this, "Standaard instellingen", Color.black, Color.white);
         leftBottomPanel.add(jbStandardSettings);
+
 
         JPanel rightBottomPanel = new JPanel();
         jbCancel = new CButton(this, "Annuleren", Color.black, Color.white);
@@ -117,13 +120,14 @@ public class PersonalSettingsView extends View implements ActionListener, Change
     @Override
     public void actionPerformed(ActionEvent e) {
         boolean change = true; // Change the values with the (new) user PersonalSettings
+        String confirmationText = "Weet u het zeker?";
         if (e.getSource() == jbCancel) {
-            int choice = JOptionPane.showConfirmDialog(this, "Weet u het zeker?", "Bevestiging annuleren", JOptionPane.YES_NO_OPTION);
+            int choice = JOptionPane.showConfirmDialog(this, confirmationText, "Bevestiging annuleren", JOptionPane.YES_NO_OPTION);
             if(choice == JOptionPane.NO_OPTION){
                 change = false; // Don't set the values with the user PersonalSettings
             }
         } else if (e.getSource() == jbSave) {
-            int choice = JOptionPane.showConfirmDialog(this, "Weet u het zeker?", "Bevestiging opslaan", JOptionPane.YES_NO_OPTION);
+            int choice = JOptionPane.showConfirmDialog(this, confirmationText, "Bevestiging opslaan", JOptionPane.YES_NO_OPTION);
             if(choice == JOptionPane.YES_OPTION){
                 int heating = (int) spinner.getValue();
                 int light = jsLightIntensity.getValue();
@@ -134,12 +138,21 @@ public class PersonalSettingsView extends View implements ActionListener, Change
                 }
             }
         } else if (e.getSource() == jbStandardSettings) {
-            int choice = JOptionPane.showConfirmDialog(this, "Weet u het zeker?", "Bevestiging naar standaardinstellingen", JOptionPane.YES_NO_OPTION);
+            int choice = JOptionPane.showConfirmDialog(this, confirmationText, "Bevestiging naar standaardinstellingen", JOptionPane.YES_NO_OPTION);
             if(choice == JOptionPane.YES_OPTION){
                 boolean result = Queries.updatePersonalSettings(25 ,16, User.getUsername());
                 if (result) {
                     User.setStandardPersonalSettings();
                     JOptionPane.showMessageDialog(this, "Instelling naar Standaardinstellingen gezet");
+                }
+            }
+        }else if (e.getSource() == jbDeleteProfile) {
+            int choice = JOptionPane.showConfirmDialog(this, confirmationText, "Bevestiging verwijderen profiel", JOptionPane.YES_NO_OPTION);
+            if(choice == JOptionPane.YES_OPTION){
+                boolean result = Queries.deleteProfile(User.getUsername());
+                if (result) {
+                    changeFocus("ProfileView");
+                    JOptionPane.showMessageDialog(this, "profiel verwijderd");
                 }
             }
         }
