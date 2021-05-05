@@ -10,16 +10,16 @@ public class Queries {
 
     public static boolean isPasswordCorrect(String username, String password) {
         try {
-            PreparedStatement myStmt = connection.prepareStatement("SELECT COUNT(Username) FROM Person WHERE Username = ? AND PasswordHash = ?");
+            PreparedStatement myStmt = connection.prepareStatement("SELECT PasswordHash FROM Person WHERE Username = ?");
             myStmt.setString(1, username);
-            myStmt.setString(2, password);
             ArrayList<ArrayList<String>> results = Database.query(myStmt);
-            return Integer.parseInt(results.get(0).get(0))>0;
+            
+            return Authentication.checkPassword(password, results.get(0).get(0));
         } catch (Exception ex) {
             System.out.println(ex);
             Logging.logThis("Failed login attempt for user " + username);
             return false;
-        }
+        } 
     }
 
     public static ArrayList<ArrayList<String>> getProfiles() {
