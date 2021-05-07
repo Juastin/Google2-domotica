@@ -16,7 +16,7 @@ public class LoginView extends View implements ActionListener{
 
     private JLabel jlUser, jlPassword;
     private JPasswordField jbPassword;
-    private JButton jbOk, jbTerug;
+    private JButton jbOk, jbBack;
 
     public LoginView(Container container, String name) {
         super(container, name);
@@ -31,6 +31,9 @@ public class LoginView extends View implements ActionListener{
         JPanel gebruikerPanel = new JPanel();
         jlUser = new JLabel("", JLabel.CENTER);
         jlUser.setFont(jlUser.getFont().deriveFont(24.0f));
+        jlUser.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.BLACK));
+        jlUser.setPreferredSize(new Dimension(222, 50));
+
         gebruikerPanel.add(jlUser, BorderLayout.NORTH);
         top.add(gebruikerPanel, BorderLayout.NORTH);
 
@@ -41,16 +44,18 @@ public class LoginView extends View implements ActionListener{
         center.setBorder(BorderFactory.createEmptyBorder(70, 0, 10, 0));
         JPanel formGrid = new JPanel();
         GridLayout formGridLayout = new GridLayout(3, 1);
-        formGridLayout.setHgap(10); formGridLayout.setVgap(10);
+        formGridLayout.setVgap(10);
         formGrid.setLayout(formGridLayout);
 
         jlPassword = new JLabel("Wachtwoord", JLabel.CENTER);
-        jlPassword.setFont(jlPassword.getFont().deriveFont(20.0f));
+        jlPassword.setFont(new Font(jlPassword.getFont().getFamily(), Font.PLAIN, 24));
         formGrid.add(jlPassword, BorderLayout.CENTER);
         jbPassword = new JPasswordField(20);
+        jbPassword.setHorizontalAlignment(SwingConstants.CENTER);
         jbPassword.addActionListener(this);
         formGrid.add(jbPassword, BorderLayout.CENTER);
-        jbOk = new CButton(this, "OK", Color.black, Color.white);
+        jbOk = new CButton(this, "Inloggen", Color.black, Color.white);
+        jbOk.setFont(new Font(jbOk.getFont().getFamily(), Font.PLAIN, jbOk.getFont().getSize()));
         formGrid.add(jbOk, BorderLayout.CENTER);
 
         center.add(formGrid);
@@ -58,21 +63,16 @@ public class LoginView extends View implements ActionListener{
 
         //BOTTOM
         JPanel bottom = new JPanel();
-        bottom.setLayout(new BorderLayout());
-        bottom.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
+        bottom.setBorder(BorderFactory.createEmptyBorder(0, 0, 40, 0));
 
-        JPanel TerugLabelPanel = new JPanel();
-        jbTerug = new JButton("< Terug");
-        jbTerug.addActionListener(this);
-        jbTerug.setOpaque(false);
-        jbTerug.setContentAreaFilled(false);
-        jbTerug.setBorderPainted(false);
-        jbTerug.setFont(jbTerug.getFont().deriveFont(24.0f));
-        TerugLabelPanel.add(jbTerug, BorderLayout.SOUTH);
-        bottom.add(TerugLabelPanel, BorderLayout.SOUTH);
-
+        jbBack = new JButton("< Terug");
+        jbBack.setFont(new Font(jbBack.getFont().getFamily(), Font.PLAIN, 20));
+        jbBack.addActionListener(this);
+        jbBack.setOpaque(false);
+        jbBack.setContentAreaFilled(false);
+        jbBack.setBorderPainted(false);
+        bottom.add(jbBack, BorderLayout.SOUTH);
         add(bottom, BorderLayout.SOUTH);
-
     }
 
     @Override
@@ -106,7 +106,7 @@ public class LoginView extends View implements ActionListener{
                     JOptionPane.showMessageDialog(this, "Incorrect password. Try Again", "Login Failed", 2);
                 }
             }
-        } else if (e.getSource() == jbTerug) {
+        } else if (e.getSource() == jbBack) {
             changeFocus("ProfileView");
         }
         jbPassword.setText("");
@@ -115,7 +115,7 @@ public class LoginView extends View implements ActionListener{
 
     @Override
     public void onFocus() {
-        jlUser.setText("Naam: " + User.getUsername());
+        jlUser.setText(User.getUsername());
     }
 
     @Override
