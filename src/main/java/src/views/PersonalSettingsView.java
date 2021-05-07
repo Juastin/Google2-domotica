@@ -97,7 +97,7 @@ public class PersonalSettingsView extends View implements ActionListener, Change
         bottom.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
 
         JPanel leftBottomPanel = new JPanel();
-        jbDeleteProfile = new CButton(this, "Verwijderen profiel", Color.black, Color.red);
+        jbDeleteProfile = new CButton(this, "Verwijder profiel", Color.black, Color.red);
         leftBottomPanel.add(jbDeleteProfile);
         jbStandardSettings = new CButton(this, "Standaard instellingen", Color.black, Color.white);
         leftBottomPanel.add(jbStandardSettings);
@@ -134,7 +134,7 @@ public class PersonalSettingsView extends View implements ActionListener, Change
                 boolean result = Queries.updatePersonalSettings(light, heating, User.getUsername());
                 if (result) {
                     User.setPersonalSettings(light, heating);
-                    JOptionPane.showMessageDialog(this, "Instelling geüpdated");
+                    JOptionPane.showMessageDialog(this, "Instellingen geüpdated");
                 }
             }
         } else if (e.getSource() == jbStandardSettings) {
@@ -143,16 +143,18 @@ public class PersonalSettingsView extends View implements ActionListener, Change
                 boolean result = Queries.updatePersonalSettings(25 ,16, User.getUsername());
                 if (result) {
                     User.setStandardPersonalSettings();
-                    JOptionPane.showMessageDialog(this, "Instelling naar Standaardinstellingen gezet");
+                    JOptionPane.showMessageDialog(this, "Instellingen teruggezet naar standaardinstellingen");
                 }
             }
-        }else if (e.getSource() == jbDeleteProfile) {
+        } else if (e.getSource() == jbDeleteProfile) {
             int choice = JOptionPane.showConfirmDialog(this, confirmationText, "Bevestiging verwijderen profiel", JOptionPane.YES_NO_OPTION);
             if(choice == JOptionPane.YES_OPTION){
                 boolean result = Queries.deleteProfile(User.getUsername());
                 if (result) {
+                    String user = User.getUsername();
+                    User.logOut();
                     changeFocus("ProfileView");
-                    JOptionPane.showMessageDialog(this, "profiel verwijderd");
+                    JOptionPane.showMessageDialog(this, "Profiel \"" + user + "\" is verwijderd");
                 }
             }
         }
