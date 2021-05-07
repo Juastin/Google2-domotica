@@ -1,12 +1,8 @@
 package src.core;
-
-import java.io.IOException;
 import java.util.TimerTask;
 
 public class Worker extends TimerTask {
     private Container parent;
-    private final Arduino ar = new Arduino();
-
     public Worker(Container parent) {
         this.parent = parent;
     }
@@ -15,6 +11,5 @@ public class Worker extends TimerTask {
     public void run() {
         long now = System.currentTimeMillis() / 1000L;
         parent.getCurrentView().onTick(now);
-        String lichtsterkte = ar.getArduinoData();
     }
 }

@@ -7,9 +7,6 @@ public class Arduino {
     final SerialPort comPort = SerialPort.getCommPort("COM3");
     private String var1;
     private String var2="";
-    private Boolean gaan=true;
-
-
 
     public String getArduinoData(){
         comPort.openPort();
@@ -29,6 +26,9 @@ public class Arduino {
         } catch (Exception e) {}
 
         comPort.closePort();
+
+        var2 = var2.replace("<","");
+        var2 = var2.replace(">","");
         return var2;
     }
 }
