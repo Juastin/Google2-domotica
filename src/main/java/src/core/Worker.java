@@ -15,6 +15,6 @@ public class Worker extends TimerTask {
     public void run() {
         long now = System.currentTimeMillis() / 1000L;
         parent.getCurrentView().onTick(now);
-        System.out.println(ar.getArduinoData());
+        String lichtsterkte = ar.getArduinoData();
     }
 }
