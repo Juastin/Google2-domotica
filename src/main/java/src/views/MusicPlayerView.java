@@ -5,6 +5,7 @@ import src.core.Audio;
 import src.core.Container;
 import src.core.View;
 import src.core.Navbar;
+import src.system.Queries;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -12,6 +13,7 @@ import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.lang.reflect.Array;
 
 public class MusicPlayerView extends View implements ActionListener {
     private JPanel jpTop, jpCenter, jpBottom, jpLeft, jpMiddle, jpRight;
@@ -48,7 +50,7 @@ public class MusicPlayerView extends View implements ActionListener {
         jpCenter.setLayout(new BorderLayout());
         jpCenter.setPreferredSize(new Dimension(jpCenter.getWidth(), 70));
         // COMPONENTS
-        jsPlayTime = new JSlider(JSlider.HORIZONTAL, 0, 168, 51);
+        jsPlayTime = new JSlider(JSlider.HORIZONTAL, 168);
         jsPlayTime.setMinorTickSpacing(1);
         jsPlayTime.setSnapToTicks(true);
 //        jsPlayTime.setEnabled(false);
@@ -120,7 +122,9 @@ public class MusicPlayerView extends View implements ActionListener {
     }
 
     @Override
-    public void onFocus() {}
+    public void onFocus() {
+        jsPlayTime.setValue(0);
+    }
 
     @Override
     public void onShadow() {}

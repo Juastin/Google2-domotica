@@ -66,8 +66,6 @@ public class MusicMenuView extends View implements ActionListener {
         jpPlaylist = new MusicMenuPlaylist();
         jpQueue = new MusicMenuQueue();
         jpNewPlaylist = new MusicMenuNewPlaylist();
-        /* Add default visible panel */
-        changeMusicPanel(jpSongs);
 
 
         // Bottom bar panel
@@ -180,7 +178,10 @@ public class MusicMenuView extends View implements ActionListener {
     }
 
     @Override
-    public void onFocus() {}
+    public void onFocus() {
+        /* Add default visible panel */
+        changeMusicPanel(jpSongs);
+    }
 
     @Override
     public void onShadow() {}
