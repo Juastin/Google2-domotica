@@ -25,11 +25,11 @@ public class Index extends View implements ActionListener {
 
         // TOP
         JPanel top = new JPanel();
-        top.setBorder(BorderFactory.createEmptyBorder(40, 0, 10, 0));
-        jlKies = new JLabel("Kies uw profiel:");
+        top.setBorder(BorderFactory.createEmptyBorder(25, 0, 10, 0));
+        jlKies = new JLabel("Kies uw profiel", SwingConstants.CENTER);
         jlKies.setFont(jlKies.getFont().deriveFont(24.0f));
-        jbNewProfile = new CButton(this, "＋", Color.black, Color.white);
-        jbNewProfile.setFont(new Font(jbNewProfile.getFont().getFamily(), Font.PLAIN, 24));
+        jlKies.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.BLACK));
+        jlKies.setPreferredSize(new Dimension(222, 50));
         top.add(jlKies);
         add(top, BorderLayout.NORTH);
 
@@ -45,6 +45,8 @@ public class Index extends View implements ActionListener {
         bottom.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
 
         JPanel nieuwProfielButtonPanel = new JPanel();
+        jbNewProfile = new CButton(this, "＋", Color.black, Color.white);
+        jbNewProfile.setFont(new Font(jbNewProfile.getFont().getFamily(), Font.PLAIN, 24));
         nieuwProfielButtonPanel.add(jbNewProfile);
         bottom.add(nieuwProfielButtonPanel, BorderLayout.NORTH);
 
