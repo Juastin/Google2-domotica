@@ -40,8 +40,8 @@ public class Navbar extends JPanel implements ActionListener {
         formGrid.add(jbLogOut);
         formGrid.add(jbHome);
         formGrid.add(jbMusic);
-        formGrid.add(new JLabel(""));
-        formGrid.add(new JLabel(""));
+        formGrid.add(new JLabel());
+        formGrid.add(new JLabel());
         formGrid.add(jbSettings);
 
         menuBar.add(formGrid);
