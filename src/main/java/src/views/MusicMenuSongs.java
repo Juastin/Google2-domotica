@@ -22,6 +22,7 @@ public class MusicMenuSongs extends JPanel implements ActionListener {
     public MusicMenuSongs() {
         setVisible(false);
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+
         songsList = Queries.getAllSongs();
 
         // Test scroller
