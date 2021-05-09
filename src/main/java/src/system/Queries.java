@@ -70,7 +70,7 @@ public class Queries {
     // Standard values for function are: light 25, heating 16
     public static boolean updatePersonalSettings(int light, int heating, String username) {
         try {
-            PreparedStatement myStmt = connection.prepareStatement(" UPDATE PersonalSettings set Light = ?, Temperature = ? WHERE ProfileID = (SELECT PersonID FROM Person WHERE Username = ?)");
+            PreparedStatement myStmt = connection.prepareStatement(" UPDATE PersonalSettings set Light = ?, Temperature = ? WHERE ProfileID = (SELECT ProfileID FROM Profile WHERE PersonID = (SELECT PersonID FROM Person WHERE Username = ?))");
             myStmt.setInt(1, light);
             myStmt.setInt(2, heating);
             myStmt.setString(3, username);

@@ -1,7 +1,7 @@
 package src.views;
 
-import src.components.TableCell;
-import src.components.TableModel;
+import src.components.SongsTableCellRenderer;
+import src.components.SongsTableModel;
 import src.core.Audio;
 import src.system.Queries;
 
@@ -16,7 +16,7 @@ import java.util.ArrayList;
 public class MusicMenuSongs extends JPanel implements ActionListener {
     private JTable jtSongs;
     private ArrayList<ArrayList<String>> songsList;
-    private TableCell tableCell;
+    private SongsTableCellRenderer songTableCell;
     private JScrollPane scroll;
 
     public MusicMenuSongs() {
@@ -47,7 +47,7 @@ public class MusicMenuSongs extends JPanel implements ActionListener {
         */
 
         // Table songs
-        jtSongs = new JTable(new TableModel(songsList));
+        jtSongs = new JTable(new SongsTableModel(songsList));
 
         // Styling for the Table
         jtSongs.setOpaque(false);
@@ -59,9 +59,9 @@ public class MusicMenuSongs extends JPanel implements ActionListener {
                 new BorderUIResource.LineBorderUIResource(new Color(0, 0, 0, 0)));
         jtSongs.getTableHeader().setReorderingAllowed(false);
         jtSongs.getTableHeader().setResizingAllowed(false);
-        tableCell = new TableCell(this);
-        jtSongs.getColumnModel().getColumn(0).setCellRenderer(tableCell);
-        jtSongs.getColumnModel().getColumn(0).setCellEditor(tableCell);
+        songTableCell = new SongsTableCellRenderer(this);
+        jtSongs.getColumnModel().getColumn(0).setCellRenderer(songTableCell);
+        jtSongs.getColumnModel().getColumn(0).setCellEditor(songTableCell);
         jtSongs.getColumnModel().getColumn(0).setMaxWidth(50);
         jtSongs.getColumnModel().getColumn(1).setMaxWidth(500);
         jtSongs.getColumnModel().getColumn(2).setMaxWidth(330);
@@ -79,7 +79,7 @@ public class MusicMenuSongs extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == tableCell.getJb()) {
+        if (e.getSource() == songTableCell.getJb()) {
             int test = jtSongs.getSelectedRow();
             System.out.println(String.format("\nSong: %s\n" +
             "SongId: %s", jtSongs.getValueAt(test, 1), jtSongs.getValueAt(test, 0)));

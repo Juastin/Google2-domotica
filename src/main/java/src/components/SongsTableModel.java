@@ -3,11 +3,11 @@ package src.components;
 import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
 
-public class TableModel extends AbstractTableModel {
+public class SongsTableModel extends AbstractTableModel {
     private ArrayList<ArrayList<String>> songs;
     private String[] columnNames;
 
-    public TableModel(ArrayList<ArrayList<String>> songs) {
+    public SongsTableModel(ArrayList<ArrayList<String>> songs) {
         super();
         columnNames = new String[] {"", "SongName", "Duration"};
         this.songs = songs;

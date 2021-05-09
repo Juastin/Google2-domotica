@@ -8,10 +8,10 @@ import javax.swing.table.TableCellRenderer;
 import java.awt.*;
 import java.awt.event.ActionListener;
 
-public class TableCell extends AbstractCellEditor implements TableCellEditor, TableCellRenderer{
+public class SongsTableCellRenderer extends AbstractCellEditor implements TableCellEditor, TableCellRenderer{
     private JButton jb;
 
-    public TableCell(ActionListener listener) {
+    public SongsTableCellRenderer(ActionListener listener) {
         jb = new MusicButton(listener, "⏵", 20);
     }
 
