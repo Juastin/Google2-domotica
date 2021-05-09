@@ -1,11 +1,17 @@
 package src.system;
 
+import com.fazecast.jSerialComm.SerialPort;
+
 public class User {
     private static boolean isLoggedIn = false;
     private static String username;
     private static int light;
     private static int temperature;
     private static int playlistID;
+
+    private static boolean isportopen=false;
+    final static SerialPort comPort = SerialPort.getCommPort("COM3");
+    static int laatstelichtwaarde=0;
 
     public User() {}
 
@@ -26,7 +32,16 @@ public class User {
     }
 
     public static int getLight() {
-        return light;
+        if(!isportopen){
+            comPort.openPort();
+            isportopen=true;
+        }
+        byte[] b = new byte[5];
+        int l = comPort.readBytes(b, 5);
+        String s = new String(b);
+        try{
+            laatstelichtwaarde=Integer.parseInt(s.trim());
+            return Integer.parseInt(s.trim());}catch (NumberFormatException e){return laatstelichtwaarde;}
     }
 
     public static int getTemperature() {
