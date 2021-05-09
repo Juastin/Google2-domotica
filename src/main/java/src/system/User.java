@@ -47,8 +47,8 @@ public class User {
     }
 
     public static void setStandardPersonalSettings() {
-        User.light = 25;
-        User.temperature = 16;
+        User.light = 40;
+        User.temperature = 17;
     }
 
     public static void logOut() {
