@@ -29,6 +29,9 @@ public class MusicMenuView extends View implements ActionListener {
     private Color customGray = new Color(250, 250, 250);
     private Color customGray2 = new Color(189, 188, 188);
 
+    private int id;
+    private String name;
+
     public MusicMenuView(Container container, String name) {
         super(container, name);
         setLayout(new BorderLayout());
@@ -97,7 +100,6 @@ public class MusicMenuView extends View implements ActionListener {
         jpMiddleBottom.setBackground(customGray);
         jpMiddleBottom.setLayout(new BorderLayout());
         jpMiddleBottom.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 20));
-        // COMPONENTS
         jsPlayTime = new JSlider(JSlider.HORIZONTAL, 0, 168, 51);
         jsPlayTime.setBackground(customGray);
         jsPlayTime.setMinorTickSpacing(1);
@@ -171,8 +173,14 @@ public class MusicMenuView extends View implements ActionListener {
         }
         if (e.getSource() == jbPlaylist) {
             ArrayList<ArrayList<String>> playlistData = Queries.getPlaylistData(User.getUsername());
-            int id = Integer.parseInt(playlistData.get(0).get(0));
-            String name = playlistData.get(0).get(1);
+            System.out.println(playlistData);
+            try {
+                id = Integer.parseInt(playlistData.get(0).get(0));
+                name = playlistData.get(0).get(1);
+            } catch (IndexOutOfBoundsException ie){
+                id = 0;
+                name = "Geen playlist beschikbaar";
+            }
             jpPlaylist = new MusicMenuPlaylist(id, name);
             changeMusicPanel(jpPlaylist);
         }

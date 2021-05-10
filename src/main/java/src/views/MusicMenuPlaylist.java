@@ -1,6 +1,7 @@
 package src.views;
 
 import src.components.SongsTableCellRenderer;
+import src.components.SongsTableLayout;
 import src.components.SongsTableModel;
 import src.core.Audio;
 import src.system.Queries;
@@ -59,24 +60,8 @@ public class MusicMenuPlaylist extends JPanel implements ActionListener {
         center.setLayout(new BorderLayout());
 
         // Table songs
-        jtSongs = new JTable(new SongsTableModel(playlistSongsList));
-
-        // Styling for the Table
-        jtSongs.setOpaque(false);
-        jtSongs.setShowGrid(false);
-        ((DefaultTableCellRenderer)jtSongs.getDefaultRenderer(Object.class)).setOpaque(false);
-        ((DefaultTableCellRenderer)jtSongs.getTableHeader().getDefaultRenderer())
-                .setHorizontalAlignment(JLabel.LEFT);
-        UIManager.put("Table.focusCellHighlightBorder",
-                new BorderUIResource.LineBorderUIResource(new Color(0, 0, 0, 0)));
-        jtSongs.getTableHeader().setReorderingAllowed(false);
-        jtSongs.getTableHeader().setResizingAllowed(false);
         songTableCell = new SongsTableCellRenderer(this);
-        jtSongs.getColumnModel().getColumn(0).setCellRenderer(songTableCell);
-        jtSongs.getColumnModel().getColumn(0).setCellEditor(songTableCell);
-        jtSongs.getColumnModel().getColumn(0).setMaxWidth(50);
-        jtSongs.getColumnModel().getColumn(1).setMaxWidth(500);
-        jtSongs.getColumnModel().getColumn(2).setMaxWidth(330);
+        jtSongs = new SongsTableLayout(new SongsTableModel(playlistSongsList), songTableCell);
 
         // Add
         add(jlTitel, BorderLayout.NORTH);
