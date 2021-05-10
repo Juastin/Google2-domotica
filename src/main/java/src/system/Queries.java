@@ -35,10 +35,12 @@ public class Queries {
 
     public static ArrayList<ArrayList<String>> getPersonalSettings(String username) {
         try {
-            PreparedStatement myStmt = connection.prepareStatement("SELECT ps.Light, ps.Temperature, ps.PlaylistID FROM PersonalSettings ps JOIN Person p ON ps.ProfileID = p.PersonID WHERE p.Username = ?");
+            PreparedStatement myStmt = connection.prepareStatement("SELECT ps.InstellingenID, ps.Light, ps.Temperature, ps.PlaylistID FROM PersonalSettings ps JOIN Profile p ON ps.ProfileID= p.ProfileID JOIN Person pr ON p.PersonID = pr.PersonID WHERE pr.Username = ?");
             myStmt.setString(1, username);
             ArrayList<ArrayList<String>> results = Database.query(myStmt);
             Logging.logThis("Retrieving personal settings for user " + username);
+            
+            /* [[instellingenID, Light, Temperature, PlaylistID]] */
             return results;
         } catch (Exception ex) {
             System.out.println(ex);
@@ -70,7 +72,7 @@ public class Queries {
     // Standard values for function are: light 25, heating 16
     public static boolean updatePersonalSettings(int light, int heating, String username) {
         try {
-            PreparedStatement myStmt = connection.prepareStatement(" UPDATE PersonalSettings set Light = ?, Temperature = ? WHERE ProfileID = (SELECT PersonID FROM Person WHERE Username = ?)");
+            PreparedStatement myStmt = connection.prepareStatement("UPDATE PersonalSettings set Light = ?, Temperature = ? WHERE ProfileID = (SELECT ProfileID FROM Profile WHERE PersonID = (SELECT PersonID FROM Person WHERE Username = ?))");
             myStmt.setInt(1, light);
             myStmt.setInt(2, heating);
             myStmt.setString(3, username);
