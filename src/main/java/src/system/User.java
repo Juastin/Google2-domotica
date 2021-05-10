@@ -9,10 +9,6 @@ public class User {
     private static int temperature;
     private static int playlistID;
 
-    private static boolean isportopen=false;
-    final static SerialPort comPort = SerialPort.getCommPort("COM3");
-    static int laatstelichtwaarde=0;
-
     public User() {}
 
     public static void setUsername(String username) {
