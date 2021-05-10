@@ -1,5 +1,6 @@
 package src.views;
 import src.components.CButton;
+import src.components.MetalSlider;
 import src.core.Audio;
 import src.core.Container;
 import src.core.Navbar;
@@ -61,6 +62,7 @@ public class PersonalSettingsView extends View implements ActionListener, Change
         jlLightIntensity.setFont(new Font(jlLightIntensity.getFont().getFamily(), Font.PLAIN, 13));
         lightIntensityPanel.add(jlLightIntensity);
         jsLightIntensity = new JSlider(JSlider.HORIZONTAL, 0, 100, 0);
+        jsLightIntensity.setUI(new MetalSlider());
         jsLightIntensity.setMajorTickSpacing(25);
         jsLightIntensity.setMinorTickSpacing(10);
         jsLightIntensity.setPaintLabels(true);
