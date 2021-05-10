@@ -32,16 +32,7 @@ public class User {
     }
 
     public static int getLight() {
-        if(!isportopen){
-            comPort.openPort();
-            isportopen=true;
-        }
-        byte[] b = new byte[5];
-        int l = comPort.readBytes(b, 5);
-        String s = new String(b);
-        try{
-            laatstelichtwaarde=Integer.parseInt(s.trim());
-            return Integer.parseInt(s.trim());}catch (NumberFormatException e){return laatstelichtwaarde;}
+        return light;
     }
 
     public static int getTemperature() {
