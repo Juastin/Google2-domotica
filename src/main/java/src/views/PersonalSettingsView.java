@@ -15,6 +15,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Hashtable;
+import java.util.ArrayList;
 
 public class PersonalSettingsView extends View implements ActionListener, ChangeListener {
 
@@ -164,13 +165,13 @@ public class PersonalSettingsView extends View implements ActionListener, Change
             }
         }
         if (change) {
-            onFocus();
+            onFocus(new ArrayList<String>());
         }
         Audio.play("click.wav");
     }
 
     @Override
-    public void onFocus() {
+    public void onFocus(ArrayList<String> parameters) {
         jsLightIntensity.setValue(Integer.parseInt(User.getLight()));
         smHeatingValue.setValue(Integer.parseInt(User.getTemperature()));
     }
