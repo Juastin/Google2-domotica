@@ -1,6 +1,8 @@
 package src.views;
 import src.components.CButton;
 import src.components.MusicButton;
+import src.components.PlayMusic;
+import src.components.Songs;
 import src.core.Audio;
 import src.core.Container;
 import src.core.View;
@@ -12,6 +14,11 @@ import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+<<<<<<< Updated upstream
+=======
+import java.io.IOException;
+import java.lang.reflect.Array;
+>>>>>>> Stashed changes
 
 public class MusicPlayerView extends View implements ActionListener {
     private JPanel jpTop, jpCenter, jpBottom, jpLeft, jpMiddle, jpRight;
@@ -111,6 +118,16 @@ public class MusicPlayerView extends View implements ActionListener {
                 jbPlay.setText("⏵");
             } else {
                 jbPlay.setText("⏸");
+            }
+
+            Songs song = new Songs();
+            PlayMusic muziek = new PlayMusic();
+            try {
+                muziek.Speelaf(song.getBloodytears());
+            } catch (InterruptedException interruptedException) {
+                interruptedException.printStackTrace();
+            } catch (IOException exception) {
+                exception.printStackTrace();
             }
         }
         if (e.getSource() == jbNext) {
