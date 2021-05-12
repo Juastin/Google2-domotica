@@ -105,11 +105,11 @@ public class Queries {
 
     public static ArrayList<ArrayList<String>> getSensorData() {
         try {
-            // HAAL LAATSTE ROW OP
+            // RETRIEVE LAST SENSORDATA ROW
             PreparedStatement myStmt1 = connection.prepareStatement("SELECT DataCollectionID, Temperature, AirPressure, Humidity FROM DataCollection ORDER BY DataCollectionID DESC LIMIT 1");
             ArrayList<ArrayList<String>> results = Database.query(myStmt1);
 
-            // HAAL LICHT OP UIT ARDUINO
+            // RETRIEVE LIGHT VALUE
             if(!isportopen){
                 comPort.openPort();
                 isportopen = true;
@@ -117,26 +117,30 @@ public class Queries {
 
             byte[] b = new byte[5];
             int l = comPort.readBytes(b, 5);
-            String s = new String(b);
-            String lichtwaarde = "";
 
-            try{
-                laatstelichtwaarde = Integer.parseInt(s.trim());
-                lichtwaarde = s;
-                results.get(0).add(lichtwaarde);
-            }catch (NumberFormatException e){
-                lichtwaarde = laatstelichtwaarde + "";
-                results.get(0).add(laatstelichtwaarde + "");
-            }
-
-            // UPDATE LICHT FIELD IN LAATSTE ROW MET SPECIFIEK ID
-            if (lichtwaarde.equals("")) {
-                Logging.logThis("Unable to access Arduino for user " + User.getUsername());
-            } else {
-                System.out.println("ee");
-                PreparedStatement myStmt2 = connection.prepareStatement("UPDATE DataCollection SET Light = ? WHERE DataCollectionID = ? AND Light IS NULL");
-                myStmt2.setInt(1, Integer.parseInt(lichtwaarde));
-                myStmt2.setInt(2, Integer.parseInt(results.get(0).get(0)));
+            if (l!=-1) { // ONLY ATTEMPT A RETRIEVAL IF PORT IS AVAILABLE
+                String s = new String(b);
+                String lichtwaarde = "";
+                System.out.println(l);
+    
+                try{
+                    laatstelichtwaarde = Integer.parseInt(s.trim());
+                    lichtwaarde = s;
+                    results.get(0).add(lichtwaarde);
+                }catch (NumberFormatException e){
+                    lichtwaarde = laatstelichtwaarde + "";
+                    results.get(0).add(laatstelichtwaarde + "");
+                }
+    
+                // UPDATE LIGHT FIELD WITH SPECIFIC ID, WHERE LIGHT IS NULL
+                if (lichtwaarde.equals("")) {
+                    Logging.logThis("Unable to access Arduino for user " + User.getUsername());
+                } else {
+                    PreparedStatement myStmt2 = connection.prepareStatement("UPDATE DataCollection SET Light = ? WHERE DataCollectionID = ? AND Light IS NULL");
+                    myStmt2.setInt(1, Integer.parseInt(lichtwaarde));
+                    myStmt2.setInt(2, Integer.parseInt(results.get(0).get(0)));
+                    Database.query(myStmt2);
+                }
             }
 
             return results;
