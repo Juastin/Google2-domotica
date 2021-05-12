@@ -112,7 +112,7 @@ public class Queries {
             // HAAL LICHT OP UIT ARDUINO
             if(!isportopen){
                 comPort.openPort();
-                isportopen=true;
+                isportopen = true;
             }
 
             byte[] b = new byte[5];
@@ -134,7 +134,7 @@ public class Queries {
                 Logging.logThis("Unable to access Arduino for user " + User.getUsername());
             } else {
                 System.out.println("ee");
-                PreparedStatement myStmt2 = connection.prepareStatement("UPDATE DataCollection SET Light = ? WHERE DataCollectionID = ? AND Light = NULL");
+                PreparedStatement myStmt2 = connection.prepareStatement("UPDATE DataCollection SET Light = ? WHERE DataCollectionID = ? AND Light IS NULL");
                 myStmt2.setInt(1, Integer.parseInt(lichtwaarde));
                 myStmt2.setInt(2, Integer.parseInt(results.get(0).get(0)));
             }
