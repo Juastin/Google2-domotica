@@ -7,10 +7,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 public class Navbar extends JPanel implements ActionListener {
     private View parent;
-    private JButton jbLogOut, jbHome, jbMusic, jbSettings;
+    private JButton jbLogOut, jbHome, jbMusic, jbGame,jbSettings;
 
     public Navbar(View parent) {
         this.parent = parent;
@@ -19,11 +20,13 @@ public class Navbar extends JPanel implements ActionListener {
         jbLogOut = new CButton(this, "⮊", Color.black, Color.white);
         jbHome = new CButton(this, "⌂", Color.black, Color.white);
         jbMusic = new CButton(this, "♫", Color.black, Color.white);
+        jbGame = new CButton(this, "🎮", Color.black, Color.white);
         jbSettings = new CButton(this, "⛭", Color.black, Color.white);
 
         jbLogOut.setFont(new Font(jbLogOut.getFont().getFamily(), Font.PLAIN, 40));
         jbHome.setFont(new Font(jbHome.getFont().getFamily(), Font.PLAIN, 40));
         jbMusic.setFont(new Font(jbMusic.getFont().getFamily(), Font.PLAIN, 40));
+        jbGame.setFont(new Font(jbMusic.getFont().getFamily(), Font.PLAIN, 40));
         jbSettings.setFont(new Font(jbSettings.getFont().getFamily(), Font.PLAIN, 40));
 
         JPanel menuBar = new JPanel();
@@ -40,7 +43,7 @@ public class Navbar extends JPanel implements ActionListener {
         formGrid.add(jbLogOut);
         formGrid.add(jbHome);
         formGrid.add(jbMusic);
-        formGrid.add(new JLabel());
+        formGrid.add(jbGame);
         formGrid.add(new JLabel());
         formGrid.add(jbSettings);
 
@@ -59,6 +62,14 @@ public class Navbar extends JPanel implements ActionListener {
             parent.changeFocus("MainScreenView");
         } else if (e.getSource() == jbMusic) {
             parent.changeFocus("MusicPlayerView");
+        } else if (e.getSource() == jbGame) {
+            ProcessBuilder pb = new ProcessBuilder("java", "-jar", "src/main/java/src/components/Temple-Run.jar", User.getUsername());
+            try {
+                pb.start();
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+                System.out.println("Er is iets misgegaan met het opstarten van de game.");
+            }
         } else if (e.getSource() == jbSettings) {
             parent.changeFocus("PersonalSettingsView");
         }
