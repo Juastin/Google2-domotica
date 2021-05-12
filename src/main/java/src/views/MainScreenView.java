@@ -112,10 +112,10 @@ public class MainScreenView extends View implements ActionListener {
     public void fetchSensorData() {
         ArrayList<ArrayList<String>> data = Queries.getSensorData();
         // UPDATE LIVE SENSOR DATA
-        jlTemperature.setText("🌡 " + data.get(0).get(0) + "°C");
-        jlHPA.setText("<html><p style='text-align:center;font-size:1.5em'>⏲</p><br><span>" + data.get(0).get(1) + " hPa</span></html>");
-        jlHumidity.setText("<html><p style='text-align:center;font-size:1.5em'>💧</p><br><span>" + data.get(0).get(2) + "%</span></html>");
-        jlLight.setText("💡 " + data.get(0).get(3) + "%");
+        jlTemperature.setText("🌡 " + data.get(0).get(1) + "°C");
+        jlHPA.setText("<html><p style='text-align:center;font-size:1.5em'>⏲</p><br><span>" + data.get(0).get(2) + " hPa</span></html>");
+        jlHumidity.setText("<html><p style='text-align:center;font-size:1.5em'>💧</p><br><span>" + data.get(0).get(3) + "%</span></html>");
+        jlLight.setText("💡 " + data.get(0).get(4) + "%");
         // UPDATE USER SETTINGS DATA
         jlHeating.setText("♨️ " + User.getTemperature() + "°C");
         jlLightSmall.setText("🔆 " + User.getLight() + "%");

@@ -105,20 +105,40 @@ public class Queries {
 
     public static ArrayList<ArrayList<String>> getSensorData() {
         try {
-            PreparedStatement myStmt = connection.prepareStatement("SELECT Temperature, AirPressure, Humidity FROM DataCollection ORDER BY DataCollectionID DESC LIMIT 1");
-            ArrayList<ArrayList<String>> results = Database.query(myStmt);
+            // HAAL LAATSTE ROW OP
+            PreparedStatement myStmt1 = connection.prepareStatement("SELECT DataCollectionID, Temperature, AirPressure, Humidity FROM DataCollection ORDER BY DataCollectionID DESC LIMIT 1");
+            ArrayList<ArrayList<String>> results = Database.query(myStmt1);
+
+            // HAAL LICHT OP UIT ARDUINO
             if(!isportopen){
                 comPort.openPort();
                 isportopen=true;
             }
+
             byte[] b = new byte[5];
             int l = comPort.readBytes(b, 5);
             String s = new String(b);
+            String lichtwaarde = "";
+
             try{
-                laatstelichtwaarde=Integer.parseInt(s.trim());
-                String lichtwaarde = s;
+                laatstelichtwaarde = Integer.parseInt(s.trim());
+                lichtwaarde = s;
                 results.get(0).add(lichtwaarde);
-            }catch (NumberFormatException e){results.get(0).add(laatstelichtwaarde+"");}
+            }catch (NumberFormatException e){
+                lichtwaarde = laatstelichtwaarde + "";
+                results.get(0).add(laatstelichtwaarde + "");
+            }
+
+            // UPDATE LICHT FIELD IN LAATSTE ROW MET SPECIFIEK ID
+            if (lichtwaarde.equals("")) {
+                Logging.logThis("Unable to access Arduino for user " + User.getUsername());
+            } else {
+                System.out.println("ee");
+                PreparedStatement myStmt2 = connection.prepareStatement("UPDATE DataCollection SET Light = ? WHERE DataCollectionID = ? AND Light = NULL");
+                myStmt2.setInt(1, Integer.parseInt(lichtwaarde));
+                myStmt2.setInt(2, Integer.parseInt(results.get(0).get(0)));
+            }
+
             return results;
         } catch (Exception ex) {
             System.out.println(ex);
