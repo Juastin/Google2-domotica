@@ -52,6 +52,7 @@ public class Navbar extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == jbLogOut) {
             Audio.play("success_1.wav");
+            Logging.logThis("User " + User.getUsername() + " has logged out");
             User.logOut();
             parent.changeFocus("ProfileView");
             JOptionPane.showMessageDialog(this, "U bent afgemeld");

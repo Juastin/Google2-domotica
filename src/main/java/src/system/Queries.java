@@ -38,18 +38,18 @@ public class Queries {
         }
     }
 
-    public static ArrayList<ArrayList<String>> getPersonalSettings(String username) {
+    public static ArrayList<ArrayList<String>> getPersonalSettings() {
         try {
             PreparedStatement myStmt = connection.prepareStatement("SELECT ps.InstellingenID, ps.Light, ps.Temperature, ps.PlaylistID FROM PersonalSettings ps JOIN Profile p ON ps.ProfileID= p.ProfileID JOIN Person pr ON p.PersonID = pr.PersonID WHERE pr.Username = ?");
-            myStmt.setString(1, username);
+            myStmt.setString(1, User.getUsername());
             ArrayList<ArrayList<String>> results = Database.query(myStmt);
-            Logging.logThis("Retrieving personal settings for user " + username);
+            Logging.logThis("Retrieving personal settings for user " + User.getUsername());
             
             /* [[instellingenID, Light, Temperature, PlaylistID]] */
             return results;
         } catch (Exception ex) {
             System.out.println(ex);
-            Logging.logThis("Failed to retrieve personal settings for user " + username);
+            Logging.logThis("Failed to retrieve personal settings for user " + User.getUsername());
             return null;
         }
     }
