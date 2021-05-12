@@ -172,7 +172,7 @@ public class PersonalSettingsView extends View implements ActionListener, Change
 
     @Override
     public void onFocus(ArrayList<String> parameters) {
-        User.getPersonalSettings();
+        User.refreshPersonalSettings();
         jsLightIntensity.setValue(User.getLight());
         smHeatingValue.setValue(User.getTemperature());
     }

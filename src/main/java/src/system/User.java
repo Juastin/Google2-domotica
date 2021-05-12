@@ -41,14 +41,17 @@ public class User extends Queries{
         return temperature;
     }
 
-    public static void getPersonalSettings() {
-        ArrayList<String> results = getPersonalSettings(username).get(0);
-        temperature = Integer.parseInt(results.get(0));
+    public static void refreshPersonalSettings() {
+        ArrayList<String> results = getPersonalSettings().get(0);
         light = Integer.parseInt(results.get(1));
+        temperature = Integer.parseInt(results.get(2));
+        try {
+            playlistID = Integer.parseInt(results.get(3));
+        } catch (Exception ex) {}
     }
 
-    public static String getPlaylistID() {
-        return getPersonalSettings(username).get(0).get(3);
+    public static int getPlaylistID() {
+        return playlistID;
     }
 
     public static void setPlaylistID(int playlistID) {

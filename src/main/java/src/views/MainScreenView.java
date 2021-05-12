@@ -137,7 +137,7 @@ public class MainScreenView extends View implements ActionListener {
 
     @Override
     public void onFocus(ArrayList<String> parameters) {
-        User.getPersonalSettings();
+        User.refreshPersonalSettings();
 
         jlWelcomeMessage.setText("Gebruiker: " + User.getUsername());
 
