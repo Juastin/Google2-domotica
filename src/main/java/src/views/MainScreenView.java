@@ -115,7 +115,13 @@ public class MainScreenView extends View implements ActionListener {
         jlTemperature.setText("🌡 " + data.get(0).get(1) + "°C");
         jlHPA.setText("<html><p style='text-align:center;font-size:1.5em'>⏲</p><br><span>" + data.get(0).get(2) + " hPa</span></html>");
         jlHumidity.setText("<html><p style='text-align:center;font-size:1.5em'>💧</p><br><span>" + data.get(0).get(3) + "%</span></html>");
-        jlLight.setText("💡 " + data.get(0).get(4) + "%");
+        if (data.get(0).get(4).equals("")) {
+            jlLight.setText("Arduino not found");
+            jlLight.setFont(new Font(jlLight.getFont().getFamily(), Font.PLAIN, 24));
+        } else {
+            jlLight.setText("💡 " + data.get(0).get(4) + "%");
+            jlLight.setFont(new Font(jlLight.getFont().getFamily(), Font.PLAIN, 48));
+        }
         // UPDATE USER SETTINGS DATA
         jlHeating.setText("♨️ " + User.getTemperature() + "°C");
         jlLightSmall.setText("🔆 " + User.getLight() + "%");

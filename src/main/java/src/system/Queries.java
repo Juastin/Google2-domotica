@@ -139,6 +139,7 @@ public class Queries {
                 Database.query(myStmt2);
             } else {
                 Logging.logThis("Unable to access Arduino for user " + User.getUsername());
+                results.get(0).add("");
             }
 
             return results;
