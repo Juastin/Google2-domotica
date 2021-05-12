@@ -105,6 +105,7 @@ public class LoginView extends View implements ActionListener{
     @Override
     public void onFocus(ArrayList<String> parameters) {
         jlUser.setText(User.getUsername());
+        jbPassword.requestFocus();
     }
 
     @Override
