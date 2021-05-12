@@ -1,8 +1,8 @@
 package src.views;
 
-import src.components.CButton;
-import src.components.MusicButton;
+import src.components.*;
 import src.core.Audio;
+import src.system.Queries;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,8 +16,9 @@ public class MusicMenuNewPlaylist extends JPanel implements ActionListener {
     private JButton jbMaken, jbAnnuleren;
     private JTable jtSongs;
     private JPanel top, center, bottom;
-    private ArrayList<ArrayList<String>> SongsList;
+    private ArrayList<ArrayList<String>> songsList;
     private JScrollPane scroll;
+    private SongsTableCellRenderer songTableCell;
 
     public MusicMenuNewPlaylist() {
         setVisible(false);
@@ -35,8 +36,16 @@ public class MusicMenuNewPlaylist extends JPanel implements ActionListener {
         top.add(jlPlaylistName);
         top.add(jtPlaylistName);
 
-        // Center panel
-
+        // Center panel (table)
+        center = new JPanel();
+        center.setLayout(new BorderLayout());
+//        center.setBackground(Color.RED);
+        songsList = Queries.getAllSongs();
+        songTableCell = new SongsTableCellRenderer(this);
+        jtSongs = new PlaylistTableLayout(new PlaylistTableModel(songsList));
+        /* Add */
+        center.add(jtSongs.getTableHeader(), BorderLayout.NORTH);
+        center.add(jtSongs, BorderLayout.CENTER);
 
         // Bottom panel
         bottom =  new JPanel();
@@ -49,22 +58,17 @@ public class MusicMenuNewPlaylist extends JPanel implements ActionListener {
         bottom.add(jbAnnuleren);
         bottom.add(jbMaken);
 
-        // Center panel table
-        center = new JPanel();
-        center.setLayout(new BorderLayout());
-
         // MAIN ADD
         add(top, BorderLayout.NORTH);
+        add(center, BorderLayout.CENTER);
         add(bottom, BorderLayout.SOUTH);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == jbAnnuleren) {
-
         }
         if (e.getSource() == jbMaken) {
-
         }
         Audio.play("click.wav");
     }

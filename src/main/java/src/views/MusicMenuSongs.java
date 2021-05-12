@@ -24,8 +24,6 @@ public class MusicMenuSongs extends JPanel implements ActionListener {
         setVisible(false);
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-        songsList = Queries.getAllSongs();
-
         // Test scroller
         /*
         ArrayList<String> test = new ArrayList<>();
@@ -49,6 +47,7 @@ public class MusicMenuSongs extends JPanel implements ActionListener {
         */
 
         // Table songs
+        songsList = Queries.getAllSongs();
         songTableCell = new SongsTableCellRenderer(this);
         jtSongs = new SongsTableLayout(new SongsTableModel(songsList), songTableCell);
 
