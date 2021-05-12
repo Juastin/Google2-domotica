@@ -133,14 +133,12 @@ public class Queries {
                 }
     
                 // UPDATE LIGHT FIELD WITH SPECIFIC ID, WHERE LIGHT IS NULL
-                if (lichtwaarde.equals("")) {
-                    Logging.logThis("Unable to access Arduino for user " + User.getUsername());
-                } else {
-                    PreparedStatement myStmt2 = connection.prepareStatement("UPDATE DataCollection SET Light = ? WHERE DataCollectionID = ? AND Light IS NULL");
-                    myStmt2.setInt(1, Integer.parseInt(lichtwaarde));
-                    myStmt2.setInt(2, Integer.parseInt(results.get(0).get(0)));
-                    Database.query(myStmt2);
-                }
+                PreparedStatement myStmt2 = connection.prepareStatement("UPDATE DataCollection SET Light = ? WHERE DataCollectionID = ? AND Light IS NULL");
+                myStmt2.setInt(1, Integer.parseInt(lichtwaarde));
+                myStmt2.setInt(2, Integer.parseInt(results.get(0).get(0)));
+                Database.query(myStmt2);
+            } else {
+                Logging.logThis("Unable to access Arduino for user " + User.getUsername());
             }
 
             return results;
