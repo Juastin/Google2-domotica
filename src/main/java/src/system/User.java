@@ -33,12 +33,18 @@ public class User extends Queries{
         return isLoggedIn;
     }
 
-    public static String getLight() {
-        return getPersonalSettings(username).get(0).get(1);
+    public static int getLight() {
+        return light;
     }
 
-    public static String getTemperature() {
-        return getPersonalSettings(username).get(0).get(2);
+    public static int getTemperature() {
+        return temperature;
+    }
+
+    public static void getPersonalSettings() {
+        ArrayList<String> results = getPersonalSettings(username).get(0);
+        temperature = Integer.parseInt(results.get(0));
+        light = Integer.parseInt(results.get(1));
     }
 
     public static String getPlaylistID() {
