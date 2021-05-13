@@ -7,12 +7,10 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 
 /* MusicButton
-
 An extension of JButton, created for the MusicPlayerView to:
 + Immediately give style
 + Immediately give an ActionListener
 + Customize your button style in different states
-
 */
 
 public class MusicButton extends JButton implements ChangeListener {
@@ -29,6 +27,10 @@ public class MusicButton extends JButton implements ChangeListener {
         setOpaque(false);
         addActionListener(parent);
         addChangeListener(this);
+    }
+
+    public MusicButton(String text, int fontSize) {
+        this(null, text, fontSize);
     }
 
     @Override
