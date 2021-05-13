@@ -2,6 +2,8 @@ package src.core;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class Frame extends JFrame {
     private Container container;
@@ -18,6 +20,14 @@ public class Frame extends JFrame {
 
         add(container);
         setVisible(true);
+
+        this.addWindowListener(new WindowAdapter(){
+            public void windowClosing(WindowEvent e){
+                if (Navbar.getP() != null) {
+                    Navbar.getP().destroy();
+                }
+            }
+        });
     }
 
     public void addView(Object view) {

@@ -12,6 +12,8 @@ import java.io.IOException;
 public class Navbar extends JPanel implements ActionListener {
     private View parent;
     private JButton jbLogOut, jbHome, jbMusic, jbGame,jbSettings;
+    private ProcessBuilder pb;
+    private static Process p;
 
     public Navbar(View parent) {
         this.parent = parent;
@@ -63,9 +65,12 @@ public class Navbar extends JPanel implements ActionListener {
         } else if (e.getSource() == jbMusic) {
             parent.changeFocus("MusicPlayerView");
         } else if (e.getSource() == jbGame) {
-            ProcessBuilder pb = new ProcessBuilder("java", "-jar", "src/main/java/src/components/Temple-Run.jar", User.getUsername());
+            if (p != null) {
+                p.destroy();
+            }
+            pb = new ProcessBuilder("java", "-jar", "src/main/java/src/components/Temple-Run.jar", User.getUsername());
             try {
-                pb.start();
+                p = pb.start();
             } catch (IOException ioException) {
                 ioException.printStackTrace();
                 System.out.println("Er is iets misgegaan met het opstarten van de game.");
@@ -76,4 +81,7 @@ public class Navbar extends JPanel implements ActionListener {
         Audio.play("click.wav");
     }
 
+    public static Process getP() {
+        return p;
+    }
 }
