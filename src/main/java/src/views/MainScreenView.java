@@ -134,7 +134,7 @@ public class MainScreenView extends View implements ActionListener {
         if (source==mbIcon) {
             changeFocus("MusicPlayerView");
         } else if (source==mbList) {
-            changeFocus("MusicPlayerView", new ArrayList<String>(Arrays.asList("showList")));
+            changeFocus("MusicMenuView");
         }
           
 

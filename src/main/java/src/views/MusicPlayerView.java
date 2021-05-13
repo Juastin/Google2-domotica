@@ -119,16 +119,7 @@ public class MusicPlayerView extends View implements ActionListener {
     }
 
     @Override
-    public void onFocus(ArrayList<String> parameters) {
-        // DO SOMETHING IF A PARAMETER IS GIVEN
-        if (parameters.size()>0) {
-            switch(parameters.get(0)) {
-                case "showList":
-                    this.changeFocus("MusicMenuView");
-                    break;
-            }
-        }
-    }
+    public void onFocus(ArrayList<String> parameters) {}
 
     @Override
     public void onShadow() {}
