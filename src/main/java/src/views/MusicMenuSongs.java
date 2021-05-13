@@ -14,7 +14,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-public class MusicMenuSongs extends JPanel implements ActionListener {
+public class MusicMenuSongs extends JPanel {
     private JTable jtSongs;
     private ArrayList<ArrayList<String>> songsList;
     private SongsTableCellRenderer songTableCell;
@@ -48,7 +48,7 @@ public class MusicMenuSongs extends JPanel implements ActionListener {
 
         // Table songs
         songsList = Queries.getAllSongs();
-        songTableCell = new SongsTableCellRenderer(this);
+        songTableCell = new SongsTableCellRenderer();
         jtSongs = new SongsTableLayout(new SongsTableModel(songsList), songTableCell);
 
         // Add
@@ -60,16 +60,6 @@ public class MusicMenuSongs extends JPanel implements ActionListener {
         scroll.setBorder(BorderFactory.createEmptyBorder());
         scroll.setViewportBorder(BorderFactory.createEmptyBorder());
         add(scroll);
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == songTableCell.getJb()) {
-            int test = jtSongs.getSelectedRow();
-            System.out.println(String.format("\nSong: %s\n" +
-            "SongId: %s", jtSongs.getValueAt(test, 1), jtSongs.getValueAt(test, 0)));
-        }
-        Audio.play("click.wav");
     }
 }
 

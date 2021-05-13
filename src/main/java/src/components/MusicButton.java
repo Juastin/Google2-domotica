@@ -33,6 +33,10 @@ public class MusicButton extends JButton implements ChangeListener {
         addChangeListener(this);
     }
 
+    public MusicButton(String text, int fontSize) {
+        this(null, text, fontSize);
+    }
+
     @Override
     public void stateChanged(ChangeEvent e) {
         if (this.model.isPressed()) {

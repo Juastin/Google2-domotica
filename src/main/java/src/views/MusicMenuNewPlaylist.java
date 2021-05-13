@@ -41,7 +41,7 @@ public class MusicMenuNewPlaylist extends JPanel implements ActionListener {
         center.setLayout(new BorderLayout());
 //        center.setBackground(Color.RED);
         songsList = Queries.getAllSongs();
-        songTableCell = new SongsTableCellRenderer(this);
+        songTableCell = new SongsTableCellRenderer();
         jtSongs = new PlaylistTableLayout(new PlaylistTableModel(songsList));
         /* Add */
         center.add(jtSongs.getTableHeader(), BorderLayout.NORTH);
