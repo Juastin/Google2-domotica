@@ -10,7 +10,7 @@ import java.lang.reflect.Array;
 
 public class PlayMusic {
     private Arduino ar = new Arduino();
-    private Integer noot;
+    private Integer note;
     private int divider =0, noteDuration =0;
     private int tempo=40;
     private int wholenote = (6000*4)/tempo;
@@ -44,12 +44,12 @@ public class PlayMusic {
             //========tone(buzzer, melody[thisNote], noteDuration*0.9);==========
             Integer notenduratie = noteDuration;
             try {
-                noot = melody[thisNote];
+                note = melody[thisNote];
             } catch (ArrayIndexOutOfBoundsException e) {
-                noot = 0;
+                note = 0;
                 thisNote = 0;
             }
-            ar.getoutputstream(noot);
+            ar.getoutputstream(note);
             // Wait for the specief duration before playing the next note.
             // stop the waveform generation before the next note.
             vorigetijd = System.currentTimeMillis();
