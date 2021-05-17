@@ -42,7 +42,7 @@ public class Queries {
 
     public static ArrayList<ArrayList<String>> getPersonalSettings() {
         try {
-            PreparedStatement myStmt = connection.prepareStatement("SELECT ps.InstellingenID, ps.Light, ps.Temperature, ps.PlaylistID FROM PersonalSettings ps JOIN Profile p ON ps.ProfileID= p.ProfileID JOIN Person pr ON p.PersonID = pr.PersonID WHERE pr.Username = ?");
+            PreparedStatement myStmt = connection.prepareStatement("SELECT ps.InstellingenID, ps.Light, ps.Temperature FROM PersonalSettings ps JOIN Profile p ON ps.ProfileID= p.ProfileID JOIN Person pr ON p.PersonID = pr.PersonID WHERE pr.Username = ?");
             myStmt.setString(1, User.getUsername());
             ArrayList<ArrayList<String>> results = Database.query(myStmt);
             Logging.logThis("Retrieving personal settings for user " + User.getUsername());
@@ -110,15 +110,25 @@ public class Queries {
             // RETRIEVE LAST SENSORDATA ROW
             PreparedStatement myStmt1 = connection.prepareStatement("SELECT DataCollectionID, Temperature, AirPressure, Humidity FROM DataCollection ORDER BY DataCollectionID DESC LIMIT 1");
             ArrayList<ArrayList<String>> results = Database.query(myStmt1);
-
             // RETRIEVE LIGHT VALUE
-            String licht = ar.getlichtwaarde()+"";
-            results.get(0).add(licht);
+                String lichtwaarde = ar.getlightvalue()+"";
+                try{
+                    results.get(0).add(lichtwaarde);
+                }catch (NumberFormatException e){
+                    lichtwaarde = laatstelichtwaarde + "";
+                    System.out.println(lichtwaarde);
+                    results.get(0).add(laatstelichtwaarde + "");
+                }
+                // UPDATE LIGHT FIELD WITH SPECIFIC ID, WHERE LIGHT IS NULL
+                PreparedStatement myStmt2 = connection.prepareStatement("UPDATE DataCollection SET Light = ? WHERE DataCollectionID = ? AND Light IS NULL");
+                myStmt2.setInt(1, Integer.parseInt(lichtwaarde));
+                myStmt2.setInt(2, Integer.parseInt(results.get(0).get(0)));
+                Database.query(myStmt2);
+
             return results;
         } catch (Exception ex) {
             System.out.println(ex);
             return null;
         }
     }
-
 }

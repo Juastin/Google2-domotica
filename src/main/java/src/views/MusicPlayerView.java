@@ -145,7 +145,7 @@ public class MusicPlayerView extends View implements ActionListener {
     public void onTick(long now) {
         if(playing){
         try {
-            music.Speelaf(song.getNummer1());
+            music.sendnotes(song.getNummer1());
     } catch (InterruptedException | IOException interruptedException) {
         interruptedException.printStackTrace();
             }
