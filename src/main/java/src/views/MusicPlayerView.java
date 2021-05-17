@@ -1,5 +1,4 @@
 package src.views;
-import src.components.CButton;
 import src.components.MusicButton;
 import src.components.PlayMusic;
 import src.components.Songs;
@@ -7,18 +6,12 @@ import src.core.Audio;
 import src.core.Container;
 import src.core.View;
 import src.core.Navbar;
-
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-<<<<<<< Updated upstream
-=======
 import java.io.IOException;
-import java.lang.reflect.Array;
->>>>>>> Stashed changes
+
 
 public class MusicPlayerView extends View implements ActionListener {
     private JPanel jpTop, jpCenter, jpBottom, jpLeft, jpMiddle, jpRight;
@@ -26,6 +19,9 @@ public class MusicPlayerView extends View implements ActionListener {
     private JSlider jsPlayTime;
     private JLabel jlTitle, jlCurrentPlayTime, jlMelodyLength;
     private String currentPlayTime, melodyLength;
+    private static boolean playing=false;
+    private Songs song = new Songs();
+    private PlayMusic muziek = new PlayMusic();
 
     public MusicPlayerView(Container container, String name) {
         super(container, name);
@@ -120,16 +116,9 @@ public class MusicPlayerView extends View implements ActionListener {
                 jbPlay.setText("⏸");
             }
 
-            Songs song = new Songs();
-            PlayMusic muziek = new PlayMusic();
-            try {
-                muziek.Speelaf(song.getBloodytears());
-            } catch (InterruptedException interruptedException) {
-                interruptedException.printStackTrace();
-            } catch (IOException exception) {
-                exception.printStackTrace();
-            }
+            playing = !playing;
         }
+
         if (e.getSource() == jbNext) {
 
         }
@@ -143,6 +132,11 @@ public class MusicPlayerView extends View implements ActionListener {
     public void onShadow() {}
 
     @Override
-    public void onTick(long now) {}
-    
+    public void onTick(long now) {
+        if(playing){
+        try {
+        muziek.Speelaf(song.getNummer1());
+    } catch (InterruptedException | IOException interruptedException) {
+        interruptedException.printStackTrace();
+    }}}
 }

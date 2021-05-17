@@ -8,9 +8,7 @@ import java.util.ArrayList;
 
 public class Queries {
     static Connection connection = Database.maakVerbinding();
-    private static boolean isportopen=false;
-    final static SerialPort comPort = SerialPort.getCommPort("COM3");
-    static int laatstelichtwaarde=0;
+    static Arduino ar = new Arduino();
 
 
     public static boolean isPasswordCorrect(String username, String password) {
@@ -105,18 +103,7 @@ public class Queries {
         try {
             PreparedStatement myStmt = connection.prepareStatement("SELECT Temperature, AirPressure, Humidity FROM DataCollection ORDER BY DataCollectionID DESC LIMIT 1");
             ArrayList<ArrayList<String>> results = Database.query(myStmt);
-            if(!isportopen){
-                comPort.openPort();
-                isportopen=true;
-            }
-            byte[] b = new byte[5];
-            int l = comPort.readBytes(b, 5);
-            String s = new String(b);
-            try{
-                laatstelichtwaarde=Integer.parseInt(s.trim());
-                String lichtwaarde = s;
-                results.get(0).add(lichtwaarde);
-            }catch (NumberFormatException e){results.get(0).add(laatstelichtwaarde+"");}
+            results.get(0).add(ar.getlichtwaarde());
             return results;
         } catch (Exception ex) {
             System.out.println(ex);
