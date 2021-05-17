@@ -7,14 +7,16 @@ import java.io.IOException;
 public class Arduino {
     final static SerialPort comPort = SerialPort.getCommPort("COM3");
     private boolean isportopen=false;
+    private int lastvalue=0;
 
     public int getlightvalue() throws IOException {
-        openport();
-        byte[] b = new byte[3];
-        int l = comPort.readBytes(b, 3);
-        String s = new String(b);
-        System.out.println(s);
-        return Integer.parseInt(s);
+        try {
+            openport();
+            byte[] b = new byte[3];
+            int l = comPort.readBytes(b, 3);
+            String s = new String(b);
+            return Integer.parseInt(s);
+        }catch (NumberFormatException e){return 0;}
     }
 
     public void openport(){
