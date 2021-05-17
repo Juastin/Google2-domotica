@@ -183,4 +183,31 @@ public class Queries {
             return null;
         }
     }
+
+    public static void newPlaylist(String title, ArrayList<ArrayList<String>> songs) {
+        try {
+            PreparedStatement myStmt_0 = connection.prepareStatement("INSERT INTO Playlist (PlaylistName) VALUES (?)");
+            myStmt_0.setString(1, title);
+            Database.query(myStmt_0);
+        } catch (Exception ex) {
+            System.out.println(ex);
+            return;
+        }
+
+        try {
+            PreparedStatement myStmt_1 = connection.prepareStatement("SELECT PlaylistID FROM Playlist WHERE PlaylistName = ?");
+            myStmt_1.setString(1, title);
+            String playlist_id = Database.query(myStmt_1).get(0).get(0);
+
+            for (ArrayList<String> song: songs) {
+                PreparedStatement myStmt_2 = connection.prepareStatement("INSERT INTO LinkedSong (SongID, PlaylistID) VALUES (?,?)");
+                myStmt_2.setString(1, song.get(0));
+                myStmt_2.setString(2, playlist_id);
+                Database.query(myStmt_2);
+            }
+        } catch (Exception ex) {
+            System.out.println(ex);
+            return;
+        }
+    }
 }

@@ -18,6 +18,7 @@ public class MusicMenuNewPlaylist extends JPanel implements ActionListener {
     private ArrayList<CButton> inPlaylist, inSongList;
     private JScrollPane playlistScroll, songScroll;
     private CButton cbReset, cbSave;
+    private JTextField jtNewPlaylist;
 
     public MusicMenuNewPlaylist() {
         setVisible(false);
@@ -42,7 +43,7 @@ public class MusicMenuNewPlaylist extends JPanel implements ActionListener {
         JPanel jpLeftTop = new JPanel();
         jpLeftTop.setLayout(new GridLayout(2, 2));
         jpLeftTop.add(new JLabel("Afspeellijst naam:"));
-        JTextField jtNewPlaylist = new JTextField();
+        jtNewPlaylist = new JTextField();
         jpLeftTop.add(jtNewPlaylist);
         jpLeftTop.add(new JLabel("In afspeellijst"));
         JPanel functiePanel = new JPanel();
@@ -163,16 +164,37 @@ public class MusicMenuNewPlaylist extends JPanel implements ActionListener {
         revalidate();
     }
 
+    private void resetProgress() {
+        displayedPlaylist.removeAll();
+        playlistSongs = new ArrayList<ArrayList<String>>();
+        jtNewPlaylist.setText("");
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();
         int i;
+
+        if (source==cbReset) {
+            int choice = JOptionPane.showConfirmDialog(null, "Do you really want to delete your playlist?", "Playlist", JOptionPane.YES_NO_OPTION);
+
+            if (choice == JOptionPane.YES_OPTION) {
+                resetProgress();
+            }
+        }
+
+        if (source==cbSave) {
+            Queries.newPlaylist(jtNewPlaylist.getText(), playlistSongs);
+            resetProgress();
+            JOptionPane.showMessageDialog(this, "Playlist created");
+        }
 
         // CHECK IF PRESSED BUTTON IS A PLAYLIST SONG
         i = 0;
         for (CButton button: inPlaylist) {
             if (source==button) {
                 playlistSongs.remove(i);
+                break;
             }
             i++;
         }
@@ -182,6 +204,7 @@ public class MusicMenuNewPlaylist extends JPanel implements ActionListener {
         for (CButton button: inSongList) {
             if (source==button) {
                 playlistSongs.add(dbSongs.get(i));
+                break;
             }
             i++;
         }
