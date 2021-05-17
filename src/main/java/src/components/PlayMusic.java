@@ -55,4 +55,7 @@ public class PlayMusic {
             vorigetijd = System.currentTimeMillis();
         }
     }
+    public void pause() throws IOException {
+        ar.getoutputstream(0);
+    }
 }

@@ -22,7 +22,7 @@ public class MusicPlayerView extends View implements ActionListener {
     private String currentPlayTime, melodyLength;
     private static boolean playing=false;
     private Songs song = new Songs();
-    private PlayMusic muziek = new PlayMusic();
+    private PlayMusic music = new PlayMusic();
 
     public MusicPlayerView(Container container, String name) {
         super(container, name);
@@ -145,8 +145,16 @@ public class MusicPlayerView extends View implements ActionListener {
     public void onTick(long now) {
         if(playing){
         try {
-        muziek.Speelaf(song.getNummer1());
+            music.Speelaf(song.getNummer1());
     } catch (InterruptedException | IOException interruptedException) {
         interruptedException.printStackTrace();
-    }}}
+            }
+        } if(!playing) {
+            try {
+                music.pause();
+            } catch (IOException interruptedException) {
+                interruptedException.printStackTrace();
+            }
+        }
+    }
 }
