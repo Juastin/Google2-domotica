@@ -8,9 +8,11 @@ import java.util.ArrayList;
 
 public class Queries {
     static Connection connection = Database.maakVerbinding();
+    static Arduino ar = new Arduino();
     private static boolean isportopen=false;
     final static SerialPort comPort = SerialPort.getCommPort("COM3");
     static int laatstelichtwaarde=0;
+
 
 
     public static boolean isPasswordCorrect(String username, String password) {
@@ -141,7 +143,6 @@ public class Queries {
                 Logging.logThis("Unable to access Arduino for user " + User.getUsername());
                 results.get(0).add("");
             }
-
             return results;
         } catch (Exception ex) {
             System.out.println(ex);
