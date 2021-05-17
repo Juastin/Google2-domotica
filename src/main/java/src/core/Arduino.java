@@ -7,24 +7,38 @@ import java.io.IOException;
 public class Arduino {
     final static SerialPort comPort = SerialPort.getCommPort("COM3");
     private boolean isportopen=false;
-    private String lichtwaarde= "";
+    private int lichtwaarde= 0;
 
-    public String getlichtwaarde(){
+    public int getlichtwaarde() throws IOException {
         if(!isportopen){
             comPort.openPort();
             System.out.println("Port opened");
             isportopen=true;
         }
+        getoutputstream('W');
         byte[] b = new byte[5];
         int l = comPort.readBytes(b, 5);
         String s = new String(b);
-        try{
-            lichtwaarde = s;}catch (NumberFormatException e){return lichtwaarde;}
-        System.out.println(lichtwaarde);
+        try{lichtwaarde = Integer.parseInt(s);}catch (NumberFormatException e){return lichtwaarde;}
+        System.out.println("test");
         return lichtwaarde;
     }
 
+    public void getoutputstream(char waarde)throws IOException{
+        if(!isportopen){
+            comPort.openPort();
+            System.out.println("Port opened");
+            isportopen=true;
+        }
+        comPort.getOutputStream().write(waarde);
+    }
+
     public void getoutputstream(Integer waarde) throws IOException {
+        if(!isportopen){
+            comPort.openPort();
+            System.out.println("Port opened");
+            isportopen=true;
+        }
         String cijfer = ""+waarde;
         if(waarde>999){
             comPort.getOutputStream().write(cijfer.charAt(0));

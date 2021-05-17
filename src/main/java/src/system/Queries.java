@@ -112,37 +112,8 @@ public class Queries {
             ArrayList<ArrayList<String>> results = Database.query(myStmt1);
 
             // RETRIEVE LIGHT VALUE
-            if(!isportopen){
-                comPort.openPort();
-                isportopen = true;
-            }
-
-            byte[] b = new byte[5];
-            int l = comPort.readBytes(b, 5);
-
-            if (l!=-1) { // ONLY ATTEMPT A RETRIEVAL IF PORT IS AVAILABLE
-                String s = new String(b);
-                String lichtwaarde = "";
-                System.out.println(l);
-    
-                try{
-                    laatstelichtwaarde = Integer.parseInt(s.trim());
-                    lichtwaarde = s;
-                    results.get(0).add(lichtwaarde);
-                }catch (NumberFormatException e){
-                    lichtwaarde = laatstelichtwaarde + "";
-                    results.get(0).add(laatstelichtwaarde + "");
-                }
-    
-                // UPDATE LIGHT FIELD WITH SPECIFIC ID, WHERE LIGHT IS NULL
-                PreparedStatement myStmt2 = connection.prepareStatement("UPDATE DataCollection SET Light = ? WHERE DataCollectionID = ? AND Light IS NULL");
-                myStmt2.setInt(1, Integer.parseInt(lichtwaarde));
-                myStmt2.setInt(2, Integer.parseInt(results.get(0).get(0)));
-                Database.query(myStmt2);
-            } else {
-                Logging.logThis("Unable to access Arduino for user " + User.getUsername());
-                results.get(0).add("");
-            }
+            String licht = ar.getlichtwaarde()+"";
+            results.get(0).add(licht);
             return results;
         } catch (Exception ex) {
             System.out.println(ex);
