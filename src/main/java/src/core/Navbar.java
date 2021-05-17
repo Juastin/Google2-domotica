@@ -60,6 +60,7 @@ public class Navbar extends JPanel implements ActionListener {
             if (gameProcess != null) {
                 gameProcess.destroy();
             }
+            Logging.logThis("User " + User.getUsername() + " has logged out");
             User.logOut();
             parent.changeFocus("ProfileView");
             JOptionPane.showMessageDialog(this, "U bent afgemeld");

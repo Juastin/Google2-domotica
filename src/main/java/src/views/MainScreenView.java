@@ -112,13 +112,29 @@ public class MainScreenView extends View implements ActionListener {
     public void fetchSensorData() {
         ArrayList<ArrayList<String>> data = Queries.getSensorData();
         // UPDATE LIVE SENSOR DATA
-        jlTemperature.setText("🌡 " + data.get(0).get(0) + "°C");
-        jlHPA.setText("<html><p style='text-align:center;font-size:1.5em'>⏲</p><br><span>" + data.get(0).get(1) + " hPa</span></html>");
-        jlHumidity.setText("<html><p style='text-align:center;font-size:1.5em'>💧</p><br><span>" + data.get(0).get(2) + "%</span></html>");
-        jlLight.setText("💡 " + data.get(0).get(3) + "%");
+        jlTemperature.setText("🌡 " + data.get(0).get(1) + "°C");
+        jlHPA.setText("<html><p style='text-align:center;font-size:1.5em'>⏲</p><br><span>" + data.get(0).get(2) + " hPa</span></html>");
+        jlHumidity.setText("<html><p style='text-align:center;font-size:1.5em'>💧</p><br><span>" + data.get(0).get(3) + "%</span></html>");
+        if (data.get(0).get(4).equals("")) {
+            jlLight.setText("Arduino not found");
+            jlLight.setFont(new Font(jlLight.getFont().getFamily(), Font.PLAIN, 24));
+        } else {
+            jlLight.setText("💡 " + data.get(0).get(4) + "%");
+            jlLight.setFont(new Font(jlLight.getFont().getFamily(), Font.PLAIN, 48));
+        }
         // UPDATE USER SETTINGS DATA
         jlHeating.setText("♨️ " + User.getTemperature() + "°C");
         jlLightSmall.setText("🔆 " + User.getLight() + "%");
+
+        // If statements to show if heating and light is on.
+        if (Integer.parseInt(data.get(0).get(1)) < User.getTemperature()){
+            jlHeating.setForeground(Color.RED);
+        }
+        if (!data.get(0).get(4).equals("")) {
+            if (Integer.parseInt(data.get(0).get(4)) < User.getLight()) {
+                jlLightSmall.setForeground(Color.BLUE);
+            }
+        }
     }
 
     @Override
@@ -137,6 +153,8 @@ public class MainScreenView extends View implements ActionListener {
 
     @Override
     public void onFocus(ArrayList<String> parameters) {
+        User.refreshPersonalSettings();
+
         jlWelcomeMessage.setText("Gebruiker: " + User.getUsername());
 
         System.out.println("Light: " + User.getLight());
@@ -160,4 +178,3 @@ public class MainScreenView extends View implements ActionListener {
     }
 
 }
-

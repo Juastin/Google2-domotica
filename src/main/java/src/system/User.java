@@ -11,10 +11,6 @@ public class User extends Queries{
     private static int temperature;
     private static int playlistID;
 
-    private static boolean isportopen=false;
-    final static SerialPort comPort = SerialPort.getCommPort("COM3");
-    static int laatstelichtwaarde=0;
-
     public User() {}
 
     public static void setUsername(String username) {
@@ -33,16 +29,25 @@ public class User extends Queries{
         return isLoggedIn;
     }
 
-    public static String getLight() {
-        return getPersonalSettings(username).get(0).get(1);
+    public static int getLight() {
+        return light;
     }
 
-    public static String getTemperature() {
-        return getPersonalSettings(username).get(0).get(2);
+    public static int getTemperature() {
+        return temperature;
     }
 
-    public static String getPlaylistID() {
-        return getPersonalSettings(username).get(0).get(3);
+    public static void refreshPersonalSettings() {
+        ArrayList<String> results = getPersonalSettings().get(0);
+        light = Integer.parseInt(results.get(1));
+        temperature = Integer.parseInt(results.get(2));
+        try {
+            playlistID = Integer.parseInt(results.get(3));
+        } catch (Exception ex) {}
+    }
+
+    public static int getPlaylistID() {
+        return playlistID;
     }
 
     public static void setPlaylistID(int playlistID) {

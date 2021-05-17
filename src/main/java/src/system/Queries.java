@@ -8,9 +8,11 @@ import java.util.ArrayList;
 
 public class Queries {
     static Connection connection = Database.maakVerbinding();
+    static Arduino ar = new Arduino();
     private static boolean isportopen=false;
     final static SerialPort comPort = SerialPort.getCommPort("COM3");
     static int laatstelichtwaarde=0;
+
 
 
     public static boolean isPasswordCorrect(String username, String password) {
@@ -38,18 +40,18 @@ public class Queries {
         }
     }
 
-    public static ArrayList<ArrayList<String>> getPersonalSettings(String username) {
+    public static ArrayList<ArrayList<String>> getPersonalSettings() {
         try {
             PreparedStatement myStmt = connection.prepareStatement("SELECT ps.InstellingenID, ps.Light, ps.Temperature, ps.PlaylistID FROM PersonalSettings ps JOIN Profile p ON ps.ProfileID= p.ProfileID JOIN Person pr ON p.PersonID = pr.PersonID WHERE pr.Username = ?");
-            myStmt.setString(1, username);
+            myStmt.setString(1, User.getUsername());
             ArrayList<ArrayList<String>> results = Database.query(myStmt);
-            Logging.logThis("Retrieving personal settings for user " + username);
+            Logging.logThis("Retrieving personal settings for user " + User.getUsername());
             
             /* [[instellingenID, Light, Temperature, PlaylistID]] */
             return results;
         } catch (Exception ex) {
             System.out.println(ex);
-            Logging.logThis("Failed to retrieve personal settings for user " + username);
+            Logging.logThis("Failed to retrieve personal settings for user " + User.getUsername());
             return null;
         }
     }
@@ -105,20 +107,13 @@ public class Queries {
 
     public static ArrayList<ArrayList<String>> getSensorData() {
         try {
-            PreparedStatement myStmt = connection.prepareStatement("SELECT Temperature, AirPressure, Humidity FROM DataCollection ORDER BY DataCollectionID DESC LIMIT 1");
-            ArrayList<ArrayList<String>> results = Database.query(myStmt);
-            if(!isportopen){
-                comPort.openPort();
-                isportopen=true;
-            }
-            byte[] b = new byte[5];
-            int l = comPort.readBytes(b, 5);
-            String s = new String(b);
-            try{
-                laatstelichtwaarde=Integer.parseInt(s.trim());
-                String lichtwaarde = s;
-                results.get(0).add(lichtwaarde);
-            }catch (NumberFormatException e){results.get(0).add(laatstelichtwaarde+"");}
+            // RETRIEVE LAST SENSORDATA ROW
+            PreparedStatement myStmt1 = connection.prepareStatement("SELECT DataCollectionID, Temperature, AirPressure, Humidity FROM DataCollection ORDER BY DataCollectionID DESC LIMIT 1");
+            ArrayList<ArrayList<String>> results = Database.query(myStmt1);
+
+            // RETRIEVE LIGHT VALUE
+            String licht = ar.getlichtwaarde()+"";
+            results.get(0).add(licht);
             return results;
         } catch (Exception ex) {
             System.out.println(ex);
