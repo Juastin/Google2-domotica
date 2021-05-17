@@ -172,6 +172,8 @@ public class MusicMenuView extends View implements ActionListener {
         }
         if (e.getSource() == jbNewPlaylist) {
             changeMusicPanel(jpNewPlaylist);
+            MusicMenuNewPlaylist d = (MusicMenuNewPlaylist)jpNewPlaylist;
+            d.updateGUI();
         }
         Audio.play("click.wav");
     }

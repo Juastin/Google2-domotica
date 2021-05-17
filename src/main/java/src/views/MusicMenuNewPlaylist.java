@@ -16,6 +16,8 @@ public class MusicMenuNewPlaylist extends JPanel implements ActionListener {
     private ArrayList<ArrayList<String>> dbSongs, playlistSongs = new ArrayList<ArrayList<String>>();
     private JPanel jpLeft, jpRight, displayedSongs, displayedPlaylist;
     private ArrayList<CButton> inPlaylist, inSongList;
+    private JScrollPane playlistScroll, songScroll;
+    private CButton cbReset, cbSave;
 
     public MusicMenuNewPlaylist() {
         setVisible(false);
@@ -43,7 +45,13 @@ public class MusicMenuNewPlaylist extends JPanel implements ActionListener {
         JTextField jtNewPlaylist = new JTextField();
         jpLeftTop.add(jtNewPlaylist);
         jpLeftTop.add(new JLabel("In afspeellijst"));
-        jpLeftTop.add(new JLabel(""));
+        JPanel functiePanel = new JPanel();
+        functiePanel.setLayout(new GridLayout(1, 2));
+        cbReset = new CButton(this, "❌", new Color(238,238,238), new Color(176, 0, 0));
+        functiePanel.add(cbReset);
+        cbSave = new CButton(this, "✔", new Color(238,238,238), new Color(0, 176, 36));
+        functiePanel.add(cbSave);
+        jpLeftTop.add(functiePanel);
         jpLeftTop.setPreferredSize(new Dimension(400, 40));
         jpLeft.add(jpLeftTop);
         // SONGS
@@ -82,18 +90,23 @@ public class MusicMenuNewPlaylist extends JPanel implements ActionListener {
         jpRight.add(label6);
 
         displayedPlaylist = new JPanel();
-        displayedPlaylist.setPreferredSize(new Dimension(400, 290));
-        jpLeft.add(displayedPlaylist);
+        displayedPlaylist.setLayout(new BoxLayout(displayedPlaylist, SwingConstants.VERTICAL));
+        playlistScroll = new JScrollPane(displayedPlaylist, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        playlistScroll.setBorder(BorderFactory.createEmptyBorder());
+        playlistScroll.setPreferredSize(new Dimension(400, 284));
+        jpLeft.add(playlistScroll);
         displayedSongs = new JPanel();
-        displayedSongs.setPreferredSize(new Dimension(400, 290));
-        jpRight.add(displayedSongs);
+        displayedSongs.setLayout(new BoxLayout(displayedSongs, SwingConstants.VERTICAL));
+        songScroll = new JScrollPane(displayedSongs, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        songScroll.setBorder(BorderFactory.createEmptyBorder());
+        songScroll.setPreferredSize(new Dimension(400, 284));
+        jpRight.add(songScroll);
 
         add(jpLeft);
         add(jpRight);
-        updateGUI();
     }
 
-    private void updateGUI() {
+    public void updateGUI() {
         displayedPlaylist.removeAll();
         displayedSongs.removeAll();
 
@@ -107,33 +120,44 @@ public class MusicMenuNewPlaylist extends JPanel implements ActionListener {
 
         inPlaylist = new ArrayList<CButton>();
         for (ArrayList<String> song: playlistSongs) {
-            CButton button = new CButton(this, "-", Color.black, Color.white);
+            JPanel bar = new JPanel();
+            bar.setMaximumSize(new Dimension(400, 30));
+            bar.setBorder(new EmptyBorder(5, 14, 0, 0));
+            CButton button = new CButton(this, "X", Color.black, Color.white);
             inPlaylist.add(button);
             button.setPreferredSize(new Dimension(fw1, height));
-            JLabel title = new JLabel(song.get(2));
+            JLabel title = new JLabel(song.get(1));
             title.setBorder(new EmptyBorder(0, 10, 0, 0));
             title.setPreferredSize(new Dimension(fw2, height));
-            JLabel length = new JLabel(song.get(3));
+            JLabel length = new JLabel(song.get(2));
             length.setPreferredSize(new Dimension(fw3, height));
-            displayedPlaylist.add(button);
-            displayedPlaylist.add(title);
-            displayedPlaylist.add(length);
+            bar.add(button);
+            bar.add(title);
+            bar.add(length);
+            displayedPlaylist.add(bar);
         }
 
         inSongList = new ArrayList<CButton>();
         for (ArrayList<String> song: dbSongs) {
+            JPanel bar = new JPanel();
+            bar.setMaximumSize(new Dimension(400, 30));
+            bar.setBorder(new EmptyBorder(5, 14, 0, 0));
             CButton button = new CButton(this, "+", Color.black, Color.white);
             inSongList.add(button);
             button.setPreferredSize(new Dimension(fw1, height));
-            JLabel title = new JLabel(song.get(2));
+            JLabel title = new JLabel(song.get(1));
             title.setBorder(new EmptyBorder(0, 10, 0, 0));
             title.setPreferredSize(new Dimension(fw2, height));
-            JLabel length = new JLabel(song.get(3));
+            JLabel length = new JLabel(song.get(2));
             length.setPreferredSize(new Dimension(fw3, height));
-            displayedSongs.add(button);
-            displayedSongs.add(title);
-            displayedSongs.add(length);
+            bar.add(button);
+            bar.add(title);
+            bar.add(length);
+            displayedSongs.add(bar);
         }
+
+        displayedPlaylist.setSize(new Dimension(400, 30*inPlaylist.size()));
+        displayedSongs.setSize(new Dimension(400, 30*inPlaylist.size()));
 
         repaint();
         revalidate();
