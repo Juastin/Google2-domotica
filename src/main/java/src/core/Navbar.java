@@ -13,7 +13,7 @@ public class Navbar extends JPanel implements ActionListener {
     private View parent;
     private JButton jbLogOut, jbHome, jbMusic, jbGame,jbSettings;
     private ProcessBuilder pb;
-    private static Process p;
+    private static Process gameProcess;
 
     public Navbar(View parent) {
         this.parent = parent;
@@ -57,6 +57,9 @@ public class Navbar extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == jbLogOut) {
             Audio.play("success_1.wav");
+            if (gameProcess != null) {
+                gameProcess.destroy();
+            }
             User.logOut();
             parent.changeFocus("ProfileView");
             JOptionPane.showMessageDialog(this, "U bent afgemeld");
@@ -65,12 +68,12 @@ public class Navbar extends JPanel implements ActionListener {
         } else if (e.getSource() == jbMusic) {
             parent.changeFocus("MusicPlayerView");
         } else if (e.getSource() == jbGame) {
-            if (p != null) {
-                p.destroy();
+            if (gameProcess != null) {
+                gameProcess.destroy();
             }
             pb = new ProcessBuilder("java", "-jar", "src/main/java/src/components/Temple-Run.jar", User.getUsername());
             try {
-                p = pb.start();
+                gameProcess = pb.start();
             } catch (IOException ioException) {
                 ioException.printStackTrace();
                 System.out.println("Er is iets misgegaan met het opstarten van de game.");
@@ -81,7 +84,7 @@ public class Navbar extends JPanel implements ActionListener {
         Audio.play("click.wav");
     }
 
-    public static Process getP() {
-        return p;
+    public static Process getGameProcess() {
+        return gameProcess;
     }
 }

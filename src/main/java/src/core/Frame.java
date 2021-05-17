@@ -23,8 +23,8 @@ public class Frame extends JFrame {
 
         this.addWindowListener(new WindowAdapter(){
             public void windowClosing(WindowEvent e){
-                if (Navbar.getP() != null) {
-                    Navbar.getP().destroy();
+                if (Navbar.getGameProcess() != null) {
+                    Navbar.getGameProcess().destroy();
                 }
             }
         });
