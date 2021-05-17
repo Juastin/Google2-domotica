@@ -1,9 +1,11 @@
 package src.views;
+import src.core.Audio;
 import src.core.Container;
 import src.core.View;
 import src.core.Navbar;
 import src.system.User;
 import src.system.Queries;
+import src.components.MusicButton;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,12 +13,14 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.border.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class MainScreenView extends View implements ActionListener {
     private JLabel jlWelcomeMessage, jlHeating, jlTemperature, jlLight, jlLightSmall, jlHPA, jlHumidity;
     // Names are based on position, left upper panel being jpLU, right bottom panel being jpRU
     private JPanel jpLU, jpRU, jpLB, jpRB;
     private long lastFetchTimestamp;
+    private MusicButton mbPrevious, mbPlay, mbNext, mbList, mbIcon;
 
     public MainScreenView(Container container, String name) {
         super(container, name);
@@ -76,7 +80,26 @@ public class MainScreenView extends View implements ActionListener {
 
         // RIGHT BOTTOM
         jpRB = new JPanel();
+        jpRB.setLayout(new BorderLayout());
         jpRB.setBorder(myborder);
+        // COMPONENTS CENTER
+        mbIcon = new MusicButton(this, "♫", 90);
+        jpRB.add(mbIcon, BorderLayout.CENTER);
+        // COMPONENTS BOTTOM
+        JPanel toolbar = new JPanel();
+        toolbar.setLayout(new BorderLayout());
+        toolbar.setBorder(new EmptyBorder(0,10,10,10));
+        mbList = new MusicButton(this, "⋮☰", 20);
+        mbList.setBorder(new EmptyBorder(0,13,0,0));
+        toolbar.add(mbList, BorderLayout.WEST);
+        JPanel toolbarCenter = new JPanel();
+        toolbarCenter.setLayout(new GridBagLayout());
+        toolbarCenter.setBorder(new EmptyBorder(0,0,4,35));
+        mbPrevious = new MusicButton(this, "⏮", 30); toolbarCenter.add(mbPrevious);
+        mbPlay = new MusicButton(this, "⏵", 30); toolbarCenter.add(mbPlay);
+        mbNext = new MusicButton(this, "⏭", 30); toolbarCenter.add(mbNext);
+        toolbar.add(toolbarCenter, BorderLayout.CENTER);
+        jpRB.add(toolbar, BorderLayout.SOUTH);
 
         main.add(jpLU);
         main.add(jpRU);
@@ -89,20 +112,49 @@ public class MainScreenView extends View implements ActionListener {
     public void fetchSensorData() {
         ArrayList<ArrayList<String>> data = Queries.getSensorData();
         // UPDATE LIVE SENSOR DATA
-        jlTemperature.setText("🌡 " + data.get(0).get(0) + "°C");
-        jlHPA.setText("<html><p style='text-align:center;font-size:1.5em'>⏲</p><br><span>" + data.get(0).get(1) + " hPa</span></html>");
-        jlHumidity.setText("<html><p style='text-align:center;font-size:1.5em'>💧</p><br><span>" + data.get(0).get(2) + "%</span></html>");
-        jlLight.setText("💡 " + data.get(0).get(3) + "%");
+        jlTemperature.setText("🌡 " + data.get(0).get(1) + "°C");
+        jlHPA.setText("<html><p style='text-align:center;font-size:1.5em'>⏲</p><br><span>" + data.get(0).get(2) + " hPa</span></html>");
+        jlHumidity.setText("<html><p style='text-align:center;font-size:1.5em'>💧</p><br><span>" + data.get(0).get(3) + "%</span></html>");
+        if (data.get(0).get(4).equals("")) {
+            jlLight.setText("Arduino not found");
+            jlLight.setFont(new Font(jlLight.getFont().getFamily(), Font.PLAIN, 24));
+        } else {
+            jlLight.setText("💡 " + data.get(0).get(4) + "%");
+            jlLight.setFont(new Font(jlLight.getFont().getFamily(), Font.PLAIN, 48));
+        }
         // UPDATE USER SETTINGS DATA
         jlHeating.setText("♨️ " + User.getTemperature() + "°C");
         jlLightSmall.setText("🔆 " + User.getLight() + "%");
+
+        // If statements to show if heating and light is on.
+        if (Integer.parseInt(data.get(0).get(1)) < User.getTemperature()){
+            jlHeating.setForeground(Color.RED);
+        }
+        if (!data.get(0).get(4).equals("")) {
+            if (Integer.parseInt(data.get(0).get(4)) < User.getLight()) {
+                jlLightSmall.setForeground(Color.BLUE);
+            }
+        }
     }
 
     @Override
-    public void actionPerformed (ActionEvent e) {}
+    public void actionPerformed (ActionEvent e) {
+        Object source = e.getSource();
+        
+        if (source==mbIcon) {
+            changeFocus("MusicPlayerView");
+        } else if (source==mbList) {
+            changeFocus("MusicPlayerView", new ArrayList<String>(Arrays.asList("showList")));
+        }
+          
+
+        Audio.play("click.wav");
+    }
 
     @Override
-    public void onFocus() {
+    public void onFocus(ArrayList<String> parameters) {
+        User.refreshPersonalSettings();
+
         jlWelcomeMessage.setText("Gebruiker: " + User.getUsername());
 
         System.out.println("Light: " + User.getLight());
@@ -126,4 +178,3 @@ public class MainScreenView extends View implements ActionListener {
     }
 
 }
-

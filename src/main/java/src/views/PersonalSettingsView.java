@@ -1,5 +1,6 @@
 package src.views;
 import src.components.CButton;
+import src.components.MetalSlider;
 import src.core.Audio;
 import src.core.Container;
 import src.core.Navbar;
@@ -14,6 +15,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Hashtable;
+import java.util.ArrayList;
 
 public class PersonalSettingsView extends View implements ActionListener, ChangeListener {
 
@@ -61,6 +63,7 @@ public class PersonalSettingsView extends View implements ActionListener, Change
         jlLightIntensity.setFont(new Font(jlLightIntensity.getFont().getFamily(), Font.PLAIN, 13));
         lightIntensityPanel.add(jlLightIntensity);
         jsLightIntensity = new JSlider(JSlider.HORIZONTAL, 0, 100, 0);
+        jsLightIntensity.setUI(new MetalSlider());
         jsLightIntensity.setMajorTickSpacing(25);
         jsLightIntensity.setMinorTickSpacing(10);
         jsLightIntensity.setPaintLabels(true);
@@ -143,7 +146,7 @@ public class PersonalSettingsView extends View implements ActionListener, Change
         } else if (e.getSource() == jbStandardSettings) {
             int choice = JOptionPane.showConfirmDialog(this, confirmationText, "Bevestiging naar standaardinstellingen", JOptionPane.YES_NO_OPTION);
             if(choice == JOptionPane.YES_OPTION){
-                boolean result = Queries.updatePersonalSettings(25 ,16, User.getUsername());
+                boolean result = Queries.updatePersonalSettings(40,17, User.getUsername());
                 if (result) {
                     User.setStandardPersonalSettings();
                     JOptionPane.showMessageDialog(this, "Instellingen teruggezet naar standaardinstellingen");
@@ -162,13 +165,14 @@ public class PersonalSettingsView extends View implements ActionListener, Change
             }
         }
         if (change) {
-            onFocus();
+            onFocus(new ArrayList<String>());
         }
         Audio.play("click.wav");
     }
 
     @Override
-    public void onFocus() {
+    public void onFocus(ArrayList<String> parameters) {
+        User.refreshPersonalSettings();
         jsLightIntensity.setValue(User.getLight());
         smHeatingValue.setValue(User.getTemperature());
     }

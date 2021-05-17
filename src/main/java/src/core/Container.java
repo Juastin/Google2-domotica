@@ -20,7 +20,7 @@ public class Container extends JPanel {
 
         add(views.get(0));
         views.get(0).setVisible(true);
-        views.get(0).onFocus();
+        views.get(0).onFocus(new ArrayList<String>());
         currentView = views.get(0);
 
         Timer timer = new Timer();
@@ -28,7 +28,7 @@ public class Container extends JPanel {
         setVisible(true);
     }
 
-    public void switchView(View oldView, String name) {
+    public void switchView(View oldView, String name, ArrayList<String> parameters) {
         boolean found = false;
 
         for (View view: views) {
@@ -40,7 +40,7 @@ public class Container extends JPanel {
                 currentView = view;
                 add(view);
                 view.setVisible(true);
-                view.onFocus();
+                view.onFocus(parameters);
 
                 found = true;
                 break;

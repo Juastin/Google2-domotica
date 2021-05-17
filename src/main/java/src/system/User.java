@@ -1,8 +1,10 @@
 package src.system;
 
+import java.util.ArrayList;
+
 import com.fazecast.jSerialComm.SerialPort;
 
-public class User {
+public class User extends Queries{
     private static boolean isLoggedIn = false;
     private static String username;
     private static int light;
@@ -33,6 +35,15 @@ public class User {
 
     public static int getTemperature() {
         return temperature;
+    }
+
+    public static void refreshPersonalSettings() {
+        ArrayList<String> results = getPersonalSettings().get(0);
+        light = Integer.parseInt(results.get(1));
+        temperature = Integer.parseInt(results.get(2));
+        try {
+            playlistID = Integer.parseInt(results.get(3));
+        } catch (Exception ex) {}
     }
 
     public static int getPlaylistID() {

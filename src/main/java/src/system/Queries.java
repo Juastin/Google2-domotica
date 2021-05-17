@@ -9,6 +9,10 @@ import java.util.ArrayList;
 public class Queries {
     static Connection connection = Database.maakVerbinding();
     static Arduino ar = new Arduino();
+    private static boolean isportopen=false;
+    final static SerialPort comPort = SerialPort.getCommPort("COM3");
+    static int laatstelichtwaarde=0;
+
 
 
     public static boolean isPasswordCorrect(String username, String password) {
@@ -36,16 +40,18 @@ public class Queries {
         }
     }
 
-    public static ArrayList<ArrayList<String>> getPersonalSettings(String username) {
+    public static ArrayList<ArrayList<String>> getPersonalSettings() {
         try {
-            PreparedStatement myStmt = connection.prepareStatement("SELECT ps.Light, ps.Temperature, ps.PlaylistID FROM PersonalSettings ps JOIN Person p ON ps.ProfileID = p.PersonID WHERE p.Username = ?");
-            myStmt.setString(1, username);
+            PreparedStatement myStmt = connection.prepareStatement("SELECT ps.InstellingenID, ps.Light, ps.Temperature, ps.PlaylistID FROM PersonalSettings ps JOIN Profile p ON ps.ProfileID= p.ProfileID JOIN Person pr ON p.PersonID = pr.PersonID WHERE pr.Username = ?");
+            myStmt.setString(1, User.getUsername());
             ArrayList<ArrayList<String>> results = Database.query(myStmt);
-            Logging.logThis("Retrieving personal settings for user " + username);
+            Logging.logThis("Retrieving personal settings for user " + User.getUsername());
+            
+            /* [[instellingenID, Light, Temperature, PlaylistID]] */
             return results;
         } catch (Exception ex) {
             System.out.println(ex);
-            Logging.logThis("Failed to retrieve personal settings for user " + username);
+            Logging.logThis("Failed to retrieve personal settings for user " + User.getUsername());
             return null;
         }
     }
@@ -73,7 +79,7 @@ public class Queries {
     // Standard values for function are: light 25, heating 16
     public static boolean updatePersonalSettings(int light, int heating, String username) {
         try {
-            PreparedStatement myStmt = connection.prepareStatement(" UPDATE PersonalSettings set Light = ?, Temperature = ? WHERE ProfileID = (SELECT PersonID FROM Person WHERE Username = ?)");
+            PreparedStatement myStmt = connection.prepareStatement("UPDATE PersonalSettings set Light = ?, Temperature = ? WHERE ProfileID = (SELECT ProfileID FROM Profile WHERE PersonID = (SELECT PersonID FROM Person WHERE Username = ?))");
             myStmt.setInt(1, light);
             myStmt.setInt(2, heating);
             myStmt.setString(3, username);
@@ -101,9 +107,42 @@ public class Queries {
 
     public static ArrayList<ArrayList<String>> getSensorData() {
         try {
-            PreparedStatement myStmt = connection.prepareStatement("SELECT Temperature, AirPressure, Humidity FROM DataCollection ORDER BY DataCollectionID DESC LIMIT 1");
-            ArrayList<ArrayList<String>> results = Database.query(myStmt);
-            results.get(0).add(ar.getlichtwaarde());
+            // RETRIEVE LAST SENSORDATA ROW
+            PreparedStatement myStmt1 = connection.prepareStatement("SELECT DataCollectionID, Temperature, AirPressure, Humidity FROM DataCollection ORDER BY DataCollectionID DESC LIMIT 1");
+            ArrayList<ArrayList<String>> results = Database.query(myStmt1);
+
+            // RETRIEVE LIGHT VALUE
+            if(!isportopen){
+                comPort.openPort();
+                isportopen = true;
+            }
+
+            byte[] b = new byte[5];
+            int l = comPort.readBytes(b, 5);
+
+            if (l!=-1) { // ONLY ATTEMPT A RETRIEVAL IF PORT IS AVAILABLE
+                String s = new String(b);
+                String lichtwaarde = "";
+                System.out.println(l);
+    
+                try{
+                    laatstelichtwaarde = Integer.parseInt(s.trim());
+                    lichtwaarde = s;
+                    results.get(0).add(lichtwaarde);
+                }catch (NumberFormatException e){
+                    lichtwaarde = laatstelichtwaarde + "";
+                    results.get(0).add(laatstelichtwaarde + "");
+                }
+    
+                // UPDATE LIGHT FIELD WITH SPECIFIC ID, WHERE LIGHT IS NULL
+                PreparedStatement myStmt2 = connection.prepareStatement("UPDATE DataCollection SET Light = ? WHERE DataCollectionID = ? AND Light IS NULL");
+                myStmt2.setInt(1, Integer.parseInt(lichtwaarde));
+                myStmt2.setInt(2, Integer.parseInt(results.get(0).get(0)));
+                Database.query(myStmt2);
+            } else {
+                Logging.logThis("Unable to access Arduino for user " + User.getUsername());
+                results.get(0).add("");
+            }
             return results;
         } catch (Exception ex) {
             System.out.println(ex);

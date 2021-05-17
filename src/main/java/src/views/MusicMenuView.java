@@ -1,5 +1,4 @@
 package src.views;
-import src.components.CButton;
 import src.components.MusicButton;
 import src.components.MusicMenuButton;
 import src.core.Audio;
@@ -8,11 +7,10 @@ import src.core.View;
 import src.core.Navbar;
 
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 public class MusicMenuView extends View implements ActionListener {
     private JPanel
@@ -117,8 +115,7 @@ public class MusicMenuView extends View implements ActionListener {
         jpRight = new JPanel();
         jpRight.setBackground(customGray);
         jpRight.setLayout(new FlowLayout(FlowLayout.RIGHT));
-        jpRight.setComponentOrientation(
-                ComponentOrientation.LEFT_TO_RIGHT);;
+        jpRight.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
         jpRight.setBorder(BorderFactory.createEmptyBorder(15, 0, 0, 0));
         jbList = new MusicButton(this, "⋮☰", 30);
 
@@ -180,7 +177,7 @@ public class MusicMenuView extends View implements ActionListener {
     }
 
     @Override
-    public void onFocus() {}
+    public void onFocus(ArrayList<String> parameters) {}
 
     @Override
     public void onShadow() {}

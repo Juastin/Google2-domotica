@@ -11,6 +11,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.ArrayList;
 
 
 public class MusicPlayerView extends View implements ActionListener {
@@ -126,7 +127,16 @@ public class MusicPlayerView extends View implements ActionListener {
     }
 
     @Override
-    public void onFocus() {}
+    public void onFocus(ArrayList<String> parameters) {
+        // DO SOMETHING IF A PARAMETER IS GIVEN
+        if (parameters.size()>0) {
+            switch(parameters.get(0)) {
+                case "showList":
+                    this.changeFocus("MusicMenuView");
+                    break;
+            }
+        }
+    }
 
     @Override
     public void onShadow() {}

@@ -10,6 +10,7 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.util.Objects;
+import java.util.ArrayList;
 
 public class MakeProfileView extends View implements ActionListener {
     private JButton jbBack, jbSave;
@@ -119,7 +120,7 @@ public class MakeProfileView extends View implements ActionListener {
     }
 
     @Override
-    public void onFocus() {}
+    public void onFocus(ArrayList<String> parameters) {}
 
     @Override
     public void onShadow() {}

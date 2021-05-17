@@ -85,17 +85,6 @@ public class LoginView extends View implements ActionListener{
                 Logging.logThis("Successful login attempt for user " + User.getUsername());
                 Audio.play("success_0.wav");
                 User.setLoggedIn(true);
-
-                try {
-                    ArrayList<ArrayList<String>> resultPersonalSettings = Queries.getPersonalSettings(User.getUsername());
-                    User.setPersonalSettings(Integer.parseInt(resultPersonalSettings.get(0).get(0)), Integer.parseInt(resultPersonalSettings.get(0).get(1)));
-                    if (resultPersonalSettings.get(0).get(2) != null){
-                        User.setPlaylistID(Integer.parseInt(resultPersonalSettings.get(0).get(2)));
-                        // if null -> PlaylistID = 0;
-                    }
-                } catch (Exception ex) {
-                    System.out.println(ex.getMessage());
-                }
                 changeFocus("MainScreenView");
             } else {
                 Audio.play("error.wav");
@@ -114,8 +103,9 @@ public class LoginView extends View implements ActionListener{
     }
 
     @Override
-    public void onFocus() {
+    public void onFocus(ArrayList<String> parameters) {
         jlUser.setText(User.getUsername());
+        jbPassword.requestFocus();
     }
 
     @Override
