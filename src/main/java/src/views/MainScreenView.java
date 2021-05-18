@@ -125,6 +125,16 @@ public class MainScreenView extends View implements ActionListener {
         // UPDATE USER SETTINGS DATA
         jlHeating.setText("♨️ " + User.getTemperature() + "°C");
         jlLightSmall.setText("🔆 " + User.getLight() + "%");
+
+        // If statements to show if heating and light is on.
+        if (Integer.parseInt(data.get(0).get(1)) < User.getTemperature()){
+            jlHeating.setForeground(Color.RED);
+        }
+        if (!data.get(0).get(4).equals("")) {
+            if (Integer.parseInt(data.get(0).get(4)) < User.getLight()) {
+                jlLightSmall.setForeground(Color.BLUE);
+            }
+        }
     }
 
     @Override
