@@ -17,9 +17,9 @@ import java.util.ArrayList;
 
 public class MusicMenuPlaylist extends JPanel {
     private JTable jtSongs;
-    private JPanel center;
+    private JPanel top, center;
     private JLabel jlTitel;
-    private ArrayList<ArrayList<String>> playlistSongsList;
+    private ArrayList<ArrayList<String>> playlistSongsList, playlistNamesList;
     private SongsTableCellRenderer songTableCell;
     private JScrollPane scroll;
 
@@ -28,6 +28,8 @@ public class MusicMenuPlaylist extends JPanel {
         setLayout(new BorderLayout());
 
         playlistSongsList = Queries.getPlaylistSongsList(id);
+        ArrayList<ArrayList<String>> playlistData = Queries.getPlaylistData(User.getUsername());
+
         // Test scroller
         /*
         ArrayList<String> test = new ArrayList<>();
@@ -51,9 +53,17 @@ public class MusicMenuPlaylist extends JPanel {
         */
 
         // Top of panel Title
+        top = new JPanel(new FlowLayout(FlowLayout.LEFT));
         jlTitel = new JLabel("Naam afspeellijst: " + name);
         jlTitel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         jlTitel.setFont(jlTitel.getFont().deriveFont(20.0f));
+        top.add(jlTitel);
+
+        JComboBox<String> comboList = new JComboBox<String>();
+        for (ArrayList<String> playlistName : playlistData) {
+            comboList.addItem(playlistName.get(1));
+        }
+        top.add(comboList, BorderLayout.NORTH);
 
         // Center panel table
         center = new JPanel();
@@ -64,7 +74,7 @@ public class MusicMenuPlaylist extends JPanel {
         jtSongs = new SongsTableLayout(new SongsTableModel(playlistSongsList), songTableCell);
 
         // Add
-        add(jlTitel, BorderLayout.NORTH);
+        add(top, BorderLayout.NORTH);
         add(center, BorderLayout.CENTER);
         center.add(jtSongs.getTableHeader(), BorderLayout.NORTH);
         center.add(jtSongs, BorderLayout.CENTER);
