@@ -5,6 +5,11 @@ import src.core.Audio;
 import src.core.Container;
 import src.core.View;
 import src.core.Navbar;
+import src.system.Queries;
+import src.system.User;
+import src.views.musicMenuPanels.MusicMenuPlaylist;
+import src.views.musicMenuPanels.MusicMenuQueue;
+import src.views.musicMenuPanels.MusicMenuSongs;
 
 import javax.swing.*;
 import java.awt.*;
@@ -23,6 +28,9 @@ public class MusicMenuView extends View implements ActionListener {
     private String currentPlayTime, melodyLength;
     private Color customGray = new Color(250, 250, 250);
     private Color customGray2 = new Color(189, 188, 188);
+
+    private int id;
+    private String name;
 
     public MusicMenuView(Container container, String name) {
         super(container, name);
@@ -44,7 +52,7 @@ public class MusicMenuView extends View implements ActionListener {
         jpTop.setBackground(customGray);
         // COMPONENTS
         jbSongs = new MusicMenuButton(this, "Nummers", 16);
-        jbPlaylist = new MusicMenuButton(this, "Afspeellijsten", 16);
+        jbPlaylist = new MusicMenuButton(this, "Afspeellijst nummers", 16);
         jbQueue = new MusicMenuButton(this, "Afspeelwachtrij", 16);
         jbNewPlaylist = new MusicMenuButton(this, "➕ Nieuwe afspeellijst", 16);
         jbNewPlaylist.setBorderPainted(true);
@@ -60,12 +68,10 @@ public class MusicMenuView extends View implements ActionListener {
         jpCenter.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, customGray2));
         jpCenter.setLayout(new BorderLayout());
         // COMPONENTS
-        jpSongs = new MusicMenuSongs();
-        jpPlaylist = new MusicMenuPlaylist();
-        jpQueue = new MusicMenuQueue();
-        jpNewPlaylist = new MusicMenuNewPlaylist();
-        /* Add default visible panel */
-        changeMusicPanel(jpSongs);
+//        jpSongs = new MusicMenuSongs();
+//        jpPlaylist = new MusicMenuPlaylist();
+//        jpQueue = new MusicMenuQueue();
+//        jpNewPlaylist = new MusicMenuNewPlaylist();
 
 
         // Bottom bar panel
@@ -94,7 +100,6 @@ public class MusicMenuView extends View implements ActionListener {
         jpMiddleBottom.setBackground(customGray);
         jpMiddleBottom.setLayout(new BorderLayout());
         jpMiddleBottom.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 20));
-        // COMPONENTS
         jsPlayTime = new JSlider(JSlider.HORIZONTAL, 0, 168, 51);
         jsPlayTime.setBackground(customGray);
         jsPlayTime.setMinorTickSpacing(1);
@@ -152,25 +157,40 @@ public class MusicMenuView extends View implements ActionListener {
         if (e.getSource() == jbPrevious) {
         }
         if (e.getSource() == jbPlay) {
-            if (jbPlay.getText().equals("⏸")) {
-                jbPlay.setText("⏵");
-            } else {
+            if (!MusicPlayerView.isPlayMusic()) {
                 jbPlay.setText("⏸");
+                MusicPlayerView.setPlayMusic(true);
+            } else {
+                jbPlay.setText("⏵");
+                MusicPlayerView.setPlayMusic(false);
             }
         }
         if (e.getSource() == jbNext) {
 
         }
         if (e.getSource() == jbSongs) {
+            jpSongs = new MusicMenuSongs();
             changeMusicPanel(jpSongs);
         }
         if (e.getSource() == jbPlaylist) {
+            ArrayList<ArrayList<String>> playlistData = Queries.getPlaylistData(User.getUsername());
+            System.out.println(playlistData);
+            try {
+                id = Integer.parseInt(playlistData.get(0).get(0));
+                name = playlistData.get(0).get(1);
+            } catch (IndexOutOfBoundsException ie){
+                id = 0;
+                name = "Geen playlist beschikbaar";
+            }
+            jpPlaylist = new MusicMenuPlaylist(id, name);
             changeMusicPanel(jpPlaylist);
         }
         if (e.getSource() == jbQueue) {
+            jpQueue = new MusicMenuQueue();
             changeMusicPanel(jpQueue);
         }
         if (e.getSource() == jbNewPlaylist) {
+            jpNewPlaylist = new MusicMenuNewPlaylist();
             changeMusicPanel(jpNewPlaylist);
             ((MusicMenuNewPlaylist)jpNewPlaylist).updateGUI();
         }
@@ -179,6 +199,14 @@ public class MusicMenuView extends View implements ActionListener {
 
     @Override
     public void onFocus(ArrayList<String> parameters) {
+            /* Add default visible panel */
+            jpSongs = new MusicMenuSongs();
+            changeMusicPanel(jpSongs);
+            if (MusicPlayerView.isPlayMusic()) {
+                jbPlay.setText("⏸");
+            } else {
+                jbPlay.setText("⏵");
+            }
         // DO SOMETHING IF A PARAMETER IS GIVEN
         if (parameters.size()>0) {
             if (parameters.get(0).equals("show jpNewPlaylist")) {

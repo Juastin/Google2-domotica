@@ -6,13 +6,14 @@ import src.core.Audio;
 import src.core.Container;
 import src.core.View;
 import src.core.Navbar;
+import src.system.Queries;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.lang.reflect.Array;
 import java.io.IOException;
 import java.util.ArrayList;
-
 
 public class MusicPlayerView extends View implements ActionListener {
     private JPanel jpTop, jpCenter, jpBottom, jpLeft, jpMiddle, jpRight;
@@ -23,6 +24,11 @@ public class MusicPlayerView extends View implements ActionListener {
     private static boolean playing=false;
     private Songs song = new Songs();
     private PlayMusic music = new PlayMusic();
+
+    private static int currentSong;
+    private static boolean playMusic = false;
+
+    private static MusicUpdate musicUpdate = new MusicUpdate();
 
     public MusicPlayerView(Container container, String name) {
         super(container, name);
@@ -42,7 +48,7 @@ public class MusicPlayerView extends View implements ActionListener {
         jpTop.setPreferredSize(new Dimension(jpTop.getWidth(), 400));
         //COMPONENTS
         /* Top components */
-        jlTitle = new JLabel("<html><div style='text-align:center;'><p style='margin: 0; font-size: 4em'>♫</p><p style='margin: 0;font-size: 1.5em'>Titel melodie</p></div></html>", JLabel.CENTER);
+        jlTitle = new JLabel("<html><div style='text-align:center;'><p style='margin: 0; font-size: 4em'>♫</p><p style='margin: 0;font-size: 1.5em'>"+ musicUpdate.getCurrentSongName() +"</p></div></html>", JLabel.CENTER);
         /* Add */
         jpTop.add(jlTitle, BorderLayout.CENTER);
 
@@ -52,7 +58,7 @@ public class MusicPlayerView extends View implements ActionListener {
         jpCenter.setLayout(new BorderLayout());
         jpCenter.setPreferredSize(new Dimension(jpCenter.getWidth(), 70));
         // COMPONENTS
-        jsPlayTime = new JSlider(JSlider.HORIZONTAL, 0, 168, 51);
+        jsPlayTime = new JSlider(JSlider.HORIZONTAL, musicUpdate.getCurrentSongDuration());
         jsPlayTime.setMinorTickSpacing(1);
         jsPlayTime.setSnapToTicks(true);
 //        jsPlayTime.setEnabled(false);
@@ -109,25 +115,53 @@ public class MusicPlayerView extends View implements ActionListener {
             this.changeFocus("MusicMenuView");
         }
         if (e.getSource() == jbPrevious) {
+            musicUpdate.previousSong();
         }
         if (e.getSource() == jbPlay) {
-            if (jbPlay.getText().equals("⏸")) {
-                jbPlay.setText("⏵");
-            } else {
+            if (!musicUpdate.isPlaying()) {
                 jbPlay.setText("⏸");
+                musicUpdate.setPlaying(true);
+            } else {
+                jbPlay.setText("⏵");
+                musicUpdate.setPlaying(false);
             }
 
             playing = !playing;
         }
 
         if (e.getSource() == jbNext) {
-
+            musicUpdate.nextSong();
         }
+        updateSongInfoView();
         Audio.play("click.wav");
     }
 
-    @Override
-    public void onFocus(ArrayList<String> parameters) {}
+    public void updateSongInfoView() {
+        jlTitle.setText("<html><div style='text-align:center;'><p style='margin: 0; font-size: 4em'>♫</p><p style='margin: 0;font-size: 1.5em'>"+ musicUpdate.getCurrentSongName() +"</p></div></html>");
+        jsPlayTime.setMaximum(musicUpdate.getCurrentSongDuration());
+        melodyLength = String.format("%02d:%02d", (int) Math.floor(jsPlayTime.getMaximum() / 60), jsPlayTime.getMaximum() - (int) Math.floor(jsPlayTime.getMaximum() / 60) * 60);
+        jlMelodyLength.setText(melodyLength);
+        jsPlayTime.setValue(musicUpdate.getCurrentSongTime());
+    }
+
+    public static boolean isPlayMusic() {
+        return playMusic;
+    }
+
+    public static void setPlayMusic(boolean playMusic) {
+        MusicPlayerView.playMusic = playMusic;
+    }
+
+    public void onFocus(ArrayList<String> parameters) {
+        jsPlayTime.setValue(musicUpdate.getCurrentSongTime());
+        if (!musicUpdate.isPlaying()) {
+            jbPlay.setText("⏸");
+            musicUpdate.setPlaying(true);
+        } else {
+            jbPlay.setText("⏵");
+            musicUpdate.setPlaying(false);
+        }
+    }
 
     @Override
     public void onShadow() {}
