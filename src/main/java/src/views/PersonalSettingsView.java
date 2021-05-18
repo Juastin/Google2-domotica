@@ -1,5 +1,6 @@
 package src.views;
 import src.components.CButton;
+import src.components.MetalSlider;
 import src.core.Audio;
 import src.core.Container;
 import src.core.Navbar;
@@ -14,6 +15,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Hashtable;
+import java.util.ArrayList;
 
 public class PersonalSettingsView extends View implements ActionListener, ChangeListener {
 
@@ -30,7 +32,6 @@ public class PersonalSettingsView extends View implements ActionListener, Change
 
         // NAVBAR
         Navbar navbar = new Navbar(this);
-        add(navbar, BorderLayout.EAST);
 
         // MAIN
         JPanel main = new JPanel();
@@ -39,57 +40,61 @@ public class PersonalSettingsView extends View implements ActionListener, Change
         // TOP
         JPanel top = new JPanel();
         top.setLayout(new BorderLayout());
+        top.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 0));
         jlTitel = new JLabel("Persoonlijke instellingen");
         jlTitel.setFont(jlTitel.getFont().deriveFont(20.0f));
+
         top.add(jlTitel, BorderLayout.WEST);
 
         // CENTER
         JPanel center = new JPanel();
-        center.setLayout(new GridLayout(2, 1));
+        JPanel formGrid = new JPanel();
+        GridLayout formGridLayout = new GridLayout(2, 1);
+        formGrid.setLayout(formGridLayout);
 
         // LightIntensity
         JPanel lightIntensityPanel = new JPanel();
+        lightIntensityPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+        lightIntensityPanel.setPreferredSize(new Dimension(480, 100));
         jlLightIcon = new JLabel("\uD83D\uDCA1");
-        jlLightIntensity = new JLabel(" Licht aan vanaf lichtintensiteit: ");
-        jlLightIntensity.setFont(new Font(jlLightIntensity.getFont().getFamily(), Font.PLAIN, 13));
         jlLightIcon.setFont(new Font(jlLightIcon.getFont().getFamily(), Font.PLAIN, 30));
-
+        lightIntensityPanel.add(jlLightIcon);
+        jlLightIntensity = new JLabel(" Licht aan vanaf lichtintensiteit:");
+        jlLightIntensity.setFont(new Font(jlLightIntensity.getFont().getFamily(), Font.PLAIN, 13));
+        lightIntensityPanel.add(jlLightIntensity);
         jsLightIntensity = new JSlider(JSlider.HORIZONTAL, 0, 100, 0);
+        jsLightIntensity.setUI(new MetalSlider());
         jsLightIntensity.setMajorTickSpacing(25);
         jsLightIntensity.setMinorTickSpacing(10);
-        jsLightIntensity.setPaintTicks(true);
         jsLightIntensity.setPaintLabels(true);
-
-        Hashtable position = new Hashtable();
+        Hashtable<Integer, JLabel> position = new Hashtable<>();
         position.put(0, new JLabel("0"));
         position.put(50, new JLabel("50"));
         position.put(100, new JLabel("100"));
         jsLightIntensity.setLabelTable(position);
         jsLightIntensity.addChangeListener(this);
-
-        jlCurrenLightValue = new JLabel("");
-
-        lightIntensityPanel.add(jlLightIcon);
-        lightIntensityPanel.add(jlLightIntensity);
         lightIntensityPanel.add(jsLightIntensity);
+        jlCurrenLightValue = new JLabel("");
         lightIntensityPanel.add(jlCurrenLightValue);
 
         // Heating
         JPanel heatingPanel = new JPanel();
+        heatingPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+        heatingPanel.setPreferredSize(new Dimension(480, 100));
         jlHeatingIcon = new JLabel("♨");
+        jlHeatingIcon.setFont(new Font(jlHeatingIcon.getFont().getFamily(), Font.PLAIN, 30));
+        heatingPanel.add(jlHeatingIcon);
         jlHeating = new JLabel(" Verwarming aan bij: ");
         jlHeating.setFont(new Font(jlHeating.getFont().getFamily(), Font.PLAIN, 13));
-        jlHeatingIcon.setFont(new Font(jlHeatingIcon.getFont().getFamily(), Font.PLAIN, 30));
+        heatingPanel.add(jlHeating);
         smHeatingValue = new SpinnerNumberModel(0, 0, 30, 1);
         spinner = new JSpinner(smHeatingValue);
-
-        heatingPanel.add(jlHeatingIcon);
-        heatingPanel.add(jlHeating);
         heatingPanel.add(spinner);
         heatingPanel.add(new JLabel(" °C"));
 
-        center.add(lightIntensityPanel);
-        center.add(heatingPanel);
+        formGrid.add(lightIntensityPanel, BorderLayout.WEST);
+        formGrid.add(heatingPanel, BorderLayout.WEST);
+        center.add(formGrid, BorderLayout.WEST);
 
         // BOTTOM
         JPanel bottom = new JPanel();
@@ -97,17 +102,17 @@ public class PersonalSettingsView extends View implements ActionListener, Change
         bottom.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
 
         JPanel leftBottomPanel = new JPanel();
-        jbDeleteProfile = new CButton(this, "Verwijderen profiel", Color.black, Color.red);
+        jbDeleteProfile = new CButton(this, "Verwijder profiel", Color.black, Color.red);
         leftBottomPanel.add(jbDeleteProfile);
         jbStandardSettings = new CButton(this, "Standaard instellingen", Color.black, Color.white);
         leftBottomPanel.add(jbStandardSettings);
-
 
         JPanel rightBottomPanel = new JPanel();
         jbCancel = new CButton(this, "Annuleren", Color.black, Color.white);
         rightBottomPanel.add(jbCancel);
         jbSave = new CButton(this, "Opslaan", Color.black, Color.white);
         rightBottomPanel.add(jbSave);
+
         bottom.add(leftBottomPanel, BorderLayout.WEST);
         bottom.add(rightBottomPanel, BorderLayout.EAST);
 
@@ -115,6 +120,7 @@ public class PersonalSettingsView extends View implements ActionListener, Change
         main.add(center, BorderLayout.WEST);
         main.add(bottom, BorderLayout.SOUTH);
         add(main);
+        add(navbar, BorderLayout.EAST);
     }
 
     @Override
@@ -134,36 +140,39 @@ public class PersonalSettingsView extends View implements ActionListener, Change
                 boolean result = Queries.updatePersonalSettings(light, heating, User.getUsername());
                 if (result) {
                     User.setPersonalSettings(light, heating);
-                    JOptionPane.showMessageDialog(this, "Instelling geüpdated");
+                    JOptionPane.showMessageDialog(this, "Instellingen geüpdated");
                 }
             }
         } else if (e.getSource() == jbStandardSettings) {
             int choice = JOptionPane.showConfirmDialog(this, confirmationText, "Bevestiging naar standaardinstellingen", JOptionPane.YES_NO_OPTION);
             if(choice == JOptionPane.YES_OPTION){
-                boolean result = Queries.updatePersonalSettings(25 ,16, User.getUsername());
+                boolean result = Queries.updatePersonalSettings(40,17, User.getUsername());
                 if (result) {
                     User.setStandardPersonalSettings();
-                    JOptionPane.showMessageDialog(this, "Instelling naar Standaardinstellingen gezet");
+                    JOptionPane.showMessageDialog(this, "Instellingen teruggezet naar standaardinstellingen");
                 }
             }
-        }else if (e.getSource() == jbDeleteProfile) {
+        } else if (e.getSource() == jbDeleteProfile) {
             int choice = JOptionPane.showConfirmDialog(this, confirmationText, "Bevestiging verwijderen profiel", JOptionPane.YES_NO_OPTION);
             if(choice == JOptionPane.YES_OPTION){
                 boolean result = Queries.deleteProfile(User.getUsername());
                 if (result) {
+                    String user = User.getUsername();
+                    User.logOut();
                     changeFocus("ProfileView");
-                    JOptionPane.showMessageDialog(this, "profiel verwijderd");
+                    JOptionPane.showMessageDialog(this, "Profiel \"" + user + "\" is verwijderd");
                 }
             }
         }
         if (change) {
-            onFocus();
+            onFocus(new ArrayList<String>());
         }
         Audio.play("click.wav");
     }
 
     @Override
-    public void onFocus() {
+    public void onFocus(ArrayList<String> parameters) {
+        User.refreshPersonalSettings();
         jsLightIntensity.setValue(User.getLight());
         smHeatingValue.setValue(User.getTemperature());
     }

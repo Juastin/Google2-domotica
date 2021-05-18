@@ -16,7 +16,7 @@ Returns data in the following format:
 */
 
 public class Database {
-    static String host = "jdbc:mysql://40.113.153.48/DomoticaSysteem";
+    static String host = "jdbc:mysql://40.113.153.48/DomoticaSysteem?autoReconnect=true";
     static String username = "newRemote";
     static String password = "P@ssw0rd";
 	

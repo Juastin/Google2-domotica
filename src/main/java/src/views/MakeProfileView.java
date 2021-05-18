@@ -10,6 +10,7 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.util.Objects;
+import java.util.ArrayList;
 
 public class MakeProfileView extends View implements ActionListener {
     private JButton jbBack, jbSave;
@@ -19,86 +20,76 @@ public class MakeProfileView extends View implements ActionListener {
 
     public MakeProfileView(Container container, String name) {
         super(container, name);
+        setLayout(new BorderLayout());
         setVisible(false);
 
         // TOP
         JPanel top = new JPanel();
-        top.setPreferredSize(new Dimension(1000,100));
-        top.setBorder(BorderFactory.createEmptyBorder(40, 0, 10, 0));
-
-        welcomeLabel = new JLabel("Maak hier een profiel aan:");
+        top.setBorder(BorderFactory.createEmptyBorder(25, 0, 10, 0));
+        welcomeLabel = new JLabel("Profiel toevoegen", JLabel.CENTER);
         welcomeLabel.setFont(welcomeLabel.getFont().deriveFont(24.0f));
+        welcomeLabel.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.BLACK));
+        welcomeLabel.setPreferredSize(new Dimension(222, 50));
         top.add(welcomeLabel,BorderLayout.NORTH);
 
         // CENTER
-        jtUsername = new JTextField(20);
-        jtFirstname = new JTextField(20);
-        jtLastname = new JTextField(20);
-        jtPassword = new JPasswordField(20);
-
-        JPanel backLabelPanel = new JPanel();
-        jbBack = new JButton("< Terug");
-        jbBack.addActionListener(this);
-        jbBack.setOpaque(false);
-        jbBack.setContentAreaFilled(false);
-        jbBack.setBorderPainted(false);
-        jbBack.setFont(jbBack.getFont().deriveFont(24.0f));
-        backLabelPanel.add(jbBack, BorderLayout.SOUTH);
-
-        JPanel savePanel = new JPanel();
-        jbSave = new CButton(this, "Profiel aanmaken", Color.black, Color.white);
-        jbSave.setFont(jbBack.getFont().deriveFont(20.0f));
-
+        JPanel center = new JPanel();
+        JPanel centerInner = new JPanel();
+        centerInner.setBorder(BorderFactory.createEmptyBorder(20, 0, 0, 0));
+        centerInner.setPreferredSize(new Dimension(400, 140));
+        GridLayout customGrid = new GridLayout(4, 2);
+        customGrid.setVgap(10);
+        centerInner.setLayout(customGrid);
+        center.add(centerInner);
 
         jlUsernameLabel = new JLabel("Gebruikersnaam");
+        centerInner.add(jlUsernameLabel);
+        jtUsername = new JTextField(20);
+        centerInner.add(jtUsername);
         jlFirstnameLabel = new JLabel("Voornaam");
+        centerInner.add(jlFirstnameLabel);
+        jtFirstname = new JTextField(20);
+        centerInner.add(jtFirstname);
         jlLastnameLabel = new JLabel("Achternaam");
+        centerInner.add(jlLastnameLabel);
+        jtLastname = new JTextField(20);
+        centerInner.add(jtLastname);
         jlPasswordLabel = new JLabel("Wachtwoord");
+        centerInner.add(jlPasswordLabel);
+        jtPassword = new JPasswordField(20);
+        centerInner.add(jtPassword);
 
         jlUsernameLabel.setFont(jlUsernameLabel.getFont().deriveFont(15.0f));
         jlFirstnameLabel.setFont(jlUsernameLabel.getFont().deriveFont(15.0f));
         jlLastnameLabel.setFont(jlUsernameLabel.getFont().deriveFont(15.0f));
         jlPasswordLabel.setFont(jlPasswordLabel.getFont().deriveFont(15.0f));
 
-        // Panels to divide labels and textfields.
-
-        JPanel username = new JPanel();
-        username.setPreferredSize(new Dimension(1000,40));
-        username.add(jlUsernameLabel);
-        username.add(jtUsername);
-
-        JPanel firstname = new JPanel();
-        firstname.setPreferredSize(new Dimension(1000,40));
-        firstname.add(jlFirstnameLabel);
-        firstname.add(jtFirstname);
-
-        JPanel lastname = new JPanel();
-        lastname.setPreferredSize(new Dimension(1000,40));
-        lastname.add(jlLastnameLabel);
-        lastname.add(jtLastname);
-
-        JPanel password = new JPanel();
-        password.setPreferredSize(new Dimension(1000,50));
-        password.add(jlPasswordLabel);
-        password.add(jtPassword);
-
         JPanel save = new JPanel();
-        save.setPreferredSize(new Dimension(1000,100));
-        save.add(jbSave);
+        save.setBorder(BorderFactory.createEmptyBorder(20, 0, 0, 0));
+        save.setPreferredSize(new Dimension(1000, 140));
+        JPanel saveInner = new JPanel();
+        saveInner.setLayout(new GridLayout(1,1));
+        saveInner.setPreferredSize(new Dimension(222, 32));
+        jbSave = new CButton(this, "Profiel aanmaken", Color.black, Color.white);
+        jbSave.setFont(new Font(jbSave.getFont().getFamily(), Font.PLAIN, jbSave.getFont().getSize()));
+        saveInner.add(jbSave);
+        save.add(saveInner);
+        center.add(save);
 
-        // BOTTOM
+        //BOTTOM
         JPanel bottom = new JPanel();
-        bottom.setPreferredSize(new Dimension(1000,100));
-        bottom.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
-        bottom.add(backLabelPanel, BorderLayout.SOUTH);
+        bottom.setBorder(BorderFactory.createEmptyBorder(0, 0, 40, 0));
 
+        jbBack = new JButton("< Terug");
+        jbBack.setFont(new Font(jbBack.getFont().getFamily(), Font.PLAIN, 20));
+        jbBack.addActionListener(this);
+        jbBack.setOpaque(false);
+        jbBack.setContentAreaFilled(false);
+        jbBack.setBorderPainted(false);
+        bottom.add(jbBack, BorderLayout.SOUTH);
 
         add(top,BorderLayout.NORTH);
-        add(username,BorderLayout.CENTER);
-        add(firstname,BorderLayout.CENTER);
-        add(lastname,BorderLayout.CENTER);
-        add(password,BorderLayout.CENTER);
-        add(save,BorderLayout.CENTER);
+        add(center,BorderLayout.CENTER);
         add(bottom,BorderLayout.SOUTH);
     }
 
@@ -129,7 +120,7 @@ public class MakeProfileView extends View implements ActionListener {
     }
 
     @Override
-    public void onFocus() {}
+    public void onFocus(ArrayList<String> parameters) {}
 
     @Override
     public void onShadow() {}

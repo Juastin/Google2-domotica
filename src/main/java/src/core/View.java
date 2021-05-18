@@ -2,6 +2,7 @@ package src.core;
 
 import javax.swing.JPanel;
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
 
 public abstract class View extends JPanel {
     private Container parent;
@@ -25,7 +26,11 @@ public abstract class View extends JPanel {
     * @param  name  String name of the view to switch to.
     */
     public void changeFocus(String name) {
-        parent.switchView(this, name);
+        parent.switchView(this, name, new ArrayList<String>());
+    }
+
+    public void changeFocus(String name, ArrayList<String> parameters) {
+        parent.switchView(this, name, parameters);
     }
 
     public abstract void actionPerformed(ActionEvent e);
@@ -33,7 +38,7 @@ public abstract class View extends JPanel {
     /**
     * Event that is triggered upon changing to this view. Similar to the HTML onload event.
     */
-    public abstract void onFocus();
+    public abstract void onFocus(ArrayList<String> parameters);
 
     /**
     * Event that is triggered upon leaving this view. Similar to the HTML onload event.

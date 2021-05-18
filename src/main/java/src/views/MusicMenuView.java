@@ -7,7 +7,6 @@ import src.core.View;
 import src.core.Navbar;
 import src.system.Queries;
 import src.system.User;
-import src.views.musicMenuPanels.MusicMenuNewPlaylist;
 import src.views.musicMenuPanels.MusicMenuPlaylist;
 import src.views.musicMenuPanels.MusicMenuQueue;
 import src.views.musicMenuPanels.MusicMenuSongs;
@@ -121,8 +120,7 @@ public class MusicMenuView extends View implements ActionListener {
         jpRight = new JPanel();
         jpRight.setBackground(customGray);
         jpRight.setLayout(new FlowLayout(FlowLayout.RIGHT));
-        jpRight.setComponentOrientation(
-                ComponentOrientation.LEFT_TO_RIGHT);;
+        jpRight.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
         jpRight.setBorder(BorderFactory.createEmptyBorder(15, 0, 0, 0));
         jbList = new MusicButton(this, "⋮☰", 30);
 
@@ -194,19 +192,26 @@ public class MusicMenuView extends View implements ActionListener {
         if (e.getSource() == jbNewPlaylist) {
             jpNewPlaylist = new MusicMenuNewPlaylist();
             changeMusicPanel(jpNewPlaylist);
+            ((MusicMenuNewPlaylist)jpNewPlaylist).updateGUI();
         }
         Audio.play("click.wav");
     }
 
     @Override
-    public void onFocus() {
-        /* Add default visible panel */
-        jpSongs = new MusicMenuSongs();
-        changeMusicPanel(jpSongs);
-        if (MusicPlayerView.isPlayMusic()) {
-            jbPlay.setText("⏸");
-        } else {
-            jbPlay.setText("⏵");
+    public void onFocus(ArrayList<String> parameters) {
+            /* Add default visible panel */
+            jpSongs = new MusicMenuSongs();
+            changeMusicPanel(jpSongs);
+            if (MusicPlayerView.isPlayMusic()) {
+                jbPlay.setText("⏸");
+            } else {
+                jbPlay.setText("⏵");
+            }
+        // DO SOMETHING IF A PARAMETER IS GIVEN
+        if (parameters.size()>0) {
+            if (parameters.get(0).equals("show jpNewPlaylist")) {
+                changeMusicPanel(jpNewPlaylist);
+            }
         }
     }
 

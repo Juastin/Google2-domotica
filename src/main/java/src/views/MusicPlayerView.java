@@ -1,19 +1,19 @@
 package src.views;
-import src.components.CButton;
 import src.components.MusicButton;
+import src.components.PlayMusic;
+import src.components.Songs;
 import src.core.Audio;
 import src.core.Container;
 import src.core.View;
 import src.core.Navbar;
 import src.system.Queries;
-
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.lang.reflect.Array;
+import java.io.IOException;
+import java.util.ArrayList;
 
 public class MusicPlayerView extends View implements ActionListener {
     private JPanel jpTop, jpCenter, jpBottom, jpLeft, jpMiddle, jpRight;
@@ -21,6 +21,9 @@ public class MusicPlayerView extends View implements ActionListener {
     private JSlider jsPlayTime;
     private JLabel jlTitle, jlCurrentPlayTime, jlMelodyLength;
     private String currentPlayTime, melodyLength;
+    private static boolean playing=false;
+    private Songs song = new Songs();
+    private PlayMusic music = new PlayMusic();
 
     private static int currentSong;
     private static boolean playMusic = false;
@@ -122,7 +125,10 @@ public class MusicPlayerView extends View implements ActionListener {
                 jbPlay.setText("⏵");
                 musicUpdate.setPlaying(false);
             }
+
+            playing = !playing;
         }
+
         if (e.getSource() == jbNext) {
             musicUpdate.nextSong();
         }
@@ -146,8 +152,7 @@ public class MusicPlayerView extends View implements ActionListener {
         MusicPlayerView.playMusic = playMusic;
     }
 
-    @Override
-    public void onFocus() {
+    public void onFocus(ArrayList<String> parameters) {
         jsPlayTime.setValue(musicUpdate.getCurrentSongTime());
         if (!musicUpdate.isPlaying()) {
             jbPlay.setText("⏸");
@@ -162,6 +167,19 @@ public class MusicPlayerView extends View implements ActionListener {
     public void onShadow() {}
 
     @Override
-    public void onTick(long now) {}
-    
+    public void onTick(long now) {
+        if(playing){
+        try {
+            music.sendnotes(song.getNummer1());
+    } catch (InterruptedException | IOException interruptedException) {
+        interruptedException.printStackTrace();
+            }
+        } if(!playing) {
+            try {
+                music.pause();
+            } catch (IOException interruptedException) {
+                interruptedException.printStackTrace();
+            }
+        }
+    }
 }
