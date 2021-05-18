@@ -1,39 +1,44 @@
 package src.core;
 
 import com.fazecast.jSerialComm.SerialPort;
+import com.fazecast.jSerialComm.SerialPortIOException;
 
 import java.io.IOException;
 
 public class Arduino {
-    final static SerialPort comPort = SerialPort.getCommPort("COM3");
+    final static SerialPort comPort = SerialPort.getCommPort("COM5");
     private boolean isportopen=false;
     private int lastvalue=0;
 
     public int getlightvalue() throws IOException {
         try {
             openport();
+            if(isportopen){
             byte[] b = new byte[3];
             int l = comPort.readBytes(b, 3);
             String s = new String(b);
-            return Integer.parseInt(s);
+            return Integer.parseInt(s);}
         }catch (NumberFormatException e){return 0;}
+        return 0;
     }
 
     public void openport(){
         if(!isportopen){
-            comPort.openPort();
+            if(comPort.openPort()){
             System.out.println("Port opened");
-            isportopen=true;
+            isportopen=true;}
         }
     }
 
     public void getoutputstream(char value)throws IOException{
         openport();
-        comPort.getOutputStream().write(value);
+        if(isportopen){
+        comPort.getOutputStream().write(value);}
     }
 
     public void getoutputstream(Integer value) throws IOException {
         openport();
+        if(isportopen){
         String digit = ""+value;
         if(value>999){
             comPort.getOutputStream().write(digit.charAt(0));
@@ -49,5 +54,5 @@ public class Arduino {
         else {comPort.getOutputStream().write(value);}
         System.out.println(value);
         comPort.getOutputStream().write('X');
-    }
+    }}
 }
