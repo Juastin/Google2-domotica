@@ -7,6 +7,7 @@ import src.core.View;
 import src.core.Navbar;
 import src.system.Queries;
 import src.system.User;
+import src.views.musicMenuPanels.MusicMenuNewPlaylist;
 import src.views.musicMenuPanels.MusicMenuPlaylist;
 import src.views.musicMenuPanels.MusicMenuQueue;
 import src.views.musicMenuPanels.MusicMenuSongs;
