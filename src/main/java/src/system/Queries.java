@@ -144,7 +144,7 @@ public class Queries {
 
     public static ArrayList<ArrayList<String>> getPlaylistData(String username) {
         try {
-            PreparedStatement myStmt = connection.prepareStatement("SELECT * FROM Playlist WHERE PlaylistID = (SELECT PlaylistID FROM PersonalSettings WHERE ProfileID = (SELECT ProfileID FROM Profile WHERE PersonID = (Select PersonID from Person WHERE username = ?)))");
+            PreparedStatement myStmt = connection.prepareStatement("SELECT * FROM Playlist WHERE InstellingenID = (SELECT InstellingenID FROM PersonalSettings WHERE ProfileID = (SELECT ProfileID FROM Profile WHERE PersonID = (Select PersonID from Person WHERE username = ?)))");
             myStmt.setString(1, username);
             ArrayList<ArrayList<String>> results = Database.query(myStmt);
             return results;
