@@ -156,7 +156,7 @@ public class Queries {
 
     public static ArrayList<ArrayList<String>> getPlaylistSongsList(int id) {
         try {
-            PreparedStatement myStmt = connection.prepareStatement("SELECT * FROM Song WHERE PlaylistID = ?");
+            PreparedStatement myStmt = connection.prepareStatement("SELECT * FROM Song s JOIN LinkedSong ls ON s.SongID = ls.SongID WHERE PlaylistID = ?");
             myStmt.setInt(1, id);
             ArrayList<ArrayList<String>> results = Database.query(myStmt);
             return results;
@@ -193,4 +193,6 @@ public class Queries {
             return;
         }
     }
+
+
 }
