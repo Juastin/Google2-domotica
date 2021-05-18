@@ -40,12 +40,12 @@ public class Queries {
 
     public static ArrayList<ArrayList<String>> getPersonalSettings() {
         try {
-            PreparedStatement myStmt = connection.prepareStatement("SELECT ps.InstellingenID, ps.Light, ps.Temperature, ps.PlaylistID FROM PersonalSettings ps JOIN Profile p ON ps.ProfileID= p.ProfileID JOIN Person pr ON p.PersonID = pr.PersonID WHERE pr.Username = ?");
+            PreparedStatement myStmt = connection.prepareStatement("SELECT ps.InstellingenID, ps.Light, ps.Temperature FROM PersonalSettings ps JOIN Profile p ON ps.ProfileID= p.ProfileID JOIN Person pr ON p.PersonID = pr.PersonID WHERE pr.Username = ?");
             myStmt.setString(1, User.getUsername());
             ArrayList<ArrayList<String>> results = Database.query(myStmt);
             Logging.logThis("Retrieving personal settings for user " + User.getUsername());
             
-            /* [[instellingenID, Light, Temperature, PlaylistID]] */
+            /* [[instellingenID, Light, Temperature]] */
             return results;
         } catch (Exception ex) {
             System.out.println(ex);

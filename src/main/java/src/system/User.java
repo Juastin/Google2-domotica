@@ -9,7 +9,7 @@ public class User extends Queries{
     private static String username;
     private static int light;
     private static int temperature;
-    private static int playlistID;
+    private static int settingsID;
 
     private static boolean isportopen=false;
     final static SerialPort comPort = SerialPort.getCommPort("COM3");
@@ -45,17 +45,15 @@ public class User extends Queries{
         ArrayList<String> results = getPersonalSettings().get(0);
         light = Integer.parseInt(results.get(1));
         temperature = Integer.parseInt(results.get(2));
-        try {
-            playlistID = Integer.parseInt(results.get(3));
-        } catch (Exception ex) {}
+        settingsID = Integer.parseInt(results.get(0));
     }
 
-    public static int getPlaylistID() {
-        return playlistID;
+    public static int getSettingsID() {
+        return settingsID;
     }
 
-    public static void setPlaylistID(int playlistID) {
-        User.playlistID = playlistID;
+    public static void setSettingsID(int settingsID) {
+        User.settingsID = settingsID;
     }
 
     public static void setPersonalSettings(int light, int temperature) {
@@ -72,6 +70,6 @@ public class User extends Queries{
         setLoggedIn(false);
         setUsername("");
         setPersonalSettings(0, 0);
-        setPlaylistID(0);
+        setSettingsID(0);
     }
 }

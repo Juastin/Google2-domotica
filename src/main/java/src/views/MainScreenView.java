@@ -149,7 +149,6 @@ public class MainScreenView extends View implements ActionListener {
 
         System.out.println("Light: " + User.getLight());
         System.out.println("Temperature: " + User.getTemperature());
-        System.out.println("PLaylistId: " + User.getPlaylistID());
 
         fetchSensorData();
     }
