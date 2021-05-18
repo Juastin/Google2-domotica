@@ -1,5 +1,4 @@
 package src.views;
-import src.components.CButton;
 import src.components.MusicButton;
 import src.components.MusicMenuButton;
 import src.core.Audio;
@@ -8,10 +7,12 @@ import src.core.View;
 import src.core.Navbar;
 import src.system.Queries;
 import src.system.User;
+import src.views.musicMenuPanels.MusicMenuNewPlaylist;
+import src.views.musicMenuPanels.MusicMenuPlaylist;
+import src.views.musicMenuPanels.MusicMenuQueue;
+import src.views.musicMenuPanels.MusicMenuSongs;
 
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -158,10 +159,12 @@ public class MusicMenuView extends View implements ActionListener {
         if (e.getSource() == jbPrevious) {
         }
         if (e.getSource() == jbPlay) {
-            if (jbPlay.getText().equals("⏸")) {
-                jbPlay.setText("⏵");
-            } else {
+            if (!MusicPlayerView.isPlayMusic()) {
                 jbPlay.setText("⏸");
+                MusicPlayerView.setPlayMusic(true);
+            } else {
+                jbPlay.setText("⏵");
+                MusicPlayerView.setPlayMusic(false);
             }
         }
         if (e.getSource() == jbNext) {
@@ -200,6 +203,11 @@ public class MusicMenuView extends View implements ActionListener {
         /* Add default visible panel */
         jpSongs = new MusicMenuSongs();
         changeMusicPanel(jpSongs);
+        if (MusicPlayerView.isPlayMusic()) {
+            jbPlay.setText("⏸");
+        } else {
+            jbPlay.setText("⏵");
+        }
     }
 
     @Override

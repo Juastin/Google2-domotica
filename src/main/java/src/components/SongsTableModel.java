@@ -32,8 +32,8 @@ public class SongsTableModel extends AbstractTableModel {
         ArrayList<String> song = songs.get(rowIndex);
         switch(columnIndex) {
             case 0: return song.get(0);
-            case 1: return song.get(2);
-            case 2: return song.get(3);
+            case 1: return song.get(1);
+            case 2: return song.get(2);
             default: return null;
         }
     }

@@ -1,4 +1,4 @@
-package src.views;
+package src.views.musicMenuPanels;
 
 import javax.swing.*;
 import java.awt.*;
