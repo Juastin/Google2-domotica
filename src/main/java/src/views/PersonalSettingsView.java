@@ -42,7 +42,8 @@ public class PersonalSettingsView extends View implements ActionListener, Change
         top.setLayout(new BorderLayout());
         top.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 0));
         jlTitel = new JLabel("Persoonlijke instellingen");
-        jlTitel.setFont(jlTitel.getFont().deriveFont(20.0f));
+//        jlTitel.setFont(new Font(jlTitel.getFont().getFamily(), Font.PLAIN, 18));
+        jlTitel.setFont(jlTitel.getFont().deriveFont(24.0f));
 
         top.add(jlTitel, BorderLayout.WEST);
 
@@ -60,7 +61,7 @@ public class PersonalSettingsView extends View implements ActionListener, Change
         jlLightIcon.setFont(new Font(jlLightIcon.getFont().getFamily(), Font.PLAIN, 30));
         lightIntensityPanel.add(jlLightIcon);
         jlLightIntensity = new JLabel(" Licht aan vanaf lichtintensiteit:");
-        jlLightIntensity.setFont(new Font(jlLightIntensity.getFont().getFamily(), Font.PLAIN, 13));
+        jlLightIntensity.setFont(new Font(jlTitel.getFont().getFamily(), Font.PLAIN, 15));
         lightIntensityPanel.add(jlLightIntensity);
         jsLightIntensity = new JSlider(JSlider.HORIZONTAL, 0, 100, 0);
         jsLightIntensity.setUI(new MetalSlider());
@@ -85,7 +86,7 @@ public class PersonalSettingsView extends View implements ActionListener, Change
         jlHeatingIcon.setFont(new Font(jlHeatingIcon.getFont().getFamily(), Font.PLAIN, 30));
         heatingPanel.add(jlHeatingIcon);
         jlHeating = new JLabel(" Verwarming aan bij: ");
-        jlHeating.setFont(new Font(jlHeating.getFont().getFamily(), Font.PLAIN, 13));
+        jlHeating.setFont(new Font(jlTitel.getFont().getFamily(), Font.PLAIN, 15));
         heatingPanel.add(jlHeating);
         smHeatingValue = new SpinnerNumberModel(0, 0, 30, 1);
         spinner = new JSpinner(smHeatingValue);
