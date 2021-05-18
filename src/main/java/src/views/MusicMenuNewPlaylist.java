@@ -190,23 +190,19 @@ public class MusicMenuNewPlaylist extends JPanel implements ActionListener {
         }
 
         // CHECK IF PRESSED BUTTON IS A PLAYLIST SONG
-        i = 0;
         for (CButton button: inPlaylist) {
             if (source==button) {
                 playlistSongs.remove(i);
                 break;
             }
-            i++;
         }
 
         // CHECK IF PRESSED BUTTON IS A SONG TO BE ADDED
-        i = 0;
         for (CButton button: inSongList) {
             if (source==button) {
                 playlistSongs.add(dbSongs.get(i));
                 break;
             }
-            i++;
         }
 
         updateGUI();
