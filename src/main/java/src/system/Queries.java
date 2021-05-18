@@ -2,6 +2,7 @@ package src.system;
 import com.fazecast.jSerialComm.SerialPort;
 import src.core.*;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.util.ArrayList;
@@ -9,9 +10,7 @@ import java.util.ArrayList;
 public class Queries {
     static Connection connection = Database.maakVerbinding();
     static Arduino ar = new Arduino();
-    private static boolean isportopen=false;
-    final static SerialPort comPort = SerialPort.getCommPort("COM3");
-    static int laatstelichtwaarde=0;
+    private static int lightvalue = 0;
 
 
 
@@ -42,7 +41,7 @@ public class Queries {
 
     public static ArrayList<ArrayList<String>> getPersonalSettings() {
         try {
-            PreparedStatement myStmt = connection.prepareStatement("SELECT ps.InstellingenID, ps.Light, ps.Temperature, ps.PlaylistID FROM PersonalSettings ps JOIN Profile p ON ps.ProfileID= p.ProfileID JOIN Person pr ON p.PersonID = pr.PersonID WHERE pr.Username = ?");
+            PreparedStatement myStmt = connection.prepareStatement("SELECT ps.InstellingenID, ps.Light, ps.Temperature FROM PersonalSettings ps JOIN Profile p ON ps.ProfileID= p.ProfileID JOIN Person pr ON p.PersonID = pr.PersonID WHERE pr.Username = ?");
             myStmt.setString(1, User.getUsername());
             ArrayList<ArrayList<String>> results = Database.query(myStmt);
             Logging.logThis("Retrieving personal settings for user " + User.getUsername());
@@ -106,19 +105,30 @@ public class Queries {
     }
 
     public static ArrayList<ArrayList<String>> getSensorData() {
+        //Sends command to arduino to send light-value
+        try {
+            ar.getoutputstream('W');
+        } catch (IOException exception) {
+            exception.printStackTrace();
+        }
+
         try {
             // RETRIEVE LAST SENSORDATA ROW
             PreparedStatement myStmt1 = connection.prepareStatement("SELECT DataCollectionID, Temperature, AirPressure, Humidity FROM DataCollection ORDER BY DataCollectionID DESC LIMIT 1");
             ArrayList<ArrayList<String>> results = Database.query(myStmt1);
-
             // RETRIEVE LIGHT VALUE
-            String licht = ar.getlichtwaarde()+"";
-            results.get(0).add(licht);
+            lightvalue = ar.getlightvalue();
+            results.get(0).add(lightvalue+"");
+
+                // UPDATE LIGHT FIELD WITH SPECIFIC ID, WHERE LIGHT IS NULL
+                PreparedStatement myStmt2 = connection.prepareStatement("UPDATE DataCollection SET Light = ? WHERE DataCollectionID = ? AND Light IS NULL");
+                myStmt2.setInt(1, Integer.parseInt(lightvalue+""));
+                myStmt2.setInt(2, Integer.parseInt(results.get(0).get(0)));
+                Database.query(myStmt2);
             return results;
         } catch (Exception ex) {
             System.out.println(ex);
             return null;
         }
     }
-
 }

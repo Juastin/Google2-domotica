@@ -21,7 +21,7 @@ public class PlayMusic {
 
 
 
-    public void Speelaf(Integer[] melody) throws InterruptedException, IOException {
+    public void sendnotes(Integer[] melody) throws InterruptedException, IOException {
         int notes = melody.length;
 
         if(thisNote < notes * 2&&System.currentTimeMillis()-vorigetijd>noteDuration) {

@@ -7,52 +7,47 @@ import java.io.IOException;
 public class Arduino {
     final static SerialPort comPort = SerialPort.getCommPort("COM3");
     private boolean isportopen=false;
-    private int lichtwaarde= 0;
+    private int lastvalue=0;
 
-    public int getlichtwaarde() throws IOException {
-        if(!isportopen){
-            comPort.openPort();
-            System.out.println("Port opened");
-            isportopen=true;
-        }
-        getoutputstream('W');
-        byte[] b = new byte[5];
-        int l = comPort.readBytes(b, 5);
-        String s = new String(b);
-        try{lichtwaarde = Integer.parseInt(s);}catch (NumberFormatException e){return lichtwaarde;}
-        System.out.println("test");
-        return lichtwaarde;
+    public int getlightvalue() throws IOException {
+        try {
+            openport();
+            byte[] b = new byte[3];
+            int l = comPort.readBytes(b, 3);
+            String s = new String(b);
+            return Integer.parseInt(s);
+        }catch (NumberFormatException e){return 0;}
     }
 
-    public void getoutputstream(char waarde)throws IOException{
+    public void openport(){
         if(!isportopen){
             comPort.openPort();
             System.out.println("Port opened");
             isportopen=true;
         }
-        comPort.getOutputStream().write(waarde);
     }
 
-    public void getoutputstream(Integer waarde) throws IOException {
-        if(!isportopen){
-            comPort.openPort();
-            System.out.println("Port opened");
-            isportopen=true;
+    public void getoutputstream(char value)throws IOException{
+        openport();
+        comPort.getOutputStream().write(value);
+    }
+
+    public void getoutputstream(Integer value) throws IOException {
+        openport();
+        String digit = ""+value;
+        if(value>999){
+            comPort.getOutputStream().write(digit.charAt(0));
+            comPort.getOutputStream().write(digit.charAt(1));
+            comPort.getOutputStream().write(digit.charAt(2));
+            comPort.getOutputStream().write(digit.charAt(3));
         }
-        String cijfer = ""+waarde;
-        if(waarde>999){
-            comPort.getOutputStream().write(cijfer.charAt(0));
-            comPort.getOutputStream().write(cijfer.charAt(1));
-            comPort.getOutputStream().write(cijfer.charAt(2));
-            comPort.getOutputStream().write(cijfer.charAt(3));
+        else if(value>254){
+            comPort.getOutputStream().write(digit.charAt(0));
+            comPort.getOutputStream().write(digit.charAt(1));
+            comPort.getOutputStream().write(digit.charAt(2));
         }
-        else if(waarde>254){
-            comPort.getOutputStream().write(cijfer.charAt(0));
-            comPort.getOutputStream().write(cijfer.charAt(1));
-            comPort.getOutputStream().write(cijfer.charAt(2));
-        }
-        else {comPort.getOutputStream().write(waarde);}
-        System.out.println(waarde);
+        else {comPort.getOutputStream().write(value);}
+        System.out.println(value);
         comPort.getOutputStream().write('X');
     }
 }
