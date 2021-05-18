@@ -173,7 +173,7 @@ public class MusicMenuNewPlaylist extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();
-        int i;
+        int i=0;
 
         if (source==cbReset) {
             int choice = JOptionPane.showConfirmDialog(null, "Do you really want to delete your playlist?", "Playlist", JOptionPane.YES_NO_OPTION);
