@@ -17,9 +17,10 @@ public class Arduino {
             byte[] b = new byte[3];
             int l = comPort.readBytes(b, 3);
             String s = new String(b);
+            lastvalue = Integer.parseInt(s);
             return Integer.parseInt(s);}
-        }catch (NumberFormatException e){return 0;}
-        return 0;
+        }catch (NumberFormatException e){return lastvalue;}
+        return lastvalue;
     }
 
     public void openport(){
