@@ -118,7 +118,7 @@ public class Queries {
             ArrayList<ArrayList<String>> results = Database.query(myStmt1);
             // RETRIEVE LIGHT VALUE
             lightvalue = ar.getlightvalue();
-            results.get(0).add(lightvalue+"");
+            results.get(0).add(30+"");
 
                 // UPDATE LIGHT FIELD WITH SPECIFIC ID, WHERE LIGHT IS NULL
                 PreparedStatement myStmt2 = connection.prepareStatement("UPDATE DataCollection SET Light = ? WHERE DataCollectionID = ? AND Light IS NULL");

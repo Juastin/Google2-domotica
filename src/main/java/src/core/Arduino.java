@@ -6,8 +6,8 @@ import com.fazecast.jSerialComm.SerialPortIOException;
 import java.io.IOException;
 
 public class Arduino {
-    final static SerialPort comPort = SerialPort.getCommPort("COM5");
-    private boolean isportopen=false;
+    final static SerialPort comPort = SerialPort.getCommPort("COM3");
+    private static boolean isportopen=false;
     private int lastvalue=0;
 
     public int getlightvalue() throws IOException {
@@ -23,21 +23,24 @@ public class Arduino {
         return lastvalue;
     }
 
-    public void openport(){
+    public static void openport(){
         if(!isportopen){
             if(comPort.openPort()){
             System.out.println("Port opened");
             isportopen=true;}
+            else{
+                System.out.println(isportopen);
+            }
         }
     }
 
-    public void getoutputstream(char value)throws IOException{
+    public static void getoutputstream(char value)throws IOException{
         openport();
         if(isportopen){
         comPort.getOutputStream().write(value);}
     }
 
-    public void getoutputstream(Integer value) throws IOException {
+    public static void getoutputstream(Integer value) throws IOException {
         openport();
         if(isportopen){
         String digit = ""+value;
