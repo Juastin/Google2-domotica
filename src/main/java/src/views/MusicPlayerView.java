@@ -1,16 +1,18 @@
 package src.views;
-import src.components.CButton;
 import src.components.MusicButton;
+import src.components.PlayMusic;
+import src.components.Songs;
 import src.core.Audio;
 import src.core.Container;
 import src.core.View;
 import src.core.Navbar;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.ArrayList;
+
 
 public class MusicPlayerView extends View implements ActionListener {
     private JPanel jpTop, jpCenter, jpBottom, jpLeft, jpMiddle, jpRight;
@@ -18,6 +20,9 @@ public class MusicPlayerView extends View implements ActionListener {
     private JSlider jsPlayTime;
     private JLabel jlTitle, jlCurrentPlayTime, jlMelodyLength;
     private String currentPlayTime, melodyLength;
+    private static boolean playing=false;
+    private Songs song = new Songs();
+    private PlayMusic music = new PlayMusic();
 
     public MusicPlayerView(Container container, String name) {
         super(container, name);
@@ -111,7 +116,10 @@ public class MusicPlayerView extends View implements ActionListener {
             } else {
                 jbPlay.setText("⏸");
             }
+
+            playing = !playing;
         }
+
         if (e.getSource() == jbNext) {
 
         }
@@ -125,6 +133,19 @@ public class MusicPlayerView extends View implements ActionListener {
     public void onShadow() {}
 
     @Override
-    public void onTick(long now) {}
-    
+    public void onTick(long now) {
+        if(playing){
+        try {
+            music.sendnotes(song.getNummer1());
+    } catch (InterruptedException | IOException interruptedException) {
+        interruptedException.printStackTrace();
+            }
+        } if(!playing) {
+            try {
+                music.pause();
+            } catch (IOException interruptedException) {
+                interruptedException.printStackTrace();
+            }
+        }
+    }
 }

@@ -11,10 +11,6 @@ public class User extends Queries{
     private static int temperature;
     private static int settingsID;
 
-    private static boolean isportopen=false;
-    final static SerialPort comPort = SerialPort.getCommPort("COM3");
-    static int laatstelichtwaarde=0;
-
     public User() {}
 
     public static void setUsername(String username) {

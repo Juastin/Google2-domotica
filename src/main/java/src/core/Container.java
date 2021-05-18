@@ -24,8 +24,7 @@ public class Container extends JPanel {
         currentView = views.get(0);
 
         Timer timer = new Timer();
-        timer.schedule(new Worker(this), 0, 1000);
-
+        timer.schedule(new Worker(this), 0, 100);
         setVisible(true);
     }
 

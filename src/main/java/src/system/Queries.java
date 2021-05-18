@@ -2,15 +2,16 @@ package src.system;
 import com.fazecast.jSerialComm.SerialPort;
 import src.core.*;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.util.ArrayList;
 
 public class Queries {
     static Connection connection = Database.maakVerbinding();
-    private static boolean isportopen=false;
-    final static SerialPort comPort = SerialPort.getCommPort("COM3");
-    static int laatstelichtwaarde=0;
+    static Arduino ar = new Arduino();
+    private static int lightvalue = 0;
+
 
 
     public static boolean isPasswordCorrect(String username, String password) {
@@ -104,52 +105,33 @@ public class Queries {
     }
 
     public static ArrayList<ArrayList<String>> getSensorData() {
+        //Sends command to arduino to send light-value
+        try {
+            ar.getoutputstream('W');
+        } catch (IOException exception) {
+            exception.printStackTrace();
+        }
+
         try {
             // RETRIEVE LAST SENSORDATA ROW
             PreparedStatement myStmt1 = connection.prepareStatement("SELECT DataCollectionID, Temperature, AirPressure, Humidity FROM DataCollection ORDER BY DataCollectionID DESC LIMIT 1");
             ArrayList<ArrayList<String>> results = Database.query(myStmt1);
-
             // RETRIEVE LIGHT VALUE
-            if(!isportopen){
-                comPort.openPort();
-                isportopen = true;
-            }
+            lightvalue = ar.getlightvalue();
+            results.get(0).add(lightvalue+"");
 
-            byte[] b = new byte[5];
-            int l = comPort.readBytes(b, 5);
-
-            if (l!=-1) { // ONLY ATTEMPT A RETRIEVAL IF PORT IS AVAILABLE
-                String s = new String(b);
-                String lichtwaarde = "";
-                System.out.println(l);
-    
-                try{
-                    laatstelichtwaarde = Integer.parseInt(s.trim());
-                    lichtwaarde = s;
-                    results.get(0).add(lichtwaarde);
-                }catch (NumberFormatException e){
-                    lichtwaarde = laatstelichtwaarde + "";
-                    results.get(0).add(laatstelichtwaarde + "");
-                }
-    
                 // UPDATE LIGHT FIELD WITH SPECIFIC ID, WHERE LIGHT IS NULL
                 PreparedStatement myStmt2 = connection.prepareStatement("UPDATE DataCollection SET Light = ? WHERE DataCollectionID = ? AND Light IS NULL");
-                myStmt2.setInt(1, Integer.parseInt(lichtwaarde));
+                myStmt2.setInt(1, Integer.parseInt(lightvalue+""));
                 myStmt2.setInt(2, Integer.parseInt(results.get(0).get(0)));
                 Database.query(myStmt2);
-            } else {
-                Logging.logThis("Unable to access Arduino for user " + User.getUsername());
-                results.get(0).add("");
-            }
-
             return results;
         } catch (Exception ex) {
             System.out.println(ex);
             return null;
         }
     }
-
-    public static ArrayList<ArrayList<String>> getAllSongs() {
+  public static ArrayList<ArrayList<String>> getAllSongs() {
         try {
             PreparedStatement myStmt = connection.prepareStatement("SELECT * FROM Song ORDER BY SongID ASC");
             ArrayList<ArrayList<String>> results = Database.query(myStmt);
