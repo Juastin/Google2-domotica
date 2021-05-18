@@ -8,8 +8,6 @@ import src.system.Queries;
 import src.system.User;
 
 import javax.swing.*;
-import javax.swing.plaf.BorderUIResource;
-import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -19,7 +17,7 @@ public class MusicMenuPlaylist extends JPanel implements ActionListener{
     private JTable jtSongs;
     private JPanel top, center;
     private JLabel jlTitel;
-    private ArrayList<ArrayList<String>> playlistSongsList;
+    private ArrayList<ArrayList<String>> playlistSongsList, playlistData;
     private SongsTableCellRenderer songTableCell;
     private JScrollPane scroll;
     private JComboBox comboList;
@@ -29,7 +27,7 @@ public class MusicMenuPlaylist extends JPanel implements ActionListener{
         setLayout(new BorderLayout());
 
         playlistSongsList = Queries.getPlaylistSongsList(id);
-        ArrayList<ArrayList<String>> playlistData = Queries.getPlaylistData(User.getUsername());
+        playlistData = Queries.getPlaylistData(User.getUsername());
 
         // Test scroller
         /*
@@ -60,29 +58,34 @@ public class MusicMenuPlaylist extends JPanel implements ActionListener{
         jlTitel.setFont(jlTitel.getFont().deriveFont(20.0f));
         top.add(jlTitel);
 
-        comboList = new JComboBox<String>();
-        for (ArrayList<String> playlistName : playlistData) {
-            comboList.addItem(playlistName.get(1));
+        if (playlistData != null) {
+            comboList = new JComboBox<String>();
+            for (ArrayList<String> playlistName : playlistData) {
+                comboList.addItem(playlistName.get(1));
+            }
+            comboList.addActionListener(this);
+            comboList.setEditable(false);
+            top.add(comboList, BorderLayout.NORTH);
         }
-        comboList.addActionListener(this);
-        comboList.setEditable(false);
-        top.add(comboList, BorderLayout.NORTH);
 
         // Center panel table
         center = new JPanel();
         center.setLayout(new BorderLayout());
 
         // Table songs
-        songTableCell = new SongsTableCellRenderer();
-        jtSongs = new SongsTableLayout(new SongsTableModel(playlistSongsList), songTableCell);
+        if (playlistSongsList != null) {
+            songTableCell = new SongsTableCellRenderer();
+            jtSongs = new SongsTableLayout(new SongsTableModel(playlistSongsList), songTableCell);
+            center.add(jtSongs.getTableHeader(), BorderLayout.NORTH);
+            center.add(jtSongs, BorderLayout.CENTER);
+        }
 
         // Add
         add(top, BorderLayout.NORTH);
         add(center, BorderLayout.CENTER);
-        center.add(jtSongs.getTableHeader(), BorderLayout.NORTH);
-        center.add(jtSongs, BorderLayout.CENTER);
         /* Scroller */
         scroll = new JScrollPane(jtSongs);
+//        scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         scroll.setBorder(BorderFactory.createEmptyBorder());
         scroll.setViewportBorder(BorderFactory.createEmptyBorder());
         center.add(scroll);
@@ -93,6 +96,8 @@ public class MusicMenuPlaylist extends JPanel implements ActionListener{
         if (e.getSource() == comboList) {
             String option = (String) comboList.getSelectedItem();
             jlTitel.setText("Naam afspeellijst: " + option);
+            playlistSongsList = Queries.getPlaylistSongsList(option);
+            System.out.println(playlistSongsList);
         }
     }
 
