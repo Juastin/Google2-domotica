@@ -46,7 +46,7 @@ public class Queries {
             ArrayList<ArrayList<String>> results = Database.query(myStmt);
             Logging.logThis("Retrieving personal settings for user " + User.getUsername());
             
-            /* [[instellingenID, Light, Temperature, PlaylistID]] */
+            /* [[instellingenID, Light, Temperature]] */
             return results;
         } catch (Exception ex) {
             System.out.println(ex);
@@ -129,6 +129,68 @@ public class Queries {
         } catch (Exception ex) {
             System.out.println(ex);
             return null;
+        }
+    }
+  public static ArrayList<ArrayList<String>> getAllSongs() {
+        try {
+            PreparedStatement myStmt = connection.prepareStatement("SELECT * FROM Song ORDER BY SongID ASC");
+            ArrayList<ArrayList<String>> results = Database.query(myStmt);
+            return results;
+        } catch (Exception ex) {
+            System.out.println(ex);
+            return null;
+        }
+    }
+
+    public static ArrayList<ArrayList<String>> getPlaylistData(String username) {
+        try {
+            PreparedStatement myStmt = connection.prepareStatement("SELECT * FROM Playlist WHERE PlaylistID = (SELECT PlaylistID FROM PersonalSettings WHERE ProfileID = (SELECT ProfileID FROM Profile WHERE PersonID = (Select PersonID from Person WHERE username = ?)))");
+            myStmt.setString(1, username);
+            ArrayList<ArrayList<String>> results = Database.query(myStmt);
+            return results;
+        } catch (Exception ex) {
+            System.out.println(ex);
+            return null;
+        }
+    }
+
+    public static ArrayList<ArrayList<String>> getPlaylistSongsList(int id) {
+        try {
+            PreparedStatement myStmt = connection.prepareStatement("SELECT * FROM Song WHERE PlaylistID = ?");
+            myStmt.setInt(1, id);
+            ArrayList<ArrayList<String>> results = Database.query(myStmt);
+            return results;
+        } catch (Exception ex) {
+            System.out.println(ex);
+            return null;
+        }
+    }
+
+    public static void newPlaylist(String title, ArrayList<ArrayList<String>> songs) {
+        try {
+            PreparedStatement myStmt_0 = connection.prepareStatement("INSERT INTO Playlist (PlaylistName,InstellingenID) VALUES (?,?)");
+            myStmt_0.setString(1, title);
+            myStmt_0.setString(2, ""+User.getSettingsID());
+            Database.query(myStmt_0);
+        } catch (Exception ex) {
+            System.out.println(ex);
+            return;
+        }
+
+        try {
+            PreparedStatement myStmt_1 = connection.prepareStatement("SELECT PlaylistID FROM Playlist WHERE PlaylistName = ?");
+            myStmt_1.setString(1, title);
+            String playlist_id = Database.query(myStmt_1).get(0).get(0);
+
+            for (ArrayList<String> song: songs) {
+                PreparedStatement myStmt_2 = connection.prepareStatement("INSERT INTO LinkedSong (SongID, PlaylistID) VALUES (?,?)");
+                myStmt_2.setString(1, song.get(0));
+                myStmt_2.setString(2, playlist_id);
+                Database.query(myStmt_2);
+            }
+        } catch (Exception ex) {
+            System.out.println(ex);
+            return;
         }
     }
 }

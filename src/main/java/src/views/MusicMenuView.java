@@ -172,12 +172,20 @@ public class MusicMenuView extends View implements ActionListener {
         }
         if (e.getSource() == jbNewPlaylist) {
             changeMusicPanel(jpNewPlaylist);
+            ((MusicMenuNewPlaylist)jpNewPlaylist).updateGUI();
         }
         Audio.play("click.wav");
     }
 
     @Override
-    public void onFocus(ArrayList<String> parameters) {}
+    public void onFocus(ArrayList<String> parameters) {
+        // DO SOMETHING IF A PARAMETER IS GIVEN
+        if (parameters.size()>0) {
+            if (parameters.get(0).equals("show jpNewPlaylist")) {
+                changeMusicPanel(jpNewPlaylist);
+            }
+        }
+    }
 
     @Override
     public void onShadow() {}
