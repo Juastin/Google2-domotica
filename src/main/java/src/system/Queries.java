@@ -186,8 +186,9 @@ public class Queries {
 
     public static void newPlaylist(String title, ArrayList<ArrayList<String>> songs) {
         try {
-            PreparedStatement myStmt_0 = connection.prepareStatement("INSERT INTO Playlist (PlaylistName) VALUES (?)");
+            PreparedStatement myStmt_0 = connection.prepareStatement("INSERT INTO Playlist (PlaylistName,InstellingenID) VALUES (?,?)");
             myStmt_0.setString(1, title);
+            myStmt_0.setString(2, ""+User.getSettingsID());
             Database.query(myStmt_0);
         } catch (Exception ex) {
             System.out.println(ex);
