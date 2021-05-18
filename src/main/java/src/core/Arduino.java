@@ -6,7 +6,7 @@ import com.fazecast.jSerialComm.SerialPortIOException;
 import java.io.IOException;
 
 public class Arduino {
-    final static SerialPort comPort = SerialPort.getCommPort("COM5");
+    final static SerialPort comPort = SerialPort.getCommPort("COM3");
     private boolean isportopen=false;
     private int lastvalue=0;
 
@@ -53,7 +53,6 @@ public class Arduino {
             comPort.getOutputStream().write(digit.charAt(2));
         }
         else {comPort.getOutputStream().write(value);}
-        System.out.println(value);
         comPort.getOutputStream().write('X');
     }}
 }

@@ -1,51 +1,53 @@
 package src.views;
 
+import src.components.PlayMusic;
+import src.components.Songs;
 import src.system.Queries;
 
 import java.util.ArrayList;
 
 public class MusicUpdate {
-    private String currentSongName;
-    private int currentSongID;
-    private int currentSongDuration;
-    private boolean isPlaying = false;
-    private int currentSongTime = 0;
+    private static ArrayList<ArrayList<String>> songsList = Queries.getAllSongs();
+    private static int currentIndex = 0;
 
-    private ArrayList<ArrayList<String>> songsList;
-    private int currentIndex = 0;
+    private static ArrayList<String> firstSong = songsList.get(currentIndex);
+    private static String currentSongName = firstSong.get(1);
+    private static int currentSongID = Integer.parseInt(firstSong.get(0));
+    private static int currentSongDuration = Integer.parseInt(firstSong.get(2));
+    private static boolean isPlaying = false;
+    private static int currentSongTime = 0;
+    private static PlayMusic music = new PlayMusic();
+    private static Songs song = new Songs();
 
-    public MusicUpdate() {
-        songsList = Queries.getAllSongs();
-        ArrayList<String> firstSong = songsList.get(currentIndex);
-        currentSongID = Integer.parseInt(firstSong.get(0));
-        currentSongName = firstSong.get(1);
-        currentSongDuration = Integer.parseInt(firstSong.get(2));
-    }
+    private MusicUpdate() {}
 
-    public void nextSong() {
+    public static void nextSong() {
         if (currentIndex+1 == songsList.size()) {
             currentIndex = 0;
         } else {
             currentIndex++;
         }
         setSong(currentIndex);
+        isPlaying = true;
     }
 
-    public void previousSong() {
+    public static void previousSong() {
         if (currentIndex == 0) {
             currentIndex = songsList.size()-1;
         } else {
             currentIndex--;
         }
         setSong(currentIndex);
+        isPlaying = true;
     }
 
-    public void setSong(int currentIndex) {
+    public static void setSong(int currentIndex) {
         ArrayList<String> setSong = songsList.get(currentIndex);
         currentSongID = Integer.parseInt(setSong.get(0));
         currentSongName = setSong.get(1);
         currentSongDuration = Integer.parseInt(setSong.get(2));
         currentSongTime = 0;
+        music = new PlayMusic();
         System.out.printf("\n===Song playing===\n" +
                 "Id: %s\n" +
                 "Name: %s\n" +
@@ -53,27 +55,39 @@ public class MusicUpdate {
                 "==================\n", currentSongID, currentSongName, currentSongDuration);
     }
 
-    public boolean isPlaying() {
+    public static boolean isPlaying() {
         return isPlaying;
     }
 
-    public void setPlaying(boolean playing) {
+    public static void setPlaying(boolean playing) {
         isPlaying = playing;
     }
 
-    public int getCurrentSongTime() {
+    public static int getCurrentSongTime() {
         return currentSongTime;
     }
 
-    public int getCurrentSongDuration() {
+    public static int getCurrentSongDuration() {
         return currentSongDuration;
     }
 
-    public String getCurrentSongName() {
+    public static String getCurrentSongName() {
         return currentSongName;
     }
 
-    public ArrayList<ArrayList<String>> getSongsList() {
+    public static ArrayList<ArrayList<String>> getSongsList() {
         return songsList;
+    }
+
+    public static PlayMusic getMusic() {
+        return music;
+    }
+
+    public static int getCurrentSongID() {
+        return currentSongID-1;
+    }
+
+    public static Songs getSong() {
+        return song;
     }
 }

@@ -1,6 +1,7 @@
 package src.views;
 import src.components.MusicButton;
 import src.components.MusicMenuButton;
+import src.components.MusicPlayerController;
 import src.core.Audio;
 import src.core.Container;
 import src.core.View;
@@ -16,17 +17,15 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.ArrayList;
 
-public class MusicMenuView extends View implements ActionListener {
+public class MusicMenuView extends MusicPlayerController implements ActionListener {
     private JPanel
             jpTop,
             jpCenter, jpSongs, jpPlaylist, jpQueue, jpNewPlaylist,
             jpBottom, jpMiddle, jpMiddleTop, jpMiddleBottom, jpRight;
-    private JButton jbList, jbPrevious, jbPlay, jbNext, jbSongs, jbPlaylist, jbQueue, jbNewPlaylist;
-    private JSlider jsPlayTime;
-    private JLabel jlTitle, jlCurrentPlayTime, jlMelodyLength;
-    private String currentPlayTime, melodyLength;
+    private JButton jbSongs, jbPlaylist, jbQueue, jbNewPlaylist;
     private Color customGray = new Color(250, 250, 250);
     private Color customGray2 = new Color(189, 188, 188);
 
@@ -82,7 +81,7 @@ public class MusicMenuView extends View implements ActionListener {
         jpBottom.setLayout(new GridLayout(1,3));
         jpBottom.setPreferredSize(new Dimension(0, 75));
         // COMPONENTS COLUMN 1
-        jlTitle = new JLabel("♫ Titel melodie");
+        jlTitle = new JLabel();
         jlTitle.setFont(new Font(jlTitle.getFont().getFamily(), Font.PLAIN, 20));
 
         // COMPONENTS COLUMN 2
@@ -101,7 +100,7 @@ public class MusicMenuView extends View implements ActionListener {
         jpMiddleBottom.setBackground(customGray);
         jpMiddleBottom.setLayout(new BorderLayout());
         jpMiddleBottom.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 20));
-        jsPlayTime = new JSlider(JSlider.HORIZONTAL, 0, 168, 51);
+        jsPlayTime = new JSlider(JSlider.HORIZONTAL, 0);
         jsPlayTime.setBackground(customGray);
         jsPlayTime.setMinorTickSpacing(1);
         jsPlayTime.setSnapToTicks(true);
@@ -150,25 +149,32 @@ public class MusicMenuView extends View implements ActionListener {
         add(navbar, BorderLayout.EAST);
     }
 
+
     @Override
     public void actionPerformed(ActionEvent e) {
+        // MUSIC PLAYER CONTROLLER BUTTONS
         if (e.getSource() == jbList) {
             this.changeFocus("MusicPlayerView");
         }
         if (e.getSource() == jbPrevious) {
+            MusicUpdate.previousSong();
+            jbPlay.setText("⏸");
         }
         if (e.getSource() == jbPlay) {
-            if (!MusicPlayerView.isPlayMusic()) {
+            if (!MusicUpdate.isPlaying()) {
                 jbPlay.setText("⏸");
-                MusicPlayerView.setPlayMusic(true);
+                MusicUpdate.setPlaying(true);
             } else {
                 jbPlay.setText("⏵");
-                MusicPlayerView.setPlayMusic(false);
+                MusicUpdate.setPlaying(false);
             }
         }
         if (e.getSource() == jbNext) {
-
+            MusicUpdate.nextSong();
+            jbPlay.setText("⏸");
         }
+
+        // MUSIC PLAYER TAB BUTTONS
         if (e.getSource() == jbSongs) {
             jpSongs = new MusicMenuSongs();
             changeMusicPanel(jpSongs);
@@ -195,32 +201,32 @@ public class MusicMenuView extends View implements ActionListener {
             changeMusicPanel(jpNewPlaylist);
             ((MusicMenuNewPlaylist)jpNewPlaylist).updateGUI();
         }
+        updateSongInfoView();
         Audio.play("click.wav");
     }
 
     @Override
     public void onFocus(ArrayList<String> parameters) {
-            /* Add default visible panel */
-            jpSongs = new MusicMenuSongs();
-            changeMusicPanel(jpSongs);
-            if (MusicPlayerView.isPlayMusic()) {
-                jbPlay.setText("⏸");
-            } else {
-                jbPlay.setText("⏵");
-            }
+        jsPlayTime.setValue(MusicUpdate.getCurrentSongTime());
+        /* Add default visible panel */
+        jpSongs = new MusicMenuSongs();
+        changeMusicPanel(jpSongs);
+        if (MusicUpdate.isPlaying()) {
+            jbPlay.setText("⏸");
+        } else {
+            jbPlay.setText("⏵");
+        }
         // DO SOMETHING IF A PARAMETER IS GIVEN
         if (parameters.size()>0) {
             if (parameters.get(0).equals("show jpNewPlaylist")) {
                 changeMusicPanel(jpNewPlaylist);
             }
         }
+        updateSongInfoView();
     }
 
     @Override
     public void onShadow() {}
-
-    @Override
-    public void onTick(long now) {}
 
     public void changeMusicPanel(JPanel changeToPanel) {
         try {
@@ -230,5 +236,13 @@ public class MusicMenuView extends View implements ActionListener {
         jpCenter.add(changeToPanel, BorderLayout.CENTER);
         changeToPanel.setVisible(true);
         repaint();
+    }
+
+    public void updateSongInfoView() {
+        jlTitle.setText("♫ " + MusicUpdate.getCurrentSongName());
+        jsPlayTime.setMaximum(MusicUpdate.getCurrentSongDuration());
+        melodyLength = String.format("%02d:%02d", (int) Math.floor(jsPlayTime.getMaximum() / 60), jsPlayTime.getMaximum() - (int) Math.floor(jsPlayTime.getMaximum() / 60) * 60);
+        jlMelodyLength.setText(melodyLength);
+        jsPlayTime.setValue(MusicUpdate.getCurrentSongTime());
     }
 }
