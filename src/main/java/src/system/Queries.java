@@ -118,7 +118,11 @@ public class Queries {
             ArrayList<ArrayList<String>> results = Database.query(myStmt1);
             // RETRIEVE LIGHT VALUE
             lightvalue = ar.getlightvalue();
-            results.get(0).add(lightvalue+"");
+            System.out.println(lightvalue);
+            double topercent = lightvalue;
+            double percent = (topercent/1024)*100;
+            int eindpercent = (int)percent;
+            results.get(0).add(eindpercent+"");
 
                 // UPDATE LIGHT FIELD WITH SPECIFIC ID, WHERE LIGHT IS NULL
                 PreparedStatement myStmt2 = connection.prepareStatement("UPDATE DataCollection SET Light = ? WHERE DataCollectionID = ? AND Light IS NULL");
