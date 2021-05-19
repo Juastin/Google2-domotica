@@ -16,7 +16,7 @@ import java.util.ArrayList;
 public class MusicMenuPlaylist extends JPanel implements ActionListener {
     private JTable jtSongs;
     private JPanel top, center;
-    private JLabel jlTitel;
+    private JLabel jlTitle;
     private ArrayList<ArrayList<String>> playlistSongsList, playlistData;
     private SongsTableCellRenderer songTableCell;
     private JScrollPane scroll;
@@ -54,10 +54,10 @@ public class MusicMenuPlaylist extends JPanel implements ActionListener {
 
         // Top of panel Title
         top = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        jlTitel = new JLabel("Naam afspeellijst: " + name);
-        jlTitel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        jlTitel.setFont(jlTitel.getFont().deriveFont(20.0f));
-        top.add(jlTitel);
+        jlTitle = new JLabel("Naam afspeellijst: ");
+        jlTitle.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        jlTitle.setFont(jlTitle.getFont().deriveFont(20.0f));
+        top.add(jlTitle);
 
         if (playlistData != null) {
             comboList = new JComboBox<String>();
@@ -97,7 +97,7 @@ public class MusicMenuPlaylist extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == comboList) {
             String option = (String) comboList.getSelectedItem();
-            jlTitel.setText("Naam afspeellijst: " + option);
+            jlTitle.setText("Naam afspeellijst: " + option);
             playlistSongsList = Queries.getPlaylistSongsList(option);
             tableModle.switchTableList(playlistSongsList);
             System.out.println(playlistSongsList);
