@@ -169,7 +169,7 @@ public class Queries {
     // Not complete
     public static ArrayList<ArrayList<String>> getPlaylistSongsList(String playlistname) {
         try {
-            PreparedStatement myStmt = connection.prepareStatement("SELECT s.SongName, s.Duration FROM Song s JOIN LinkedSong ls ON s.SongID = ls.SongID JOIN Playlist p ON p.PlaylistID = ls.PlaylistID WHERE p.PlaylistName = ?");
+            PreparedStatement myStmt = connection.prepareStatement("SELECT s.SongID, s.SongName, s.Duration FROM Song s JOIN LinkedSong ls ON s.SongID = ls.SongID JOIN Playlist p ON p.PlaylistID = ls.PlaylistID WHERE p.PlaylistName = ?");
             myStmt.setString(1, playlistname);
             ArrayList<ArrayList<String>> results = Database.query(myStmt);
             return results;

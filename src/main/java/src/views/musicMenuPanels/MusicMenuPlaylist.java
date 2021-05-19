@@ -13,7 +13,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-public class MusicMenuPlaylist extends JPanel implements ActionListener{
+public class MusicMenuPlaylist extends JPanel implements ActionListener {
     private JTable jtSongs;
     private JPanel top, center;
     private JLabel jlTitel;
@@ -21,6 +21,7 @@ public class MusicMenuPlaylist extends JPanel implements ActionListener{
     private SongsTableCellRenderer songTableCell;
     private JScrollPane scroll;
     private JComboBox comboList;
+    private SongsTableModel tableModle;
 
     public MusicMenuPlaylist(int id, String name) {
         setVisible(false);
@@ -60,6 +61,7 @@ public class MusicMenuPlaylist extends JPanel implements ActionListener{
 
         if (playlistData != null) {
             comboList = new JComboBox<String>();
+            comboList.setMaximumSize(new Dimension(100, 20));
             for (ArrayList<String> playlistName : playlistData) {
                 comboList.addItem(playlistName.get(1));
             }
@@ -75,7 +77,8 @@ public class MusicMenuPlaylist extends JPanel implements ActionListener{
         // Table songs
         if (playlistSongsList != null) {
             songTableCell = new SongsTableCellRenderer();
-            jtSongs = new SongsTableLayout(new SongsTableModel(playlistSongsList), songTableCell);
+            tableModle = new SongsTableModel(playlistSongsList);
+            jtSongs = new SongsTableLayout(tableModle, songTableCell);
             center.add(jtSongs.getTableHeader(), BorderLayout.NORTH);
             center.add(jtSongs, BorderLayout.CENTER);
         }
@@ -85,7 +88,6 @@ public class MusicMenuPlaylist extends JPanel implements ActionListener{
         add(center, BorderLayout.CENTER);
         /* Scroller */
         scroll = new JScrollPane(jtSongs);
-//        scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         scroll.setBorder(BorderFactory.createEmptyBorder());
         scroll.setViewportBorder(BorderFactory.createEmptyBorder());
         center.add(scroll);
@@ -97,8 +99,11 @@ public class MusicMenuPlaylist extends JPanel implements ActionListener{
             String option = (String) comboList.getSelectedItem();
             jlTitel.setText("Naam afspeellijst: " + option);
             playlistSongsList = Queries.getPlaylistSongsList(option);
+            tableModle.switchTableList(playlistSongsList);
             System.out.println(playlistSongsList);
         }
+        revalidate();
+        repaint();
     }
 
 }
