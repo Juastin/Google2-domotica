@@ -184,9 +184,13 @@ public class MusicMenuNewPlaylist extends JPanel implements ActionListener {
         }
 
         if (source==cbSave) {
-            Queries.newPlaylist(jtNewPlaylist.getText(), playlistSongs);
-            resetProgress();
-            JOptionPane.showMessageDialog(this, "Playlist created");
+            boolean succes = Queries.newPlaylist(jtNewPlaylist.getText(), playlistSongs);
+            if (succes) {
+                resetProgress();
+                JOptionPane.showMessageDialog(this, "Playlist created");
+            } else {
+                JOptionPane.showMessageDialog(this, "the name of playlist \"" + jtNewPlaylist.getText() + "\" is already used");
+            }
         }
 
         // CHECK IF PRESSED BUTTON IS A PLAYLIST SONG
