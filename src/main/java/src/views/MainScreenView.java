@@ -1,15 +1,18 @@
 package src.views;
+import src.core.Arduino;
 import src.core.Audio;
 import src.core.Container;
 import src.core.View;
 import src.core.Navbar;
 import src.system.User;
+import src.system.Data;
 import src.system.Queries;
 import src.components.MusicButton;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.awt.event.ActionEvent;
 import javax.swing.border.*;
 import java.util.ArrayList;
@@ -21,6 +24,7 @@ public class MainScreenView extends View implements ActionListener {
     private JPanel jpLU, jpRU, jpLB, jpRB;
     private long lastFetchTimestamp;
     private MusicButton mbPrevious, mbPlay, mbNext, mbList, mbIcon;
+    private Data SensorData = new Data();
 
     public MainScreenView(Container container, String name) {
         super(container, name);
@@ -110,16 +114,15 @@ public class MainScreenView extends View implements ActionListener {
     }
 
     public void fetchSensorData() {
-        ArrayList<ArrayList<String>> data = Queries.getSensorData();
-        // UPDATE LIVE SENSOR DATA
-        jlTemperature.setText("🌡 " + data.get(0).get(1) + "°C");
-        jlHPA.setText("<html><p style='text-align:center;font-size:1.5em'>⏲</p><br><span>" + data.get(0).get(2) + " hPa</span></html>");
-        jlHumidity.setText("<html><p style='text-align:center;font-size:1.5em'>💧</p><br><span>" + data.get(0).get(3) + "%</span></html>");
-        if (data.get(0).get(4).equals("")) {
+        
+        jlTemperature.setText("🌡 " + SensorData.getSensorTemp() + "°C");
+        jlHPA.setText("<html><p style='text-align:center;font-size:1.5em'>⏲</p><br><span>" + SensorData.getSensorAirPressure() + " hPa</span></html>");
+        jlHumidity.setText("<html><p style='text-align:center;font-size:1.4em'>💧</p><br><span>" + SensorData.getSensorHumidity() + "%</span></html>");
+        if (SensorData.getSensorLight() == 0) {
             jlLight.setText("Arduino not found");
             jlLight.setFont(new Font(jlLight.getFont().getFamily(), Font.PLAIN, 24));
         } else {
-            jlLight.setText("💡 " + data.get(0).get(4) + "%");
+            jlLight.setText("💡 " + SensorData.getSensorLight() + "%");
             jlLight.setFont(new Font(jlLight.getFont().getFamily(), Font.PLAIN, 48));
         }
         // UPDATE USER SETTINGS DATA
@@ -127,11 +130,11 @@ public class MainScreenView extends View implements ActionListener {
         jlLightSmall.setText("🔆 " + User.getLight() + "%");
 
         // If statements to show if heating and light is on.
-        if (Integer.parseInt(data.get(0).get(1)) < User.getTemperature()){
+        if (SensorData.getSensorTemp() < User.getTemperature()){
             jlHeating.setForeground(Color.RED);
         }
-        if (!data.get(0).get(4).equals("")) {
-            if (Integer.parseInt(data.get(0).get(4)) < User.getLight()) {
+        if (SensorData.getSensorLight() != 0) {
+            if (SensorData.getSensorLight() < User.getLight()) {
                 jlLightSmall.setForeground(Color.BLUE);
             }
         }
@@ -170,7 +173,23 @@ public class MainScreenView extends View implements ActionListener {
     public void onTick(long now) {
         if (lastFetchTimestamp==0) {lastFetchTimestamp = now;}
 
+        // Light on or off based on light settings
         if (now > lastFetchTimestamp + 5) {
+            System.out.println(Data.getSensorLight());
+            System.out.println(User.getLight());
+            if(Data.getSensorLight() > User.getLight()){
+                try {
+                    Arduino.getoutputstream(-20);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } else{
+                try {
+                    Arduino.getoutputstream(-10);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
             lastFetchTimestamp = now;
             fetchSensorData();
         }
