@@ -150,7 +150,7 @@ public class Queries {
 
     public static ArrayList<ArrayList<String>> getPlaylistData(String username) {
         try {
-            PreparedStatement myStmt = connection.prepareStatement("SELECT * FROM Playlist WHERE PlaylistID = (SELECT PlaylistID FROM PersonalSettings WHERE ProfileID = (SELECT ProfileID FROM Profile WHERE PersonID = (Select PersonID from Person WHERE username = ?)))");
+            PreparedStatement myStmt = connection.prepareStatement("SELECT * FROM Playlist WHERE InstellingenID = (SELECT InstellingenID FROM PersonalSettings WHERE ProfileID = (SELECT ProfileID FROM Profile WHERE PersonID = (Select PersonID from Person WHERE username = ?)))");
             myStmt.setString(1, username);
             ArrayList<ArrayList<String>> results = Database.query(myStmt);
             return results;
@@ -162,8 +162,21 @@ public class Queries {
 
     public static ArrayList<ArrayList<String>> getPlaylistSongsList(int id) {
         try {
-            PreparedStatement myStmt = connection.prepareStatement("SELECT * FROM Song WHERE PlaylistID = ?");
+            PreparedStatement myStmt = connection.prepareStatement("SELECT * FROM Song s JOIN LinkedSong ls ON s.SongID = ls.SongID WHERE PlaylistID = ?");
             myStmt.setInt(1, id);
+            ArrayList<ArrayList<String>> results = Database.query(myStmt);
+            return results;
+        } catch (Exception ex) {
+            System.out.println(ex);
+            return null;
+        }
+    }
+
+    // Not complete
+    public static ArrayList<ArrayList<String>> getPlaylistSongsList(String playlistname) {
+        try {
+            PreparedStatement myStmt = connection.prepareStatement("SELECT s.SongID, s.SongName, s.Duration FROM Song s JOIN LinkedSong ls ON s.SongID = ls.SongID JOIN Playlist p ON p.PlaylistID = ls.PlaylistID WHERE p.PlaylistName = ?");
+            myStmt.setString(1, playlistname);
             ArrayList<ArrayList<String>> results = Database.query(myStmt);
             return results;
         } catch (Exception ex) {
