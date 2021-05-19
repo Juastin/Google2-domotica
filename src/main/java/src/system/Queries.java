@@ -123,7 +123,7 @@ public class Queries {
             double topercent = lightvalue;
             double percent = (topercent/1024)*100;
             int endpercentage = (int)percent;
-            results.get(0).add(percentage+"");
+            results.get(0).add(endpercentage+"");
 
 
                 // UPDATE LIGHT FIELD WITH SPECIFIC ID, WHERE LIGHT IS NULL
