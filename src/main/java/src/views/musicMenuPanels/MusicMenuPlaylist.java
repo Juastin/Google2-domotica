@@ -83,14 +83,15 @@ public class MusicMenuPlaylist extends JPanel implements ActionListener {
             center.add(jtSongs, BorderLayout.CENTER);
         }
 
-        // Add
-        add(top, BorderLayout.NORTH);
-        add(center, BorderLayout.CENTER);
         /* Scroller */
         scroll = new JScrollPane(jtSongs);
         scroll.setBorder(BorderFactory.createEmptyBorder());
         scroll.setViewportBorder(BorderFactory.createEmptyBorder());
         center.add(scroll);
+
+        // Add
+        add(top, BorderLayout.NORTH);
+        add(center, BorderLayout.CENTER);
     }
 
     @Override
@@ -103,6 +104,7 @@ public class MusicMenuPlaylist extends JPanel implements ActionListener {
         }
         revalidate();
         repaint();
+        Audio.play("click.wav");
     }
 
 }
