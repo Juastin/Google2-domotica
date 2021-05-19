@@ -122,13 +122,13 @@ public class Queries {
             System.out.println(lightvalue);
             double topercent = lightvalue;
             double percent = (topercent/1024)*100;
-            int eindpercent = (int)percent;
-            results.get(0).add(eindpercent+"");
+            int endpercentage = (int)percent;
+            results.get(0).add(percentage+"");
 
 
                 // UPDATE LIGHT FIELD WITH SPECIFIC ID, WHERE LIGHT IS NULL
                 PreparedStatement myStmt2 = connection.prepareStatement("UPDATE DataCollection SET Light = ? WHERE DataCollectionID = ? AND Light IS NULL");
-                myStmt2.setInt(1, Integer.parseInt(lightvalue+""));
+                myStmt2.setInt(1, Integer.parseInt(endpercentage+""));
                 myStmt2.setInt(2, Integer.parseInt(results.get(0).get(0)));
                 Database.query(myStmt2);
             return results;
