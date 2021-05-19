@@ -97,7 +97,6 @@ public class MusicMenuPlaylist extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == comboList) {
             String option = (String) comboList.getSelectedItem();
-            jlTitle.setText("Naam afspeellijst: " + option);
             playlistSongsList = Queries.getPlaylistSongsList(option);
             tableModle.switchTableList(playlistSongsList);
             System.out.println(playlistSongsList);
