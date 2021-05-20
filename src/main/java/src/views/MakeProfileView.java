@@ -97,26 +97,35 @@ public class MakeProfileView extends View implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == jbBack) {
             changeFocus("ProfileView");
+            resetValues();
         } else if (e.getSource() == jbSave) {
             if (Objects.requireNonNull(Queries.getProfiles()).size() >= 15) {
                 JOptionPane.showMessageDialog(this,"Er zijn meer dan 15 profielen, verwijder er eerst een.");
             } else {
-                boolean result = Queries.makeNewProfile(jtUsername.getText(),jtFirstname.getText(),jtLastname.getText(),jtPassword.getPassword());
-                if (result) {
-                    Audio.play("success_0.wav");
-                    JOptionPane.showMessageDialog(this,"Account is aangemaakt!");
-                    changeFocus("ProfileView");
-                    jtPassword.setText("");
-                    jtFirstname.setText("");
-                    jtLastname.setText("");
-                    jtUsername.setText("");
-                }
-                else {
-                    JOptionPane.showMessageDialog(this,"Fout! Het account kon niet aangemaakt worden.");
+                boolean usernameUsed = Queries.isUsernameUsed(jtUsername.getText());
+                if (usernameUsed) {
+                    JOptionPane.showMessageDialog(this, "Gebruikersnaam \""+ jtUsername.getText() + "\" is al gebruikt!");
+                } else {
+                    boolean result = Queries.makeNewProfile(jtUsername.getText(), jtFirstname.getText(), jtLastname.getText(), jtPassword.getPassword());
+                    if (result) {
+                        Audio.play("success_0.wav");
+                        JOptionPane.showMessageDialog(this, "Account is aangemaakt!");
+                        changeFocus("ProfileView");
+                        resetValues();
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Fout! Het account kon niet aangemaakt worden.");
+                    }
                 }
             }
         }
         Audio.play("click.wav");
+    }
+
+    public void resetValues() {
+        jtPassword.setText("");
+        jtFirstname.setText("");
+        jtLastname.setText("");
+        jtUsername.setText("");
     }
 
     @Override
