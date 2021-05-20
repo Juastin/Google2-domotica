@@ -5,7 +5,6 @@ import src.core.Container;
 import src.core.View;
 import src.core.Navbar;
 import src.system.User;
-import src.system.Data;
 import src.system.Queries;
 import src.components.MusicButton;
 
@@ -24,8 +23,6 @@ public class MainScreenView extends View implements ActionListener {
     private JPanel jpLU, jpRU, jpLB, jpRB;
     private long lastFetchTimestamp;
     private MusicButton mbPrevious, mbPlay, mbNext, mbList, mbIcon;
-    private Data SensorData = new Data();
-
     public MainScreenView(Container container, String name) {
         super(container, name);
         setLayout(new BorderLayout());
@@ -176,8 +173,6 @@ public class MainScreenView extends View implements ActionListener {
 
         // Light on or off based on light settings
         if (now > lastFetchTimestamp + 5) {
-            System.out.println(Data.getSensorLight());
-            System.out.println(User.getLight());
             if(Queries.getEndpercentage() > User.getLight()){
                 try {
                     Arduino.getoutputstream(-20);
