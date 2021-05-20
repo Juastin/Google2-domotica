@@ -13,11 +13,14 @@ public class Arduino {
     public int getlightvalue() throws IOException {
         try {
             openport();
+            
             if(isportopen){
             byte[] b = new byte[3];
             int l = comPort.readBytes(b, 3);
             String s = new String(b);
+            System.out.println("dd" + s);
             lastvalue = Integer.parseInt(s);
+            
             return Integer.parseInt(s);}
         }catch (NumberFormatException e){return lastvalue;}
         return lastvalue;

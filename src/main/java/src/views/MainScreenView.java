@@ -112,11 +112,12 @@ public class MainScreenView extends View implements ActionListener {
 
     public void fetchSensorData() {
         ArrayList<ArrayList<String>> data = Queries.getSensorData();
+          
         
         jlTemperature.setText("🌡 " + data.get(0).get(1) + "°C");
         jlHPA.setText("<html><p style='text-align:center;font-size:1.5em'>⏲</p><br><span>" + data.get(0).get(2) + " hPa</span></html>");
         jlHumidity.setText("<html><p style='text-align:center;font-size:1.4em'>💧</p><br><span>" + data.get(0).get(3) + "%</span></html>");
-        if (data.get(0).get(4).equals("")) {
+        if (data.get(0).get(4).equals("0")) {
             jlLight.setText("Arduino not found");
             jlLight.setFont(new Font(jlLight.getFont().getFamily(), Font.PLAIN, 24));
         } else {
