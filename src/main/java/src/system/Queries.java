@@ -11,6 +11,7 @@ public class Queries {
     static Connection connection = Database.maakVerbinding();
     static Arduino ar = new Arduino();
     private static int lightvalue = 0;
+    private static int endpercentage=0;
 
 
 
@@ -121,7 +122,7 @@ public class Queries {
             System.out.println(lightvalue);
             double topercent = lightvalue;
             double percent = (topercent/1024)*100;
-            int endpercentage = (int)percent;
+            endpercentage = (int)percent;
             results.get(0).add(endpercentage+"");
 
 
@@ -233,5 +234,9 @@ public class Queries {
             return true;
         }
         return true;
+    }
+
+    public static int getEndpercentage() {
+        return endpercentage;
     }
 }

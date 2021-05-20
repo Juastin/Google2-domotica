@@ -131,11 +131,11 @@ public class MainScreenView extends View implements ActionListener {
         jlLightSmall.setText("🔆 " + User.getLight() + "%");
 
         // If statements to show if heating and light is on.
-        if (SensorData.getSensorTemp() < User.getTemperature()){
+        if (Queries.getEndpercentage() < User.getTemperature()){
             jlHeating.setForeground(Color.RED);
         }
-        if (SensorData.getSensorLight() != 0) {
-            if (SensorData.getSensorLight() < User.getLight()) {
+        if (Queries.getEndpercentage() != 0) {
+            if (Queries.getEndpercentage() < User.getLight()) {
                 jlLightSmall.setForeground(Color.BLUE);
             }
         }
@@ -178,7 +178,7 @@ public class MainScreenView extends View implements ActionListener {
         if (now > lastFetchTimestamp + 5) {
             System.out.println(Data.getSensorLight());
             System.out.println(User.getLight());
-            if(Data.getSensorLight() > User.getLight()){
+            if(Queries.getEndpercentage() > User.getLight()){
                 try {
                     Arduino.getoutputstream(-20);
                 } catch (IOException e) {
