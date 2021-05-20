@@ -1,30 +1,37 @@
 package src.system;
+import com.fazecast.jSerialComm.SerialPort;
 import src.core.*;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.util.ArrayList;
 
 public class Queries {
-    static Connection verbinding = Database.maakVerbinding();
+    static Connection connection = Database.maakVerbinding();
+    static Arduino ar = new Arduino();
+    private static int lightvalue = 0;
+    private static int endpercentage=0;
+
+
 
     public static boolean isPasswordCorrect(String username, String password) {
         try {
-            PreparedStatement myStmt = verbinding.prepareStatement("SELECT COUNT(Username) FROM Person WHERE Username = ? AND PasswordHash = ?");
+            PreparedStatement myStmt = connection.prepareStatement("SELECT PasswordHash FROM Person WHERE Username = ?");
             myStmt.setString(1, username);
-            myStmt.setString(2, password);
             ArrayList<ArrayList<String>> results = Database.query(myStmt);
-            return Integer.parseInt(results.get(0).get(0))>0;
+            
+            return Authentication.checkPassword(password, results.get(0).get(0));
         } catch (Exception ex) {
             System.out.println(ex);
             Logging.logThis("Failed login attempt for user " + username);
             return false;
-        }
+        } 
     }
 
     public static ArrayList<ArrayList<String>> getProfiles() {
         try {
-            PreparedStatement myStmt = verbinding.prepareStatement("SELECT username FROM Person");
+            PreparedStatement myStmt = connection.prepareStatement("SELECT username FROM Person");
             ArrayList<ArrayList<String>> results = Database.query(myStmt);
             return results;
         } catch (Exception ex) {
@@ -33,16 +40,18 @@ public class Queries {
         }
     }
 
-    public static ArrayList<ArrayList<String>> getPersonalSettings(String username) {
+    public static ArrayList<ArrayList<String>> getPersonalSettings() {
         try {
-            PreparedStatement myStmt = verbinding.prepareStatement("SELECT ps.Light, ps.Temperature, ps.PlaylistID FROM PersonalSettings ps JOIN Person p ON ps.ProfileID = p.PersonID WHERE p.Username = ?");
-            myStmt.setString(1, username);
+            PreparedStatement myStmt = connection.prepareStatement("SELECT ps.InstellingenID, ps.Light, ps.Temperature FROM PersonalSettings ps JOIN Profile p ON ps.ProfileID= p.ProfileID JOIN Person pr ON p.PersonID = pr.PersonID WHERE pr.Username = ?");
+            myStmt.setString(1, User.getUsername());
             ArrayList<ArrayList<String>> results = Database.query(myStmt);
-            Logging.logThis("Retrieving personal settings for user " + username);
+            Logging.logThis("Retrieving personal settings for user " + User.getUsername());
+            
+            /* [[instellingenID, Light, Temperature]] */
             return results;
         } catch (Exception ex) {
             System.out.println(ex);
-            Logging.logThis("Failed to retrieve personal settings for user " + username);
+            Logging.logThis("Failed to retrieve personal settings for user " + User.getUsername());
             return null;
         }
     }
@@ -51,7 +60,7 @@ public class Queries {
         String hashed_password = Authentication.encryptPassword(password);
 
         try {
-            PreparedStatement myStmt_0 = verbinding.prepareStatement("INSERT INTO Person (Username, FirstName, LastName, PasswordHash) VALUES (?,?,?,?)");
+            PreparedStatement myStmt_0 = connection.prepareStatement("INSERT INTO Person (Username, FirstName, LastName, PasswordHash) VALUES (?,?,?,?)");
             myStmt_0.setString(1, username);
             myStmt_0.setString(2, firstname);
             myStmt_0.setString(3, lastname);
@@ -67,26 +76,9 @@ public class Queries {
         return true;
     }
 
-    public static boolean setStandardProfileSettings(String username) {
-        int light = 30;
-        int heating = 15;
-
-        try {
-            PreparedStatement myStmt = verbinding.prepareStatement(" UPDATE PersonalSettings set Light = ?, Temperature = ? WHERE ProfileID = (SELECT PersonID FROM Person WHERE Username = ?)");
-            myStmt.setInt(1, light);
-            myStmt.setInt(2, heating);
-            myStmt.setString(3, username);
-            Database.query(myStmt);
-        } catch (Exception ex) {
-            System.out.println(ex);
-            return false;
-        }
-        return true;
-    }
-
     public static boolean updatePersonalSettings(int light, int heating, String username) {
         try {
-            PreparedStatement myStmt = verbinding.prepareStatement(" UPDATE PersonalSettings set Light = ?, Temperature = ? WHERE ProfileID = (SELECT PersonID FROM Person WHERE Username = ?)");
+            PreparedStatement myStmt = connection.prepareStatement("UPDATE PersonalSettings set Light = ?, Temperature = ? WHERE ProfileID = (SELECT ProfileID FROM Profile WHERE PersonID = (SELECT PersonID FROM Person WHERE Username = ?))");
             myStmt.setInt(1, light);
             myStmt.setInt(2, heating);
             myStmt.setString(3, username);
@@ -98,4 +90,153 @@ public class Queries {
         return true;
     }
 
+    public static boolean deleteProfile(String username) {
+        try {
+            PreparedStatement myStmt = connection.prepareStatement("DELETE FROM Person WHERE username = ?");
+            myStmt.setString(1, username);
+            Database.query(myStmt);
+            Logging.logThis("Profile deleted for " + username);
+        } catch (Exception ex) {
+            System.out.println(ex);
+            Logging.logThis("Could not delete profile for " + username);
+            return false;
+        }
+        return true;
+    }
+
+    public static ArrayList<ArrayList<String>> getSensorData() {
+        //Sends command to arduino to send light-value
+        try {
+            ar.getoutputstream('W');
+        } catch (IOException exception) {
+            exception.printStackTrace();
+        }
+
+        try {
+            // RETRIEVE LAST SENSORDATA ROW
+            PreparedStatement myStmt1 = connection.prepareStatement("SELECT DataCollectionID, Temperature, AirPressure, Humidity FROM DataCollection ORDER BY DataCollectionID DESC LIMIT 1");
+            ArrayList<ArrayList<String>> results = Database.query(myStmt1);
+            // RETRIEVE LIGHT VALUE
+            lightvalue = ar.getlightvalue();
+
+            System.out.println(lightvalue);
+            double topercent = lightvalue;
+            double percent = (topercent/1024)*100;
+            endpercentage = (int)percent;
+            results.get(0).add(endpercentage+"");
+
+
+                // UPDATE LIGHT FIELD WITH SPECIFIC ID, WHERE LIGHT IS NULL
+                PreparedStatement myStmt2 = connection.prepareStatement("UPDATE DataCollection SET Light = ? WHERE DataCollectionID = ? AND Light IS NULL");
+                myStmt2.setInt(1, Integer.parseInt(endpercentage+""));
+                myStmt2.setInt(2, Integer.parseInt(results.get(0).get(0)));
+                Database.query(myStmt2);
+            return results;
+        } catch (Exception ex) {
+            System.out.println(ex);
+            return null;
+        }
+    }
+  public static ArrayList<ArrayList<String>> getAllSongs() {
+        try {
+            PreparedStatement myStmt = connection.prepareStatement("SELECT * FROM Song ORDER BY SongID ASC");
+            ArrayList<ArrayList<String>> results = Database.query(myStmt);
+            return results;
+        } catch (Exception ex) {
+            System.out.println(ex);
+            return null;
+        }
+    }
+
+    public static ArrayList<ArrayList<String>> getPlaylistData(String username) {
+        try {
+            PreparedStatement myStmt = connection.prepareStatement("SELECT * FROM Playlist WHERE InstellingenID = (SELECT InstellingenID FROM PersonalSettings WHERE ProfileID = (SELECT ProfileID FROM Profile WHERE PersonID = (Select PersonID from Person WHERE username = ?)))");
+            myStmt.setString(1, username);
+            ArrayList<ArrayList<String>> results = Database.query(myStmt);
+            return results;
+        } catch (Exception ex) {
+            System.out.println(ex);
+            return null;
+        }
+    }
+
+    public static ArrayList<ArrayList<String>> getPlaylistSongsList(int id) {
+        try {
+            PreparedStatement myStmt = connection.prepareStatement("SELECT * FROM Song s JOIN LinkedSong ls ON s.SongID = ls.SongID WHERE PlaylistID = ?");
+            myStmt.setInt(1, id);
+            ArrayList<ArrayList<String>> results = Database.query(myStmt);
+            return results;
+        } catch (Exception ex) {
+            System.out.println(ex);
+            return null;
+        }
+    }
+
+    // Not complete
+    public static ArrayList<ArrayList<String>> getPlaylistSongsList(String playlistname) {
+        try {
+            PreparedStatement myStmt = connection.prepareStatement("SELECT s.SongID, s.SongName, s.Duration FROM Song s JOIN LinkedSong ls ON s.SongID = ls.SongID JOIN Playlist p ON p.PlaylistID = ls.PlaylistID WHERE p.PlaylistName = ? AND p.InstellingenID = ?");
+            myStmt.setString(1, playlistname);
+            myStmt.setInt(2, User.getSettingsID());
+            ArrayList<ArrayList<String>> results = Database.query(myStmt);
+            return results;
+        } catch (Exception ex) {
+            System.out.println(ex);
+            return null;
+        }
+    }
+
+    public static boolean newPlaylist(String title, ArrayList<ArrayList<String>> songs) {
+        if (!isPlaylistNameUsed(title)) {
+            try {
+                PreparedStatement myStmt_0 = connection.prepareStatement("INSERT INTO Playlist (PlaylistName,InstellingenID) VALUES (?,?)");
+                myStmt_0.setString(1, title);
+                myStmt_0.setString(2, "" + User.getSettingsID());
+                Database.query(myStmt_0);
+            } catch (Exception ex) {
+                System.out.println(ex);
+                return false;
+            }
+
+            try {
+                PreparedStatement myStmt_1 = connection.prepareStatement("SELECT PlaylistID FROM Playlist WHERE PlaylistName = ? AND InstellingenID = ?");
+                myStmt_1.setString(1, title);
+                myStmt_1.setString(2, "" + User.getSettingsID());
+                String playlist_id = Database.query(myStmt_1).get(0).get(0);
+
+                for (ArrayList<String> song : songs) {
+                    PreparedStatement myStmt_2 = connection.prepareStatement("INSERT INTO LinkedSong (SongID, PlaylistID) VALUES (?,?)");
+                    myStmt_2.setString(1, song.get(0));
+                    myStmt_2.setString(2, playlist_id);
+                    Database.query(myStmt_2);
+                }
+                return true;
+            } catch (Exception ex) {
+                System.out.println(ex);
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    public static boolean isPlaylistNameUsed(String newPlaylistName) {
+        try {
+            PreparedStatement myStmt = connection.prepareStatement("SELECT PlaylistName FROM Playlist WHERE PlaylistName = ? AND InstellingenID = ?");
+            myStmt.setString(1, newPlaylistName);
+            myStmt.setInt(2, User.getSettingsID());
+            ArrayList<ArrayList<String>> results = Database.query(myStmt);
+            if (results.isEmpty()) {
+                return false;
+            }
+        } catch (Exception ex) {
+            System.out.println(ex);
+            return true;
+        }
+        return true;
+    }
+
+    public static int getEndpercentage() {
+        return endpercentage;
+    }
 }

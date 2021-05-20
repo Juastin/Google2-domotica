@@ -1,79 +1,101 @@
 package src.views;
-
 import src.components.CButton;
-import src.core.*;
+import src.components.MetalSlider;
+import src.core.Audio;
+import src.core.Container;
+import src.core.Navbar;
+import src.core.View;
 import src.system.Queries;
 import src.system.User;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Hashtable;
+import java.util.ArrayList;
 
-public class PersonalSettingsView extends SubPanel implements ActionListener {
+public class PersonalSettingsView extends View implements ActionListener, ChangeListener {
 
-    private JLabel jlTitel, jlLightIntensity, jlHeating;
-    private JButton jbCancel, jbSave, jbStandardSettings;
+    private JLabel jlTitel, jlLightIntensity, jlHeating, jlCurrenLightValue, jlLightIcon, jlHeatingIcon;
+    private JButton jbCancel, jbSave, jbStandardSettings, jbDeleteProfile;
     private JSlider jsLightIntensity;
     private SpinnerModel smHeatingValue;
     private JSpinner spinner;
 
-    public PersonalSettingsView(MainPanel parent, String panel_name) {
-        super(parent, panel_name);
-        setLayout(new BorderLayout(30, 20));
+    public PersonalSettingsView(Container container, String name) {
+        super(container, name);
+        setLayout(new BorderLayout());
         setVisible(false);
+
+        // NAVBAR
+        Navbar navbar = new Navbar(this);
+
+        // MAIN
+        JPanel main = new JPanel();
+        main.setLayout(new BorderLayout());
 
         // TOP
         JPanel top = new JPanel();
         top.setLayout(new BorderLayout());
+        top.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 0));
         jlTitel = new JLabel("Persoonlijke instellingen");
-        jlTitel.setFont(jlTitel.getFont().deriveFont(20.0f));
+//        jlTitel.setFont(new Font(jlTitel.getFont().getFamily(), Font.PLAIN, 18));
+        jlTitel.setFont(jlTitel.getFont().deriveFont(24.0f));
+
         top.add(jlTitel, BorderLayout.WEST);
-        add(top, BorderLayout.NORTH);
 
         // CENTER
         JPanel center = new JPanel();
-//        center.setLayout(new BorderLayout());
-        center.setLayout(new GridLayout(2, 1));
-        center.setLayout(new GridLayout(2, 1, 15, 30));
+        JPanel formGrid = new JPanel();
+        GridLayout formGridLayout = new GridLayout(2, 1);
+        formGrid.setLayout(formGridLayout);
 
         // LightIntensity
         JPanel lightIntensityPanel = new JPanel();
-        // Coming soon: Picture light
-        jlLightIntensity = new JLabel("Licht aan vanaf lichtintensiteit: ");
-        jsLightIntensity = new JSlider(JSlider.HORIZONTAL, 0, 100, 38);
+        lightIntensityPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+        lightIntensityPanel.setPreferredSize(new Dimension(480, 100));
+        jlLightIcon = new JLabel("\uD83D\uDCA1");
+        jlLightIcon.setFont(new Font(jlLightIcon.getFont().getFamily(), Font.PLAIN, 30));
+        lightIntensityPanel.add(jlLightIcon);
+        jlLightIntensity = new JLabel(" Licht aan vanaf lichtintensiteit:");
+        jlLightIntensity.setFont(new Font(jlTitel.getFont().getFamily(), Font.PLAIN, 15));
+        lightIntensityPanel.add(jlLightIntensity);
+        jsLightIntensity = new JSlider(JSlider.HORIZONTAL, 0, 100, 0);
+        jsLightIntensity.setUI(new MetalSlider());
         jsLightIntensity.setMajorTickSpacing(25);
         jsLightIntensity.setMinorTickSpacing(10);
-//        jsLightIntensity.setPaintTicks(true);
         jsLightIntensity.setPaintLabels(true);
-
-        Hashtable position = new Hashtable();
+        Hashtable<Integer, JLabel> position = new Hashtable<>();
         position.put(0, new JLabel("0"));
         position.put(50, new JLabel("50"));
         position.put(100, new JLabel("100"));
         jsLightIntensity.setLabelTable(position);
-
-        lightIntensityPanel.add(jlLightIntensity);
+        jsLightIntensity.addChangeListener(this);
         lightIntensityPanel.add(jsLightIntensity);
-        lightIntensityPanel.add(new JLabel(" %"));
+        jlCurrenLightValue = new JLabel("");
+        lightIntensityPanel.add(jlCurrenLightValue);
 
         // Heating
         JPanel heatingPanel = new JPanel();
-        // Coming soon: Picture heating
-        jlHeating = new JLabel("Verwarming aan bij: ");
-        smHeatingValue = new SpinnerNumberModel(15, 0, 30, 1);
-        spinner = new JSpinner(smHeatingValue);
-//        spinner.setBounds(100,100,50,30);
-
+        heatingPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+        heatingPanel.setPreferredSize(new Dimension(480, 100));
+        jlHeatingIcon = new JLabel("♨");
+        jlHeatingIcon.setFont(new Font(jlHeatingIcon.getFont().getFamily(), Font.PLAIN, 30));
+        heatingPanel.add(jlHeatingIcon);
+        jlHeating = new JLabel(" Verwarming aan bij: ");
+        jlHeating.setFont(new Font(jlTitel.getFont().getFamily(), Font.PLAIN, 15));
         heatingPanel.add(jlHeating);
+        smHeatingValue = new SpinnerNumberModel(0, 0, 30, 1);
+        spinner = new JSpinner(smHeatingValue);
         heatingPanel.add(spinner);
         heatingPanel.add(new JLabel(" °C"));
-//        heatingPanel.setSize(300,300);
-        center.add(lightIntensityPanel);
-        center.add(heatingPanel);
 
-        add(center, BorderLayout.WEST);
+        formGrid.add(lightIntensityPanel, BorderLayout.WEST);
+        formGrid.add(heatingPanel, BorderLayout.WEST);
+        center.add(formGrid, BorderLayout.WEST);
 
         // BOTTOM
         JPanel bottom = new JPanel();
@@ -81,6 +103,8 @@ public class PersonalSettingsView extends SubPanel implements ActionListener {
         bottom.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
 
         JPanel leftBottomPanel = new JPanel();
+        jbDeleteProfile = new CButton(this, "Verwijder profiel", Color.black, Color.red);
+        leftBottomPanel.add(jbDeleteProfile);
         jbStandardSettings = new CButton(this, "Standaard instellingen", Color.black, Color.white);
         leftBottomPanel.add(jbStandardSettings);
 
@@ -89,51 +113,83 @@ public class PersonalSettingsView extends SubPanel implements ActionListener {
         rightBottomPanel.add(jbCancel);
         jbSave = new CButton(this, "Opslaan", Color.black, Color.white);
         rightBottomPanel.add(jbSave);
+
         bottom.add(leftBottomPanel, BorderLayout.WEST);
         bottom.add(rightBottomPanel, BorderLayout.EAST);
 
-        add(bottom, BorderLayout.SOUTH);
+        main.add(top, BorderLayout.NORTH);
+        main.add(center, BorderLayout.WEST);
+        main.add(bottom, BorderLayout.SOUTH);
+        add(main);
+        add(navbar, BorderLayout.EAST);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        boolean change = true; // Change the values with the (new) user PersonalSettings
+        String confirmationText = "Weet u het zeker?";
         if (e.getSource() == jbCancel) {
-            int choice = JOptionPane.showConfirmDialog(this, "Weet u het zeker?", "Bevestiging", JOptionPane.YES_NO_OPTION);
-            if(choice == JOptionPane.YES_OPTION){
-                // CANCEL
-                smHeatingValue.setValue(15);
-                changeFocus("MainScreenView");
+            int choice = JOptionPane.showConfirmDialog(this, confirmationText, "Bevestiging annuleren", JOptionPane.YES_NO_OPTION);
+            if(choice == JOptionPane.NO_OPTION){
+                change = false; // Don't set the values with the user PersonalSettings
             }
         } else if (e.getSource() == jbSave) {
-            int choice = JOptionPane.showConfirmDialog(this, "Weet u het zeker?", "Bevestiging", JOptionPane.YES_NO_OPTION);
+            int choice = JOptionPane.showConfirmDialog(this, confirmationText, "Bevestiging opslaan", JOptionPane.YES_NO_OPTION);
             if(choice == JOptionPane.YES_OPTION){
-                // UPDATE SETTINGS
-                System.out.println("INSERT NEW SETTINGS");
-                int light = 50;
-                int heating = 50;
+                int heating = (int) spinner.getValue();
+                int light = jsLightIntensity.getValue();
                 boolean result = Queries.updatePersonalSettings(light, heating, User.getUsername());
                 if (result) {
-                    JOptionPane.showMessageDialog(this, "Instelling geüpdated");
+                    User.setPersonalSettings(light, heating);
+                    JOptionPane.showMessageDialog(this, "Instellingen geüpdated");
                 }
             }
         } else if (e.getSource() == jbStandardSettings) {
-            int choice = JOptionPane.showConfirmDialog(this, "Weet u het zeker?", "Bevestiging", JOptionPane.YES_NO_OPTION);
+            int choice = JOptionPane.showConfirmDialog(this, confirmationText, "Bevestiging naar standaardinstellingen", JOptionPane.YES_NO_OPTION);
             if(choice == JOptionPane.YES_OPTION){
-                // UPDATE TO STANDARD SETTINGS
-                System.out.println("STANDARD SETTINGS");
-                boolean result = Queries.setStandardProfileSettings(User.getUsername());
+                boolean result = Queries.updatePersonalSettings(40,17, User.getUsername());
                 if (result) {
-                    JOptionPane.showMessageDialog(this, "Instelling naar Standaardinstellingen gezet");
+                    User.setStandardPersonalSettings();
+                    JOptionPane.showMessageDialog(this, "Instellingen teruggezet naar standaardinstellingen");
                 }
             }
+        } else if (e.getSource() == jbDeleteProfile) {
+            int choice = JOptionPane.showConfirmDialog(this, confirmationText, "Bevestiging verwijderen profiel", JOptionPane.YES_NO_OPTION);
+            if(choice == JOptionPane.YES_OPTION){
+                boolean result = Queries.deleteProfile(User.getUsername());
+                if (result) {
+                    String user = User.getUsername();
+                    User.logOut();
+                    changeFocus("ProfileView");
+                    JOptionPane.showMessageDialog(this, "Profiel \"" + user + "\" is verwijderd");
+                }
+            }
+        }
+        if (change) {
+            onFocus(new ArrayList<String>());
         }
         Audio.play("click.wav");
     }
 
     @Override
-    public void onFocus() {
-        System.out.println("Light: " + User.getLight());
-        System.out.println("Temperature: " + User.getTemperature());
-        System.out.println("PLaylistId: " + User.getPlaylistID());
+    public void onFocus(ArrayList<String> parameters) {
+        User.refreshPersonalSettings();
+        jsLightIntensity.setValue(User.getLight());
+        smHeatingValue.setValue(User.getTemperature());
+    }
+
+    @Override
+    public void onShadow() {}
+
+    @Override
+    public void onTick(long now) {}
+
+    @Override
+    public void stateChanged(ChangeEvent e) {
+        if (e.getSource() == jsLightIntensity) {
+            // update text field when the value of the slider changes
+            JSlider source = (JSlider) e.getSource();
+            jlCurrenLightValue.setText(source.getValue() + " %");
+        }
     }
 }
