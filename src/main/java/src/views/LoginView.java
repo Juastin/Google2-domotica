@@ -1,24 +1,22 @@
 package src.views;
 import src.core.*;
 import src.components.*;
-import src.core.Container;
 import src.system.*;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 
-public class LoginView extends View implements ActionListener{
+public class LoginView extends SubPanel implements ActionListener{
 
     private JLabel jlUser, jlPassword;
     private JPasswordField jbPassword;
-    private JButton jbOk, jbBack;
+    private JButton jbOk, jbTerug;
 
-    public LoginView(Container container, String name) {
-        super(container, name);
+    public LoginView(MainPanel parent, String panel_name) {
+        super(parent, panel_name);
         setLayout(new BorderLayout());
         setVisible(false);
 
@@ -30,9 +28,6 @@ public class LoginView extends View implements ActionListener{
         JPanel gebruikerPanel = new JPanel();
         jlUser = new JLabel("", JLabel.CENTER);
         jlUser.setFont(jlUser.getFont().deriveFont(24.0f));
-        jlUser.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.BLACK));
-        jlUser.setPreferredSize(new Dimension(222, 50));
-
         gebruikerPanel.add(jlUser, BorderLayout.NORTH);
         top.add(gebruikerPanel, BorderLayout.NORTH);
 
@@ -43,18 +38,16 @@ public class LoginView extends View implements ActionListener{
         center.setBorder(BorderFactory.createEmptyBorder(70, 0, 10, 0));
         JPanel formGrid = new JPanel();
         GridLayout formGridLayout = new GridLayout(3, 1);
-        formGridLayout.setVgap(10);
+        formGridLayout.setHgap(10); formGridLayout.setVgap(10);
         formGrid.setLayout(formGridLayout);
 
         jlPassword = new JLabel("Wachtwoord", JLabel.CENTER);
-        jlPassword.setFont(new Font(jlPassword.getFont().getFamily(), Font.PLAIN, 24));
+        jlPassword.setFont(jlPassword.getFont().deriveFont(20.0f));
         formGrid.add(jlPassword, BorderLayout.CENTER);
         jbPassword = new JPasswordField(20);
-        jbPassword.setHorizontalAlignment(SwingConstants.CENTER);
         jbPassword.addActionListener(this);
         formGrid.add(jbPassword, BorderLayout.CENTER);
-        jbOk = new CButton(this, "Inloggen", Color.black, Color.white);
-        jbOk.setFont(new Font(jbOk.getFont().getFamily(), Font.PLAIN, jbOk.getFont().getSize()));
+        jbOk = new CButton(this, "OK", Color.black, Color.white);
         formGrid.add(jbOk, BorderLayout.CENTER);
 
         center.add(formGrid);
@@ -62,18 +55,21 @@ public class LoginView extends View implements ActionListener{
 
         //BOTTOM
         JPanel bottom = new JPanel();
-        bottom.setBorder(BorderFactory.createEmptyBorder(0, 0, 40, 0));
+        bottom.setLayout(new BorderLayout());
+        bottom.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
 
-        jbBack = new JButton("< Terug");
-        jbBack.setFont(new Font(jbBack.getFont().getFamily(), Font.PLAIN, 20));
-        jbBack.addActionListener(this);
-        jbBack.setOpaque(false);
-        jbBack.setContentAreaFilled(false);
-        jbBack.setBorderPainted(false);
-        bottom.add(jbBack, BorderLayout.SOUTH);
+        JPanel TerugLabelPanel = new JPanel();
+        jbTerug = new JButton("< Terug");
+        jbTerug.addActionListener(this);
+        jbTerug.setOpaque(false);
+        jbTerug.setContentAreaFilled(false);
+        jbTerug.setBorderPainted(false);
+        jbTerug.setFont(jbTerug.getFont().deriveFont(24.0f));
+        TerugLabelPanel.add(jbTerug, BorderLayout.SOUTH);
+        bottom.add(TerugLabelPanel, BorderLayout.SOUTH);
+
         add(bottom, BorderLayout.SOUTH);
-        Arduino ar = new Arduino();
-        try {ar.getoutputstream('W');} catch (IOException ignored) {}
+
     }
 
     @Override
@@ -81,39 +77,47 @@ public class LoginView extends View implements ActionListener{
         if (e.getSource() == jbOk || e.getSource() == jbPassword) {
             String password = String.valueOf(jbPassword.getPassword());
 
-            boolean result = Queries.isPasswordCorrect(User.getUsername(), password);
-            if (result) {
-                Logging.logThis("Successful login attempt for user " + User.getUsername());
-                Audio.play("success_0.wav");
-                User.setLoggedIn(true);
-                changeFocus("MainScreenView");
-            } else {
-                Audio.play("error.wav");
-                Logging.logThis("Failed login attempt for user " + User.getUsername());
-                if (password.equals("")) {
-                    JOptionPane.showMessageDialog(this, "Try again ");
+            try {
+                boolean result = Queries.isPasswordCorrect(User.getUsername(), password);
+                if (result) {
+                    Logging.logThis("Successful login attempt for user " + User.getUsername());
+                    Audio.play("success_0.wav");
+                    User.setLoggedIn(true);
+
+                    try {
+                        ArrayList<ArrayList<String>> resultPersonalSettings = Queries.getPersonalSettings(User.getUsername());
+                        User.setLight(Integer.parseInt(resultPersonalSettings.get(0).get(0)));
+                        User.setTemperature(Integer.parseInt(resultPersonalSettings.get(0).get(1)));
+                        User.setPlaylistID(Integer.parseInt(resultPersonalSettings.get(0).get(2)));
+                    } catch (Exception ex) {
+                        ex.getMessage();
+                        System.out.println("Error try 1");
+                    }
+                    changeFocus("MainScreenView");
                 } else {
-                    JOptionPane.showMessageDialog(this, "Incorrect password. Try Again", "Login Failed", 2);
+                    Logging.logThis("Failed login attempt for user " + User.getUsername());
+                    if (password.equals("")) {
+                        JOptionPane.showMessageDialog(this, "Try Again ");
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Incorrect Password. Do you understand " + User.getUsername() + "?", "Login Failed", 2);
+                    }
                 }
+            } catch (Exception ex) {
+                ex.getMessage();
+                System.out.println("Error try 2");
             }
-        } else if (e.getSource() == jbBack) {
+            jbPassword.setText("");
+        } else if (e.getSource() == jbTerug) {
+            jbPassword.setText("");
             changeFocus("ProfileView");
         }
-        jbPassword.setText("");
         Audio.play("click.wav");
     }
 
     @Override
-    public void onFocus(ArrayList<String> parameters) {
-        jlUser.setText(User.getUsername());
-        jbPassword.requestFocus();
+    public void onFocus() {
+        jlUser.setText("Naam: " + User.getUsername());
     }
-
-    @Override
-    public void onShadow() {}
-
-    @Override
-    public void onTick(long now) {}
 
 }
 

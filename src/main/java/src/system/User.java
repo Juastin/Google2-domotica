@@ -1,15 +1,11 @@
 package src.system;
 
-import java.util.ArrayList;
-
-import com.fazecast.jSerialComm.SerialPort;
-
-public class User extends Queries{
+public class User {
     private static boolean isLoggedIn = false;
     private static String username;
     private static int light;
     private static int temperature;
-    private static int settingsID;
+    private static int playlistID;
 
     public User() {}
 
@@ -33,39 +29,31 @@ public class User extends Queries{
         return light;
     }
 
+    public static void setLight(int light) {
+        User.light = light;
+    }
+
     public static int getTemperature() {
         return temperature;
     }
 
-    public static void refreshPersonalSettings() {
-        ArrayList<String> results = getPersonalSettings().get(0);
-        light = Integer.parseInt(results.get(1));
-        temperature = Integer.parseInt(results.get(2));
-        settingsID = Integer.parseInt(results.get(0));
-    }
-
-    public static int getSettingsID() {
-        return settingsID;
-    }
-
-    public static void setSettingsID(int settingsID) {
-        User.settingsID = settingsID;
-    }
-
-    public static void setPersonalSettings(int light, int temperature) {
-        User.light = light;
+    public static void setTemperature(int temperature) {
         User.temperature = temperature;
     }
 
-    public static void setStandardPersonalSettings() {
-        User.light = 40;
-        User.temperature = 17;
+    public static int getPlaylistID() {
+        return playlistID;
+    }
+
+    public static void setPlaylistID(int playlistID) {
+        User.playlistID = playlistID;
     }
 
     public static void logOut() {
         setLoggedIn(false);
         setUsername("");
-        setPersonalSettings(0, 0);
-        setSettingsID(0);
+        setLight(0);
+        setTemperature(0);
+        setPlaylistID(0);
     }
 }
