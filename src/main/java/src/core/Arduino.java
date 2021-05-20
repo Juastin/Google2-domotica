@@ -18,10 +18,8 @@ public class Arduino {
             byte[] b = new byte[3];
             int l = comPort.readBytes(b, 3);
             String s = new String(b);
-            System.out.println("dd" + s);
-            lastvalue = Integer.parseInt(s);
-            
-            return Integer.parseInt(s);}
+            lastvalue = Integer.parseInt(s.trim());
+            return Integer.parseInt(s.trim());}
         }catch (NumberFormatException e){return lastvalue;}
         return lastvalue;
     }
