@@ -108,7 +108,6 @@ public class MainScreenView extends View implements ActionListener {
         main.add(jpRB);
         add(main, BorderLayout.CENTER);
         add(navbar, BorderLayout.EAST);
-
     }
 
     public void fetchSensorData() {
