@@ -165,9 +165,6 @@ public class PersonalSettingsView extends View implements ActionListener, Change
                 }
             }
         }
-        if (change) {
-            onFocus(new ArrayList<String>());
-        }
         Audio.play("click.wav");
     }
 
