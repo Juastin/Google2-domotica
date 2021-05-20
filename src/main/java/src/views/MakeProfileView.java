@@ -101,6 +101,8 @@ public class MakeProfileView extends View implements ActionListener {
         } else if (e.getSource() == jbSave) {
             if (Objects.requireNonNull(Queries.getProfiles()).size() >= 15) {
                 JOptionPane.showMessageDialog(this,"Er zijn meer dan 15 profielen, verwijder er eerst een.");
+            } else if (jtUsername.getText().equals("") || jtFirstname.getText().equals("") || jtLastname.getText().equals("")) {
+                JOptionPane.showMessageDialog(this,"Vul alles in!");
             } else {
                 if (Queries.isUsernameUsed(jtUsername.getText())) {
                     JOptionPane.showMessageDialog(this, "Gebruikersnaam \"" + jtUsername.getText() + "\" is al gebruikt!");
@@ -136,6 +138,36 @@ public class MakeProfileView extends View implements ActionListener {
         String text = "";
         if (jtPassword.getPassword().length < 8 || jtPassword.getPassword() == null) {
             text += "Wachtwoord moet minstens 8 karakters lang zijn";
+            return text;
+        }
+
+        boolean containsUC = false;
+        boolean containsLC = false;
+        boolean containsDigit = false;
+        for (char letter : jtPassword.getPassword()) {
+            if (Character.isDigit(letter)) { containsDigit = true; }
+            if (Character.isLowerCase(letter)) { containsLC = true; }
+            if (Character.isUpperCase(letter)) { containsUC = true; }
+        }
+
+        if (!containsUC) {
+                text = "Wachtwoord bevat geen hoofdletters";
+        }
+
+        if (!containsLC) {
+            if (text.equals("")) {
+                text = "Wachtwoord bevat geen kleine letters";
+            } else {
+                text += ", kleine letters";
+            }
+        }
+
+        if (!containsDigit) {
+            if (text.equals("")) {
+                text = "Wachtwoord bevat geen cijfers";
+            } else {
+                text += " en cijfers";
+            }
         }
         return text;
     }
