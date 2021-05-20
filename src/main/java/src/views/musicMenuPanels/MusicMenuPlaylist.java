@@ -100,6 +100,7 @@ public class MusicMenuPlaylist extends JPanel implements ActionListener {
             String option = (String) comboList.getSelectedItem();
             playlistSongsList = Queries.getPlaylistSongsList(option);
             tableModle.switchTableList(playlistSongsList);
+            tableModle.fireTableDataChanged();
             System.out.println(playlistSongsList);
         }
         revalidate();
