@@ -102,18 +102,22 @@ public class MakeProfileView extends View implements ActionListener {
             if (Objects.requireNonNull(Queries.getProfiles()).size() >= 15) {
                 JOptionPane.showMessageDialog(this,"Er zijn meer dan 15 profielen, verwijder er eerst een.");
             } else {
-                boolean usernameUsed = Queries.isUsernameUsed(jtUsername.getText());
-                if (usernameUsed) {
-                    JOptionPane.showMessageDialog(this, "Gebruikersnaam \""+ jtUsername.getText() + "\" is al gebruikt!");
+                if (Queries.isUsernameUsed(jtUsername.getText())) {
+                    JOptionPane.showMessageDialog(this, "Gebruikersnaam \"" + jtUsername.getText() + "\" is al gebruikt!");
                 } else {
-                    boolean result = Queries.makeNewProfile(jtUsername.getText(), jtFirstname.getText(), jtLastname.getText(), jtPassword.getPassword());
-                    if (result) {
-                        Audio.play("success_0.wav");
-                        JOptionPane.showMessageDialog(this, "Account is aangemaakt!");
-                        changeFocus("ProfileView");
-                        resetValues();
+                    String message = checkPwRequirements();
+                    if (message.equals("")) {
+                        boolean result = Queries.makeNewProfile(jtUsername.getText(), jtFirstname.getText(), jtLastname.getText(), jtPassword.getPassword());
+                        if (result) {
+                            Audio.play("success_0.wav");
+                            JOptionPane.showMessageDialog(this, "Account is aangemaakt!");
+                            changeFocus("ProfileView");
+                            resetValues();
+                        } else {
+                            JOptionPane.showMessageDialog(this, "Fout! Het account kon niet aangemaakt worden.");
+                        }
                     } else {
-                        JOptionPane.showMessageDialog(this, "Fout! Het account kon niet aangemaakt worden.");
+                        JOptionPane.showMessageDialog(this, message);
                     }
                 }
             }
@@ -126,6 +130,14 @@ public class MakeProfileView extends View implements ActionListener {
         jtFirstname.setText("");
         jtLastname.setText("");
         jtUsername.setText("");
+    }
+
+    public String checkPwRequirements() {
+        String text = "";
+        if (jtPassword.getPassword().length < 8 || jtPassword.getPassword() == null) {
+            text += "Wachtwoord moet minstens 8 karakters lang zijn";
+        }
+        return text;
     }
 
     @Override
