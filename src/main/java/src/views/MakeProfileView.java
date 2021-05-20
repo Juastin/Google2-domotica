@@ -97,26 +97,79 @@ public class MakeProfileView extends View implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == jbBack) {
             changeFocus("ProfileView");
+            resetValues();
         } else if (e.getSource() == jbSave) {
             if (Objects.requireNonNull(Queries.getProfiles()).size() >= 15) {
                 JOptionPane.showMessageDialog(this,"Er zijn meer dan 15 profielen, verwijder er eerst een.");
+            } else if (jtUsername.getText().equals("") || jtFirstname.getText().equals("") || jtLastname.getText().equals("")) {
+                JOptionPane.showMessageDialog(this,"Vul alles in!");
             } else {
-                boolean result = Queries.makeNewProfile(jtUsername.getText(),jtFirstname.getText(),jtLastname.getText(),jtPassword.getPassword());
-                if (result) {
-                    Audio.play("success_0.wav");
-                    JOptionPane.showMessageDialog(this,"Account is aangemaakt!");
-                    changeFocus("ProfileView");
-                    jtPassword.setText("");
-                    jtFirstname.setText("");
-                    jtLastname.setText("");
-                    jtUsername.setText("");
-                }
-                else {
-                    JOptionPane.showMessageDialog(this,"Fout! Het account kon niet aangemaakt worden.");
+                if (Queries.isUsernameUsed(jtUsername.getText())) {
+                    JOptionPane.showMessageDialog(this, "Gebruikersnaam \"" + jtUsername.getText() + "\" is al gebruikt!");
+                } else {
+                    String message = checkPwRequirements();
+                    if (message.equals("")) {
+                        boolean result = Queries.makeNewProfile(jtUsername.getText(), jtFirstname.getText(), jtLastname.getText(), jtPassword.getPassword());
+                        if (result) {
+                            Audio.play("success_0.wav");
+                            JOptionPane.showMessageDialog(this, "Account is aangemaakt!");
+                            changeFocus("ProfileView");
+                            resetValues();
+                        } else {
+                            JOptionPane.showMessageDialog(this, "Fout! Het account kon niet aangemaakt worden.");
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(this, message);
+                    }
                 }
             }
         }
         Audio.play("click.wav");
+    }
+
+    public void resetValues() {
+        jtPassword.setText("");
+        jtFirstname.setText("");
+        jtLastname.setText("");
+        jtUsername.setText("");
+    }
+
+    public String checkPwRequirements() {
+        String text = "";
+        if (jtPassword.getPassword().length < 8 || jtPassword.getPassword() == null) {
+            text += "Wachtwoord moet minstens 8 karakters lang zijn";
+            return text;
+        }
+
+        boolean containsUC = false;
+        boolean containsLC = false;
+        boolean containsDigit = false;
+        for (char letter : jtPassword.getPassword()) {
+            if (Character.isDigit(letter)) { containsDigit = true; }
+            if (Character.isLowerCase(letter)) { containsLC = true; }
+            if (Character.isUpperCase(letter)) { containsUC = true; }
+        }
+
+        if (!containsUC) {
+                text = "Wachtwoord bevat geen hoofdletters";
+        }
+
+        if (!containsLC) {
+            if (text.equals("")) {
+                text = "Wachtwoord bevat geen kleine letters";
+            } else {
+                text += ", kleine letters";
+            }
+        }
+
+        if (!containsDigit) {
+            if (text.equals("")) {
+                text = "Wachtwoord bevat geen cijfers";
+            } else {
+                text += " en cijfers";
+            }
+        }
+        return text;
     }
 
     @Override

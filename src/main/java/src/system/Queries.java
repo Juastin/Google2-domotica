@@ -76,6 +76,21 @@ public class Queries {
         return true;
     }
 
+    public static boolean isUsernameUsed(String username) {
+        try {
+            PreparedStatement myStmt = connection.prepareStatement("SELECT Username FROM Person WHERE Username = ?");
+            myStmt.setString(1, username);
+            ArrayList<ArrayList<String>> results = Database.query(myStmt);
+            if (results.isEmpty()) {
+                return false;
+            }
+        } catch (Exception ex) {
+            System.out.println(ex);
+            return true;
+        }
+        return true;
+    }
+
     public static boolean updatePersonalSettings(int light, int heating, String username) {
         try {
             PreparedStatement myStmt = connection.prepareStatement("UPDATE PersonalSettings set Light = ?, Temperature = ? WHERE ProfileID = (SELECT ProfileID FROM Profile WHERE PersonID = (SELECT PersonID FROM Person WHERE Username = ?))");
