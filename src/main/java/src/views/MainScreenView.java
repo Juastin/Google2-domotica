@@ -114,15 +114,16 @@ public class MainScreenView extends View implements ActionListener {
     }
 
     public void fetchSensorData() {
+        ArrayList<ArrayList<String>> data = Queries.getSensorData();
         
-        jlTemperature.setText("🌡 " + SensorData.getSensorTemp() + "°C");
-        jlHPA.setText("<html><p style='text-align:center;font-size:1.5em'>⏲</p><br><span>" + SensorData.getSensorAirPressure() + " hPa</span></html>");
-        jlHumidity.setText("<html><p style='text-align:center;font-size:1.4em'>💧</p><br><span>" + SensorData.getSensorHumidity() + "%</span></html>");
-        if (SensorData.getSensorLight() == 0) {
+        jlTemperature.setText("🌡 " + data.get(0).get(1) + "°C");
+        jlHPA.setText("<html><p style='text-align:center;font-size:1.5em'>⏲</p><br><span>" + data.get(0).get(2) + " hPa</span></html>");
+        jlHumidity.setText("<html><p style='text-align:center;font-size:1.4em'>💧</p><br><span>" + data.get(0).get(3) + "%</span></html>");
+        if (data.get(0).get(4).equals("")) {
             jlLight.setText("Arduino not found");
             jlLight.setFont(new Font(jlLight.getFont().getFamily(), Font.PLAIN, 24));
         } else {
-            jlLight.setText("💡 " + SensorData.getSensorLight() + "%");
+            jlLight.setText("💡 " + data.get(0).get(4) + "%");
             jlLight.setFont(new Font(jlLight.getFont().getFamily(), Font.PLAIN, 48));
         }
         // UPDATE USER SETTINGS DATA
@@ -130,11 +131,11 @@ public class MainScreenView extends View implements ActionListener {
         jlLightSmall.setText("🔆 " + User.getLight() + "%");
 
         // If statements to show if heating and light is on.
-        if (SensorData.getSensorTemp() < User.getTemperature()){
+        if (Queries.getEndpercentage() < User.getTemperature()){
             jlHeating.setForeground(Color.RED);
         }
-        if (SensorData.getSensorLight() != 0) {
-            if (SensorData.getSensorLight() < User.getLight()) {
+        if (Queries.getEndpercentage() != 0) {
+            if (Queries.getEndpercentage() < User.getLight()) {
                 jlLightSmall.setForeground(Color.BLUE);
             }
         }
@@ -177,7 +178,7 @@ public class MainScreenView extends View implements ActionListener {
         if (now > lastFetchTimestamp + 5) {
             System.out.println(Data.getSensorLight());
             System.out.println(User.getLight());
-            if(Data.getSensorLight() > User.getLight()){
+            if(Queries.getEndpercentage() > User.getLight()){
                 try {
                     Arduino.getoutputstream(-20);
                 } catch (IOException e) {
