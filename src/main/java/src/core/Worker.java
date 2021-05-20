@@ -1,15 +1,17 @@
 package src.core;
+
 import java.util.TimerTask;
 
 public class Worker extends TimerTask {
-    private Container parent;
-    public Worker(Container parent) {
+    private MainPanel parent;
+
+    public Worker(MainPanel parent) {
         this.parent = parent;
     }
 
     @Override
     public void run() {
-        long now = System.currentTimeMillis() / 1000L;
-        parent.getCurrentView().onTick(now);
+        System.out.println("Worker is working");
     }
+    
 }
