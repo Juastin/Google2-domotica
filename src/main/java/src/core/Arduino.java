@@ -34,7 +34,9 @@ public class Arduino {
             }
         }
     }
-
+    public boolean isPortOpen(){
+        return isportopen;
+    }
     public static void getoutputstream(char value)throws IOException{
         openport();
         if(isportopen){
