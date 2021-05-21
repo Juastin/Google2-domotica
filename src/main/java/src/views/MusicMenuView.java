@@ -214,6 +214,7 @@ public class MusicMenuView extends View implements ActionListener {
         if (parameters.size()>0) {
             if (parameters.get(0).equals("show jpNewPlaylist")) {
                 changeMusicPanel(jpNewPlaylist);
+                ((MusicMenuNewPlaylist)jpNewPlaylist).updateGUI();
             }
         }
     }
