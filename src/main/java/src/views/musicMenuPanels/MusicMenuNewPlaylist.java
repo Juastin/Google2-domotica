@@ -176,7 +176,7 @@ public class MusicMenuNewPlaylist extends JPanel implements ActionListener {
         int i=0;
 
         if (source==cbReset) {
-            int choice = JOptionPane.showConfirmDialog(null, "Do you really want to delete your playlist?", "Playlist", JOptionPane.YES_NO_OPTION);
+            int choice = JOptionPane.showConfirmDialog(this, "Weet je zeker dat je deze afspeellijst wil verwijderen?", "Playlist", JOptionPane.YES_NO_OPTION);
 
             if (choice == JOptionPane.YES_OPTION) {
                 resetProgress();
@@ -184,13 +184,18 @@ public class MusicMenuNewPlaylist extends JPanel implements ActionListener {
         }
 
         if (source==cbSave) {
-            boolean succes = Queries.newPlaylist(jtNewPlaylist.getText(), playlistSongs);
-            if (succes) {
-                resetProgress();
-                JOptionPane.showMessageDialog(this, "Playlist created");
+            if (!jtNewPlaylist.getText().equals("")) {
+                boolean succes = Queries.newPlaylist(jtNewPlaylist.getText(), playlistSongs);
+                if (succes) {
+                    resetProgress();
+                    JOptionPane.showMessageDialog(this, "Playlist created");
+                } else {
+                    JOptionPane.showMessageDialog(this, "De naam \"" + jtNewPlaylist.getText() + "\" is al in gebruik");
+                }
             } else {
-                JOptionPane.showMessageDialog(this, "the name of playlist \"" + jtNewPlaylist.getText() + "\" is already used");
+                JOptionPane.showMessageDialog(this, "Afspeellijst is verwijderd");
             }
+
         }
 
         // CHECK IF PRESSED BUTTON IS A PLAYLIST SONG

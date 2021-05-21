@@ -13,8 +13,6 @@ public class Queries {
     private static int lightvalue = 0;
     private static int endpercentage=0;
 
-
-
     public static boolean isPasswordCorrect(String username, String password) {
         try {
             PreparedStatement myStmt = connection.prepareStatement("SELECT PasswordHash FROM Person WHERE Username = ?");
@@ -233,6 +231,28 @@ public class Queries {
         } else {
             return false;
         }
+    }
+
+    public static boolean deletePlaylist(int playlist_id) {
+        try {
+            PreparedStatement myStmt_0 = connection.prepareStatement("DELETE FROM Playlist WHERE PlaylistID = ?");
+            myStmt_0.setInt(1, playlist_id);
+            Database.query(myStmt_0);
+        } catch (Exception ex) {
+            System.out.println(ex);
+            return false;
+        }
+
+        try {
+            PreparedStatement myStmt_1 = connection.prepareStatement("DELETE FROM LinkedSong WHERE PlaylistID = ?");
+            myStmt_1.setInt(1, playlist_id);
+            Database.query(myStmt_1);
+        } catch (Exception ex) {
+            System.out.println(ex);
+            return false;
+        }
+
+        return true;
     }
 
     public static boolean isPlaylistNameUsed(String newPlaylistName) {

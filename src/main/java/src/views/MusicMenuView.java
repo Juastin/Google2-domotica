@@ -72,7 +72,7 @@ public class MusicMenuView extends View implements ActionListener {
 //        jpSongs = new MusicMenuSongs();
 //        jpPlaylist = new MusicMenuPlaylist();
 //        jpQueue = new MusicMenuQueue();
-//        jpNewPlaylist = new MusicMenuNewPlaylist();
+       jpNewPlaylist = new MusicMenuNewPlaylist();
 
 
         // Bottom bar panel
@@ -174,28 +174,30 @@ public class MusicMenuView extends View implements ActionListener {
             changeMusicPanel(jpSongs);
         }
         if (e.getSource() == jbPlaylist) {
-            ArrayList<ArrayList<String>> playlistData = Queries.getPlaylistData(User.getUsername());
-            System.out.println(playlistData);
-            try {
-                id = Integer.parseInt(playlistData.get(0).get(0));
-                name = playlistData.get(0).get(1);
-            } catch (IndexOutOfBoundsException ie){
-                id = 0;
-                name = "Geen playlist beschikbaar";
-            }
-            jpPlaylist = new MusicMenuPlaylist(id, name);
-            changeMusicPanel(jpPlaylist);
+            refreshPlaylistView();
         }
         if (e.getSource() == jbQueue) {
             jpQueue = new MusicMenuQueue();
             changeMusicPanel(jpQueue);
         }
         if (e.getSource() == jbNewPlaylist) {
-            jpNewPlaylist = new MusicMenuNewPlaylist();
             changeMusicPanel(jpNewPlaylist);
             ((MusicMenuNewPlaylist)jpNewPlaylist).updateGUI();
         }
         Audio.play("click.wav");
+    }
+
+    public void refreshPlaylistView() {
+        ArrayList<ArrayList<String>> playlistData = Queries.getPlaylistData(User.getUsername());
+        try {
+            id = Integer.parseInt(playlistData.get(0).get(0));
+            name = playlistData.get(0).get(1);
+        } catch (IndexOutOfBoundsException ie){
+            id = 0;
+            name = "Geen playlist beschikbaar";
+        }
+        jpPlaylist = new MusicMenuPlaylist(this, id, name);
+        changeMusicPanel(jpPlaylist);
     }
 
     @Override
