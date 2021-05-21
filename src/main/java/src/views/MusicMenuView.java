@@ -186,12 +186,10 @@ public class MusicMenuView extends View implements ActionListener {
         ArrayList<ArrayList<String>> playlistData = Queries.getPlaylistData(User.getUsername());
         try {
             id = Integer.parseInt(playlistData.get(0).get(0));
-            name = playlistData.get(0).get(1);
         } catch (IndexOutOfBoundsException ie){
             id = 0;
-            name = "Geen playlist beschikbaar";
         }
-        jpPlaylist = new MusicMenuPlaylist(this, id, name);
+        jpPlaylist = new MusicMenuPlaylist(this, id);
         changeMusicPanel(jpPlaylist);
     }
 

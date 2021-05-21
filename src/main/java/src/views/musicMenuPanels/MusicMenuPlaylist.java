@@ -29,7 +29,7 @@ public class MusicMenuPlaylist extends JPanel implements ActionListener {
     private CButton cbDeletePlaylist, toNewPlaylist;
     private MusicMenuView parent;
 
-    public MusicMenuPlaylist(MusicMenuView parent, int id, String name) {
+    public MusicMenuPlaylist(MusicMenuView parent, int id) {
         this.parent = parent;
         setVisible(false);
         setLayout(new BorderLayout());
