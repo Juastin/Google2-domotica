@@ -9,6 +9,7 @@ public class Arduino {
     final static SerialPort comPort = SerialPort.getCommPort("COM3");
     private static boolean isportopen=false;
     private int lastvalue=0;
+    private static long openPortTimestamp = 0;
 
     public int getlightvalue() throws IOException {
         try {
@@ -25,12 +26,15 @@ public class Arduino {
     }
 
     public static void openport(){
-        if(!isportopen){
-            if(comPort.openPort()){
-            System.out.println("Port opened");
-            isportopen=true;}
+        long now = System.currentTimeMillis() / 1000L;
+
+        if(!isportopen && now > openPortTimestamp + 3){
+            openPortTimestamp = now;
+            if(comPort.openPort()) {
+                isportopen = true;
+            }
             else{
-                System.out.println(isportopen);
+                isportopen = false;
             }
         }
     }

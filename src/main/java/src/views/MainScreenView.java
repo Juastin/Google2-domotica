@@ -23,6 +23,7 @@ public class MainScreenView extends View implements ActionListener {
     private JPanel jpLU, jpRU, jpLB, jpRB;
     private long lastFetchTimestamp;
     private MusicButton mbPrevious, mbPlay, mbNext, mbList, mbIcon;
+    
     public MainScreenView(Container container, String name) {
         super(container, name);
         setLayout(new BorderLayout());
