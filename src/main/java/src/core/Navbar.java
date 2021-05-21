@@ -58,9 +58,8 @@ public class Navbar extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         //Sluit game applicatie af voordat je wijzigt van panel
-        System.out.println(gameProcess);
-        if (gameProcess != null) {
-            if (parent.getName().equals("GameScreenView")) {
+        if (parent.getName().equals("GameScreenView")) {
+            if (gameProcess.isAlive()) {
                 String confirmationText = "Weet u het zeker?\nDe game zal worden afgesloten.";
                 int choice = JOptionPane.showConfirmDialog(this.parent, confirmationText, "Afsluiten game", JOptionPane.YES_NO_OPTION);
                 if (choice == JOptionPane.YES_OPTION) {
@@ -69,6 +68,8 @@ public class Navbar extends JPanel implements ActionListener {
                 } else {
                     return;
                 }
+            } else {
+                Arduino.comPort.openPort();
             }
         }
 
