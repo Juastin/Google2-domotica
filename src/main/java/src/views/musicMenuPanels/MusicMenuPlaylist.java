@@ -114,6 +114,7 @@ public class MusicMenuPlaylist extends JPanel implements ActionListener {
                 }
 
                 Queries.deletePlaylist(playlist_id);
+                Audio.play("success_1.wav");
                 JOptionPane.showMessageDialog(this, "Afspeellijst is verwijderd");
                 Logging.logThis(User.getUsername() + " deleted playlist " + playlist_name);
                 parent.refreshPlaylistView();

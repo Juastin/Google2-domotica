@@ -188,12 +188,13 @@ public class MusicMenuNewPlaylist extends JPanel implements ActionListener {
                 boolean succes = Queries.newPlaylist(jtNewPlaylist.getText(), playlistSongs);
                 if (succes) {
                     resetProgress();
-                    JOptionPane.showMessageDialog(this, "Playlist created");
+                    Audio.play("success_0.wav");
+                    JOptionPane.showMessageDialog(this, "Afspeellijst aangemaakt");
                 } else {
                     JOptionPane.showMessageDialog(this, "De naam \"" + jtNewPlaylist.getText() + "\" is al in gebruik");
                 }
             } else {
-                JOptionPane.showMessageDialog(this, "Afspeellijst is verwijderd");
+                JOptionPane.showMessageDialog(this, "Afspeellijst naam mag niet leeg zijn");
             }
 
         }
