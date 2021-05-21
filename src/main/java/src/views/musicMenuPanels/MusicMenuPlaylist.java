@@ -1,9 +1,11 @@
 package src.views.musicMenuPanels;
 
+import src.components.CButton;
 import src.components.SongsTableCellRenderer;
 import src.components.SongsTableLayout;
 import src.components.SongsTableModel;
 import src.core.Audio;
+import src.core.Logging;
 import src.system.Queries;
 import src.system.User;
 
@@ -22,6 +24,7 @@ public class MusicMenuPlaylist extends JPanel implements ActionListener {
     private JScrollPane scroll;
     private JComboBox comboList;
     private SongsTableModel tableModle;
+    private CButton cbDeletePlaylist;
 
     public MusicMenuPlaylist(int id, String name) {
         setVisible(false);
@@ -29,28 +32,6 @@ public class MusicMenuPlaylist extends JPanel implements ActionListener {
 
         playlistSongsList = Queries.getPlaylistSongsList(id);
         playlistData = Queries.getPlaylistData(User.getUsername());
-
-        // Test scroller
-        /*
-        ArrayList<String> test = new ArrayList<>();
-        test.add("4");
-        test.add("null");
-        test.add("test");
-        test.add("145");
-        ArrayList<String> test2 = new ArrayList<>();
-        test2.add("1");
-        test2.add("null");
-        test2.add("liedje");
-        test2.add("60");
-        playlistSongsList = new ArrayList<>();
-        for (int i = 0; i < 50; i++) {
-            if (i % 2 == 0) {
-                playlistSongsList.add(test);
-            } else {
-                playlistSongsList.add(test2);
-            }
-        }
-        */
 
         // Top of panel Title
         top = new JPanel(new FlowLayout(FlowLayout.LEFT));
@@ -68,6 +49,9 @@ public class MusicMenuPlaylist extends JPanel implements ActionListener {
             comboList.addActionListener(this);
             comboList.setEditable(false);
             top.add(comboList, BorderLayout.NORTH);
+
+            cbDeletePlaylist = new CButton(this, "Delete " + playlistData.get(0).get(1), Color.red, Color.white);
+            top.add(cbDeletePlaylist, BorderLayout.NORTH);
         }
 
         // Center panel table
@@ -101,8 +85,17 @@ public class MusicMenuPlaylist extends JPanel implements ActionListener {
             playlistSongsList = Queries.getPlaylistSongsList(option);
             tableModle.switchTableList(playlistSongsList);
             tableModle.fireTableDataChanged();
-            System.out.println(playlistSongsList);
+            cbDeletePlaylist.setText("Delete " + comboList.getSelectedItem().toString());
         }
+
+        if (e.getSource() == cbDeletePlaylist) {
+            String afspeellijst_name = comboList.getSelectedItem().toString();
+            int choice = JOptionPane.showConfirmDialog(this, "Afspeellijst \"" + afspeellijst_name + "\" verwijderen?", "Afspeellijst verwijderen", JOptionPane.YES_NO_OPTION);
+            if(choice == JOptionPane.YES_OPTION){
+                Logging.logThis(User.getUsername() + " deleted playlist " + afspeellijst_name);
+            }
+        }
+
         revalidate();
         repaint();
         Audio.play("click.wav");
