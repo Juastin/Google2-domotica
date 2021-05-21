@@ -68,12 +68,6 @@ public class MusicMenuView extends View implements ActionListener {
         jpCenter = new JPanel();
         jpCenter.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, customGray2));
         jpCenter.setLayout(new BorderLayout());
-        // COMPONENTS
-//        jpSongs = new MusicMenuSongs();
-//        jpPlaylist = new MusicMenuPlaylist();
-//        jpQueue = new MusicMenuQueue();
-       jpNewPlaylist = new MusicMenuNewPlaylist();
-
 
         // Bottom bar panel
         jpBottom = new JPanel();
@@ -181,6 +175,7 @@ public class MusicMenuView extends View implements ActionListener {
             changeMusicPanel(jpQueue);
         }
         if (e.getSource() == jbNewPlaylist) {
+            jpNewPlaylist = new MusicMenuNewPlaylist();
             changeMusicPanel(jpNewPlaylist);
             ((MusicMenuNewPlaylist)jpNewPlaylist).updateGUI();
         }
@@ -213,6 +208,7 @@ public class MusicMenuView extends View implements ActionListener {
         // DO SOMETHING IF A PARAMETER IS GIVEN
         if (parameters.size()>0) {
             if (parameters.get(0).equals("show jpNewPlaylist")) {
+                jpNewPlaylist = new MusicMenuNewPlaylist();
                 changeMusicPanel(jpNewPlaylist);
                 ((MusicMenuNewPlaylist)jpNewPlaylist).updateGUI();
             }
