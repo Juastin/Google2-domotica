@@ -132,7 +132,6 @@ public class Queries {
             // RETRIEVE LIGHT VALUE
             lightvalue = ar.getlightvalue();
 
-            System.out.println(lightvalue);
             double topercent = lightvalue;
             double percent = (topercent/1024)*100;
             endpercentage = (int)percent;

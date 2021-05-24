@@ -157,12 +157,7 @@ public class MainScreenView extends View implements ActionListener {
     @Override
     public void onFocus(ArrayList<String> parameters) {
         User.refreshPersonalSettings();
-
         jlWelcomeMessage.setText("Gebruiker: " + User.getUsername());
-
-        System.out.println("Light: " + User.getLight());
-        System.out.println("Temperature: " + User.getTemperature());
-
         fetchSensorData();
     }
 
