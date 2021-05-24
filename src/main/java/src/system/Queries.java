@@ -142,7 +142,6 @@ public class Queries {
             myStmt2.setInt(1, Integer.parseInt(endpercentage+""));
             Database.query(myStmt2);
 
-            System.out.println(results);
             return results;
         } catch (Exception ex) {
             System.out.println(ex);
