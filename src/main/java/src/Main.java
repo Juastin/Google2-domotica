@@ -16,6 +16,5 @@ public class Main {
         frame.addView(new PersonalSettingsView(frame.getContainer(), "PersonalSettingsView"));
         frame.addView(new MusicPlayerView(frame.getContainer(), "MusicPlayerView"));
         frame.addView(new MusicMenuView(frame.getContainer(), "MusicMenuView"));
-        frame.addView(new MusicMenuView(frame.getContainer(), "MusicMenuNewPlaylist"));
     }
 }

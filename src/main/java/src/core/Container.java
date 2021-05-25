@@ -47,7 +47,7 @@ public class Container extends JPanel {
             }
         }
         
-        if (!found) {System.out.println("View " + name + " could not be found.");}
+        if (!found) {System.out.println("Container.java: View " + name + " could not be found.");}
     }
 
     public View getCurrentView() {
