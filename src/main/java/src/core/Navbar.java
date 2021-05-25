@@ -14,7 +14,7 @@ import java.io.IOException;
 public class Navbar extends JPanel implements ActionListener {
     private View parent;
     private JButton jbLogOut, jbHome, jbMusic, jbGame,jbSettings;
-    private ProcessBuilder pb;
+    private static ProcessBuilder pb = new ProcessBuilder();
     private static Process gameProcess;
 
     public Navbar(View parent) {
@@ -93,7 +93,7 @@ public class Navbar extends JPanel implements ActionListener {
             parent.changeFocus("MusicPlayerView");
         } else if (e.getSource() == jbGame) {
             parent.changeFocus("GameScreenView");
-            pb = new ProcessBuilder("java", "-jar", "src/main/java/src/components/Temple-Run.jar", User.getUsername());
+            pb.command("java", "-jar", "src/main/java/src/components/Temple-Run.jar", User.getUsername());
             try {
                 Arduino.comPort.closePort();
                 gameProcess = pb.start();
