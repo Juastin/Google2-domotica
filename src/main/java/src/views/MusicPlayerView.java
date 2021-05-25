@@ -1,11 +1,10 @@
 package src.views;
 import src.components.MusicButton;
+import src.components.MusicPlayerController;
 import src.components.PlayMusic;
 import src.components.Songs;
-import src.core.Audio;
+import src.core.*;
 import src.core.Container;
-import src.core.View;
-import src.core.Navbar;
 import src.system.Queries;
 import javax.swing.*;
 import java.awt.*;
@@ -15,20 +14,8 @@ import java.lang.reflect.Array;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class MusicPlayerView extends View implements ActionListener {
+public class MusicPlayerView extends MusicPlayerController implements ActionListener {
     private JPanel jpTop, jpCenter, jpBottom, jpLeft, jpMiddle, jpRight;
-    private JButton jbList, jbPrevious, jbPlay, jbNext;
-    private JSlider jsPlayTime;
-    private JLabel jlTitle, jlCurrentPlayTime, jlMelodyLength;
-    private String currentPlayTime, melodyLength;
-    private static boolean playing=false;
-    private Songs song = new Songs();
-    private PlayMusic music = new PlayMusic();
-
-    private static int currentSong;
-    private static boolean playMusic = false;
-
-    private static MusicUpdate musicUpdate = new MusicUpdate();
 
     public MusicPlayerView(Container container, String name) {
         super(container, name);
@@ -48,7 +35,8 @@ public class MusicPlayerView extends View implements ActionListener {
         jpTop.setPreferredSize(new Dimension(jpTop.getWidth(), 400));
         //COMPONENTS
         /* Top components */
-        jlTitle = new JLabel("<html><div style='text-align:center;'><p style='margin: 0; font-size: 4em'>♫</p><p style='margin: 0;font-size: 1.5em'>"+ musicUpdate.getCurrentSongName() +"</p></div></html>", JLabel.CENTER);
+        jlTitle = new JLabel();
+        jlTitle.setHorizontalAlignment(JLabel.CENTER);
         /* Add */
         jpTop.add(jlTitle, BorderLayout.CENTER);
 
@@ -58,7 +46,7 @@ public class MusicPlayerView extends View implements ActionListener {
         jpCenter.setLayout(new BorderLayout());
         jpCenter.setPreferredSize(new Dimension(jpCenter.getWidth(), 70));
         // COMPONENTS
-        jsPlayTime = new JSlider(JSlider.HORIZONTAL, musicUpdate.getCurrentSongDuration());
+        jsPlayTime = new JSlider(JSlider.HORIZONTAL, 0);
         jsPlayTime.setMinorTickSpacing(1);
         jsPlayTime.setSnapToTicks(true);
 //        jsPlayTime.setEnabled(false);
@@ -109,77 +97,51 @@ public class MusicPlayerView extends View implements ActionListener {
         add(navbar, BorderLayout.EAST);
     }
 
-    @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == jbList) {
             this.changeFocus("MusicMenuView");
         }
         if (e.getSource() == jbPrevious) {
-            musicUpdate.previousSong();
+            MusicUpdate.previousSong();
+            jbPlay.setText("⏸");
         }
         if (e.getSource() == jbPlay) {
-            if (!musicUpdate.isPlaying()) {
+            if (!MusicUpdate.isPlaying()) {
                 jbPlay.setText("⏸");
-                musicUpdate.setPlaying(true);
+                MusicUpdate.setPlaying(true);
             } else {
                 jbPlay.setText("⏵");
-                musicUpdate.setPlaying(false);
+                MusicUpdate.setPlaying(false);
             }
-
-            playing = !playing;
         }
-
         if (e.getSource() == jbNext) {
-            musicUpdate.nextSong();
+            MusicUpdate.nextSong();
+            jbPlay.setText("⏸");
         }
         updateSongInfoView();
         Audio.play("click.wav");
     }
 
-    public void updateSongInfoView() {
-        jlTitle.setText("<html><div style='text-align:center;'><p style='margin: 0; font-size: 4em'>♫</p><p style='margin: 0;font-size: 1.5em'>"+ musicUpdate.getCurrentSongName() +"</p></div></html>");
-        jsPlayTime.setMaximum(musicUpdate.getCurrentSongDuration());
-        melodyLength = String.format("%02d:%02d", (int) Math.floor(jsPlayTime.getMaximum() / 60), jsPlayTime.getMaximum() - (int) Math.floor(jsPlayTime.getMaximum() / 60) * 60);
-        jlMelodyLength.setText(melodyLength);
-        jsPlayTime.setValue(musicUpdate.getCurrentSongTime());
-    }
-
-    public static boolean isPlayMusic() {
-        return playMusic;
-    }
-
-    public static void setPlayMusic(boolean playMusic) {
-        MusicPlayerView.playMusic = playMusic;
-    }
-
     public void onFocus(ArrayList<String> parameters) {
-        jsPlayTime.setValue(musicUpdate.getCurrentSongTime());
-        if (!musicUpdate.isPlaying()) {
-            jbPlay.setText("⏸");
-            musicUpdate.setPlaying(true);
-        } else {
+        jsPlayTime.setValue(MusicUpdate.getCurrentSongTime());
+        if (!MusicUpdate.isPlaying()) {
             jbPlay.setText("⏵");
-            musicUpdate.setPlaying(false);
+        } else {
+            jbPlay.setText("⏸");
         }
+        updateSongInfoView();
     }
 
     @Override
     public void onShadow() {}
 
-    @Override
-    public void onTick(long now) {
-        if(playing){
-        try {
-            music.sendnotes(song.getNummer1());
-    } catch (InterruptedException | IOException interruptedException) {
-        interruptedException.printStackTrace();
-            }
-        } if(!playing) {
-            try {
-                music.pause();
-            } catch (IOException interruptedException) {
-                interruptedException.printStackTrace();
-            }
-        }
+    public void updateSongInfoView() {
+        jlTitle.setText("<html><div style='text-align:center;'><p style='margin: 0; font-size: 4em'>♫</p><p style='margin: 0;font-size: 1.5em'>"+ MusicUpdate.getCurrentSongName() +"</p></div></html>");
+        jsPlayTime.setMaximum(MusicUpdate.getCurrentSongDuration());
+        melodyLength = String.format("%02d:%02d", (int) Math.floor(jsPlayTime.getMaximum() / 60), jsPlayTime.getMaximum() - (int) Math.floor(jsPlayTime.getMaximum() / 60) * 60);
+        jlMelodyLength.setText(melodyLength);
+        jsPlayTime.setValue(MusicUpdate.getCurrentSongTime());
+
     }
+
 }

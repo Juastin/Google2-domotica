@@ -5,6 +5,7 @@ import src.components.SongsTableLayout;
 import src.components.SongsTableModel;
 import src.core.Audio;
 import src.system.Queries;
+import src.views.MusicUpdate;
 
 import javax.swing.*;
 import javax.swing.plaf.BorderUIResource;
@@ -47,8 +48,7 @@ public class MusicMenuSongs extends JPanel {
         */
 
         // Table songs
-        songsList = Queries.getAllSongs();
-        System.out.println(songsList);
+        songsList = MusicUpdate.getSongsList();
         songTableCell = new SongsTableCellRenderer();
         jtSongs = new SongsTableLayout(new SongsTableModel(songsList), songTableCell);
 

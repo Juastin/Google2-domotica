@@ -14,6 +14,7 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.awt.event.ActionEvent;
 import javax.swing.border.*;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -44,14 +45,14 @@ public class MainScreenView extends View implements ActionListener {
         // COMPONENTS
         jlWelcomeMessage = new JLabel("");
         jlWelcomeMessage.setFont(new Font(jlWelcomeMessage.getFont().getFamily(), Font.PLAIN, 18));
-        jlWelcomeMessage.setBorder(new EmptyBorder(8,10,0,0));
+        jlWelcomeMessage.setBorder(new EmptyBorder(8, 10, 0, 0));
         jpLU.add(jlWelcomeMessage, BorderLayout.NORTH);
         jlTemperature = new JLabel("...", JLabel.CENTER);
         jlTemperature.setFont(new Font(jlTemperature.getFont().getFamily(), Font.PLAIN, 48));
         jpLU.add(jlTemperature, BorderLayout.CENTER);
         jlHeating = new JLabel("...", JLabel.RIGHT);
         jlHeating.setFont(new Font(jlHeating.getFont().getFamily(), Font.PLAIN, 18));
-        jlHeating.setBorder(new EmptyBorder(0,0,10,2));
+        jlHeating.setBorder(new EmptyBorder(0, 0, 10, 2));
         jpLU.add(jlHeating, BorderLayout.SOUTH);
 
         // RIGHT UPPER
@@ -61,11 +62,11 @@ public class MainScreenView extends View implements ActionListener {
         // COMPONENTS
         jlLight = new JLabel("...", JLabel.CENTER);
         jlLight.setFont(new Font(jlLight.getFont().getFamily(), Font.PLAIN, 48));
-        jlLight.setBorder(new EmptyBorder(32,0,0,0));
+        jlLight.setBorder(new EmptyBorder(32, 0, 0, 0));
         jpRU.add(jlLight, BorderLayout.CENTER);
         jlLightSmall = new JLabel("...", JLabel.RIGHT);
         jlLightSmall.setFont(new Font(jlLightSmall.getFont().getFamily(), Font.PLAIN, 18));
-        jlLightSmall.setBorder(new EmptyBorder(0,0,10,10));
+        jlLightSmall.setBorder(new EmptyBorder(0, 0, 10, 10));
         jpRU.add(jlLightSmall, BorderLayout.SOUTH);
 
         // LEFT BOTTOM
@@ -90,16 +91,19 @@ public class MainScreenView extends View implements ActionListener {
         // COMPONENTS BOTTOM
         JPanel toolbar = new JPanel();
         toolbar.setLayout(new BorderLayout());
-        toolbar.setBorder(new EmptyBorder(0,10,10,10));
+        toolbar.setBorder(new EmptyBorder(0, 10, 10, 10));
         mbList = new MusicButton(this, "⋮☰", 20);
-        mbList.setBorder(new EmptyBorder(0,13,0,0));
+        mbList.setBorder(new EmptyBorder(0, 13, 0, 0));
         toolbar.add(mbList, BorderLayout.WEST);
         JPanel toolbarCenter = new JPanel();
         toolbarCenter.setLayout(new GridBagLayout());
-        toolbarCenter.setBorder(new EmptyBorder(0,0,4,35));
-        mbPrevious = new MusicButton(this, "⏮", 30); toolbarCenter.add(mbPrevious);
-        mbPlay = new MusicButton(this, "⏵", 30); toolbarCenter.add(mbPlay);
-        mbNext = new MusicButton(this, "⏭", 30); toolbarCenter.add(mbNext);
+        toolbarCenter.setBorder(new EmptyBorder(0, 0, 4, 35));
+        mbPrevious = new MusicButton(this, "⏮", 30);
+        toolbarCenter.add(mbPrevious);
+        mbPlay = new MusicButton(this, "⏵", 30);
+        toolbarCenter.add(mbPlay);
+        mbNext = new MusicButton(this, "⏭", 30);
+        toolbarCenter.add(mbNext);
         toolbar.add(toolbarCenter, BorderLayout.CENTER);
         jpRB.add(toolbar, BorderLayout.SOUTH);
 
@@ -130,7 +134,7 @@ public class MainScreenView extends View implements ActionListener {
         jlLightSmall.setText("🔆 " + User.getLight() + "%");
 
         // If statements to show if heating and light is on.
-        if (Queries.getEndpercentage() < User.getTemperature()){
+        if (Integer.parseInt(data.get(0).get(1)) < User.getTemperature()) {
             jlHeating.setForeground(Color.RED);
         }
         if (Queries.getEndpercentage() != 0) {
@@ -141,15 +145,30 @@ public class MainScreenView extends View implements ActionListener {
     }
 
     @Override
-    public void actionPerformed (ActionEvent e) {
+    public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();
-        
-        if (source==mbIcon) {
+
+        if (source == mbIcon) {
             changeFocus("MusicPlayerView");
-        } else if (source==mbList) {
+        } else if (source == mbList) {
             changeFocus("MusicMenuView");
         }
-          
+
+        if (source == mbList) {
+            this.changeFocus("MusicMenuView");
+        }
+        if (source == mbPrevious) {
+            MusicUpdate.previousSong();
+            changeFocus("MusicPlayerView");
+        }
+        if (source == mbPlay) {
+            MusicUpdate.setPlaying(true);
+            changeFocus("MusicPlayerView");
+        }
+        if (source == mbNext) {
+            MusicUpdate.nextSong();
+            changeFocus("MusicPlayerView");
+        }
 
         Audio.play("click.wav");
     }
@@ -162,11 +181,14 @@ public class MainScreenView extends View implements ActionListener {
     }
 
     @Override
-    public void onShadow() {}
+    public void onShadow() {
+    }
 
     @Override
     public void onTick(long now) {
-        if (lastFetchTimestamp==0) {lastFetchTimestamp = now;}
+        if (lastFetchTimestamp == 0) {
+            lastFetchTimestamp = now;
+        }
 
         // Light on or off based on light settings
         if (now > lastFetchTimestamp + 5) {
@@ -186,6 +208,7 @@ public class MainScreenView extends View implements ActionListener {
             lastFetchTimestamp = now;
             fetchSensorData();
         }
+        
     }
 
 }

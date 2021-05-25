@@ -7,7 +7,7 @@ import java.io.IOException;
 
 public class Arduino {
     final static SerialPort comPort = SerialPort.getCommPort("COM3");
-    private static boolean isportopen=false;
+    private boolean isportopen=false;
     private int lastvalue=0;
     private static long openPortTimestamp = 0;
 
@@ -63,7 +63,6 @@ public class Arduino {
             comPort.getOutputStream().write(digit.charAt(2));
         }
         else {comPort.getOutputStream().write(value);}
-        System.out.println(value);
         comPort.getOutputStream().write('X');
     }}
 }
