@@ -57,7 +57,7 @@ public class Navbar extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        //Sluit game applicatie af voordat je wijzigt van panel
+        //Closes the game before it changes from panel.
         if (parent.getName().equals("GameScreenView")) {
             if (gameProcess.isAlive()) {
                 String confirmationText = "Weet u het zeker?\nDe game zal worden afgesloten.";
