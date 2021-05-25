@@ -16,12 +16,14 @@ public class PlayMusic {
     private int wholenote = (6000*4)/tempo;
     private int thisNote = 0;
     private long vorigetijd =0;
+    private Integer[] melody;
 
     public PlayMusic(){}
 
 
 
     public void sendnotes(Integer[] melody) throws InterruptedException, IOException {
+        this.melody = melody;
         int notes = melody.length;
 
         if(thisNote < notes * 2&&System.currentTimeMillis()-vorigetijd>noteDuration) {
@@ -55,6 +57,15 @@ public class PlayMusic {
             vorigetijd = System.currentTimeMillis();
         }
     }
+
+    public int getThisNote() {
+        return thisNote;
+    }
+    public int getLengthNotes() {
+        return melody.length;
+    }
+
+
     public void pause() throws IOException {
         ar.getoutputstream(0);
     }

@@ -163,6 +163,7 @@ public class MusicPlayerView extends View implements ActionListener {
         }
     }
 
+
     @Override
     public void onShadow() {}
 
@@ -171,6 +172,7 @@ public class MusicPlayerView extends View implements ActionListener {
         if(playing){
         try {
             music.sendnotes(song.getNummer1());
+            jsPlayTime.setValue(music.getThisNote());
     } catch (InterruptedException | IOException interruptedException) {
         interruptedException.printStackTrace();
             }
