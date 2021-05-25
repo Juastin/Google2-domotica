@@ -115,14 +115,14 @@ public class MainScreenView extends View implements ActionListener {
         ArrayList<ArrayList<String>> data = Queries.getSensorData();
         Arduino ar = new Arduino();
         
-        jlTemperature.setText("🌡 " + data.get(0).get(1) + "°C");
-        jlHPA.setText("<html><p style='text-align:center;font-size:1.5em'>⏲</p><br><span>" + data.get(0).get(2) + " hPa</span></html>");
-        jlHumidity.setText("<html><p style='text-align:center;font-size:1.4em'>💧</p><br><span>" + data.get(0).get(3) + "%</span></html>");
+        jlTemperature.setText("🌡 " + data.get(0).get(0) + "°C");
+        jlHPA.setText("<html><p style='text-align:center;font-size:1.5em'>⏲</p><br><span>" + data.get(0).get(1) + " hPa</span></html>");
+        jlHumidity.setText("<html><p style='text-align:center;font-size:1.4em'>💧</p><br><span>" + data.get(0).get(2) + "%</span></html>");
         if (!ar.isPortOpen()) {
             jlLight.setText("Arduino not found");
             jlLight.setFont(new Font(jlLight.getFont().getFamily(), Font.PLAIN, 24));
         } else {
-            jlLight.setText("💡 " + data.get(0).get(4) + "%");
+            jlLight.setText("💡 " + data.get(0).get(3) + "%");
             jlLight.setFont(new Font(jlLight.getFont().getFamily(), Font.PLAIN, 48));
         }
         // UPDATE USER SETTINGS DATA

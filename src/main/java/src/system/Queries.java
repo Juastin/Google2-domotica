@@ -118,7 +118,7 @@ public class Queries {
     }
 
     public static ArrayList<ArrayList<String>> getSensorData() {
-        //Sends command to arduino to send light-value
+        // Sends command to arduino to send light-value
         try {
             ar.getoutputstream('W');
         } catch (IOException exception) {
@@ -127,22 +127,21 @@ public class Queries {
 
         try {
             // RETRIEVE LAST SENSORDATA ROW
-            PreparedStatement myStmt1 = connection.prepareStatement("SELECT DataCollectionID, Temperature, AirPressure, Humidity FROM DataCollection ORDER BY DataCollectionID DESC LIMIT 1");
+            PreparedStatement myStmt1 = connection.prepareStatement("SELECT Temperature, AirPressure, Humidity FROM DataCollectionRaspberry ORDER BY DataCollectionID DESC LIMIT 1");
             ArrayList<ArrayList<String>> results = Database.query(myStmt1);
+
             // RETRIEVE LIGHT VALUE
             lightvalue = ar.getlightvalue();
-
             double topercent = lightvalue;
             double percent = (topercent/1024)*100;
             endpercentage = (int)percent;
             results.get(0).add(endpercentage+"");
 
+            // INSERT LIGHT DATA
+            PreparedStatement myStmt2 = connection.prepareStatement("INSERT INTO DataCollectionArduino (Light) VALUES (?)");
+            myStmt2.setInt(1, Integer.parseInt(endpercentage+""));
+            Database.query(myStmt2);
 
-                // UPDATE LIGHT FIELD WITH SPECIFIC ID, WHERE LIGHT IS NULL
-                PreparedStatement myStmt2 = connection.prepareStatement("UPDATE DataCollection SET Light = ? WHERE DataCollectionID = ? AND Light IS NULL");
-                myStmt2.setInt(1, Integer.parseInt(endpercentage+""));
-                myStmt2.setInt(2, Integer.parseInt(results.get(0).get(0)));
-                Database.query(myStmt2);
             return results;
         } catch (Exception ex) {
             System.out.println(ex);
