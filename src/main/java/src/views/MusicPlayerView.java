@@ -24,6 +24,8 @@ public class MusicPlayerView extends View implements ActionListener {
     private static boolean playing=false;
     private Songs song = new Songs();
     private PlayMusic music = new PlayMusic();
+    private int currentnote=0;
+    private int lastnote=0;
 
     private static int currentSong;
     private static boolean playMusic = false;
@@ -169,14 +171,21 @@ public class MusicPlayerView extends View implements ActionListener {
 
     @Override
     public void onTick(long now) {
+        try {jsPlayTime.setMaximum(music.getLengthNotes());
+        }catch (NullPointerException e){jsPlayTime.setMaximum(0);}
+
+        jsPlayTime.setValue(currentnote);
+
+        lastnote = music.getThisNote();
         if(playing){
+            currentnote = music.getThisNote();
         try {
             music.sendnotes(song.getNummer1());
-            jsPlayTime.setValue(music.getThisNote());
-    } catch (InterruptedException | IOException interruptedException) {
-        interruptedException.printStackTrace();
+        } catch (InterruptedException | IOException interruptedException) {interruptedException.printStackTrace();
             }
-        } if(!playing) {
+        }
+
+        if(!playing) {
             try {
                 music.pause();
             } catch (IOException interruptedException) {

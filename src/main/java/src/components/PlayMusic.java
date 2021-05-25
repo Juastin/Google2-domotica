@@ -59,12 +59,15 @@ public class PlayMusic {
     }
 
     public int getThisNote() {
-        return thisNote;
+        return thisNote+0;
     }
     public int getLengthNotes() {
         return melody.length;
     }
 
+    public void setThisNote(int thisNote) {
+        this.thisNote = thisNote;
+    }
 
     public void pause() throws IOException {
         ar.getoutputstream(0);

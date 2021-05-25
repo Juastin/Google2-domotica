@@ -63,7 +63,6 @@ public class Arduino {
             comPort.getOutputStream().write(digit.charAt(2));
         }
         else {comPort.getOutputStream().write(value);}
-        System.out.println(value);
         comPort.getOutputStream().write('X');
     }}
 }
