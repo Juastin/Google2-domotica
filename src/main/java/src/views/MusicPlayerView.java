@@ -6,12 +6,11 @@ import src.core.Audio;
 import src.core.Container;
 import src.core.View;
 import src.core.Navbar;
-import src.system.Queries;
+import src.system.MusicUpdate;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.lang.reflect.Array;
 import java.io.IOException;
 import java.util.ArrayList;
 
