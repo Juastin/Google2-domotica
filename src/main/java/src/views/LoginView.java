@@ -85,7 +85,6 @@ public class LoginView extends View implements ActionListener{
             if (result) {
                 Logging.logThis("Successful login attempt for user " + User.getUsername());
                 Audio.play("success_0.wav");
-                User.setLoggedIn(true);
                 changeFocus("MainScreenView");
             } else {
                 Audio.play("error.wav");
