@@ -20,7 +20,7 @@ public class Notify {
     * @param  type          determines the displayed icon, use either: info, error or warning
     */
     public static void notification(String app_name, String title, String description, String type) {
-        if (System.getProperty("os.name").equals("Windows 10") && Main.enableNotifications) {
+        if (SystemTray.isSupported()) {
             try {
                 SystemTray tray = SystemTray.getSystemTray();
                 Image image = Toolkit.getDefaultToolkit().createImage("some-icon.png");
