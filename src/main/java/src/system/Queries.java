@@ -127,7 +127,7 @@ public class Queries {
 
         try {
             // RETRIEVE LAST SENSORDATA ROW
-            PreparedStatement myStmt1 = connection.prepareStatement("SELECT Temperature, AirPressure, Humidity FROM DataCollectionRaspberry ORDER BY DataCollectionID DESC LIMIT 1");
+            PreparedStatement myStmt1 = connection.prepareStatement("SELECT Temperature, AirPressure, Humidity FROM DataCollectionRaspberry ORDER BY DataCollectionRaspberryID DESC LIMIT 1");
             ArrayList<ArrayList<String>> results = Database.query(myStmt1);
 
             // RETRIEVE LIGHT VALUE
