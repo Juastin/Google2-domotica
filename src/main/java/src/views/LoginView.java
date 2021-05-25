@@ -86,6 +86,7 @@ public class LoginView extends View implements ActionListener{
                 Logging.logThis("Successful login attempt for user " + User.getUsername());
                 Audio.play("success_0.wav");
                 changeFocus("MainScreenView");
+                Notify.notification("Domotica Systeem", "Succesvol ingelogd", "", "info");
             } else {
                 Audio.play("error.wav");
                 Logging.logThis("Failed login attempt for user " + User.getUsername());
