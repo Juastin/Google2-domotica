@@ -5,6 +5,7 @@ import src.views.*;
 public class Main {
     public static boolean enableLogging = false;
     public static boolean enableAudio = true;
+    public static boolean enableNotifications = true;
 
     public static void main(String[] args) {
         Frame frame = new Frame();
