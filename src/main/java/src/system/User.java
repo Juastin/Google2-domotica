@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import com.fazecast.jSerialComm.SerialPort;
 
 public class User extends Queries{
-    private static boolean isLoggedIn = false;
     private static String username;
     private static int light;
     private static int temperature;
@@ -19,14 +18,6 @@ public class User extends Queries{
 
     public static String getUsername() {
         return username;
-    }
-
-    public static void setLoggedIn(boolean isLoggedIn) {
-        User.isLoggedIn = isLoggedIn;
-    }
-
-    public static boolean getLoggedIn() {
-        return isLoggedIn;
     }
 
     public static int getLight() {
@@ -63,7 +54,6 @@ public class User extends Queries{
     }
 
     public static void logOut() {
-        setLoggedIn(false);
         setUsername("");
         setPersonalSettings(0, 0);
         setSettingsID(0);
