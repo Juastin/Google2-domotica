@@ -67,12 +67,6 @@ public class MusicMenuView extends MusicPlayerController implements ActionListen
         jpCenter = new JPanel();
         jpCenter.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, customGray2));
         jpCenter.setLayout(new BorderLayout());
-        // COMPONENTS
-//        jpSongs = new MusicMenuSongs();
-//        jpPlaylist = new MusicMenuPlaylist();
-//        jpQueue = new MusicMenuQueue();
-//        jpNewPlaylist = new MusicMenuNewPlaylist();
-
 
         // Bottom bar panel
         jpBottom = new JPanel();
@@ -180,17 +174,7 @@ public class MusicMenuView extends MusicPlayerController implements ActionListen
             changeMusicPanel(jpSongs);
         }
         if (e.getSource() == jbPlaylist) {
-            ArrayList<ArrayList<String>> playlistData = Queries.getPlaylistData(User.getUsername());
-            System.out.println(playlistData);
-            try {
-                id = Integer.parseInt(playlistData.get(0).get(0));
-                name = playlistData.get(0).get(1);
-            } catch (IndexOutOfBoundsException ie){
-                id = 0;
-                name = "Geen playlist beschikbaar";
-            }
-            jpPlaylist = new MusicMenuPlaylist(id, name);
-            changeMusicPanel(jpPlaylist);
+            refreshPlaylistView();
         }
         if (e.getSource() == jbQueue) {
             jpQueue = new MusicMenuQueue();
@@ -203,6 +187,17 @@ public class MusicMenuView extends MusicPlayerController implements ActionListen
         }
         updateSongInfoView();
         Audio.play("click.wav");
+    }
+
+    public void refreshPlaylistView() {
+        ArrayList<ArrayList<String>> playlistData = Queries.getPlaylistData(User.getUsername());
+        try {
+            id = Integer.parseInt(playlistData.get(0).get(0));
+        } catch (IndexOutOfBoundsException ie){
+            id = 0;
+        }
+        jpPlaylist = new MusicMenuPlaylist(this, id);
+        changeMusicPanel(jpPlaylist);
     }
 
     @Override
@@ -219,7 +214,9 @@ public class MusicMenuView extends MusicPlayerController implements ActionListen
         // DO SOMETHING IF A PARAMETER IS GIVEN
         if (parameters.size()>0) {
             if (parameters.get(0).equals("show jpNewPlaylist")) {
+                jpNewPlaylist = new MusicMenuNewPlaylist();
                 changeMusicPanel(jpNewPlaylist);
+                ((MusicMenuNewPlaylist)jpNewPlaylist).updateGUI();
             }
         }
         updateSongInfoView();

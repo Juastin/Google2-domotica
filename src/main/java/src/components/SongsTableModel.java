@@ -41,4 +41,10 @@ public class SongsTableModel extends AbstractTableModel {
     public String getColumnName(int col) {
         return columnNames[col];
     }
+
+    public void switchTableList(ArrayList<ArrayList<String>> songs) {
+        this.songs.clear();
+        this.songs = songs;
+    }
+
 }

@@ -9,35 +9,45 @@ public class Arduino {
     final static SerialPort comPort = SerialPort.getCommPort("COM3");
     private boolean isportopen=false;
     private int lastvalue=0;
+    private static long openPortTimestamp = 0;
 
     public int getlightvalue() throws IOException {
         try {
             openport();
+            
             if(isportopen){
             byte[] b = new byte[3];
             int l = comPort.readBytes(b, 3);
             String s = new String(b);
-            lastvalue = Integer.parseInt(s);
-            return Integer.parseInt(s);}
+            lastvalue = Integer.parseInt(s.trim());
+            return Integer.parseInt(s.trim());}
         }catch (NumberFormatException e){return lastvalue;}
         return lastvalue;
     }
 
-    public void openport(){
-        if(!isportopen){
-            if(comPort.openPort()){
-            System.out.println("Port opened");
-            isportopen=true;}
+    public static void openport(){
+        long now = System.currentTimeMillis() / 1000L;
+
+        if(!isportopen && now > openPortTimestamp + 3){
+            openPortTimestamp = now;
+            if(comPort.openPort()) {
+                isportopen = true;
+            }
+            else{
+                isportopen = false;
+            }
         }
     }
-
-    public void getoutputstream(char value)throws IOException{
+    public boolean isPortOpen(){
+        return isportopen;
+    }
+    public static void getoutputstream(char value)throws IOException{
         openport();
         if(isportopen){
         comPort.getOutputStream().write(value);}
     }
 
-    public void getoutputstream(Integer value) throws IOException {
+    public static void getoutputstream(Integer value) throws IOException {
         openport();
         if(isportopen){
         String digit = ""+value;

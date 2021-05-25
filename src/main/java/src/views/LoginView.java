@@ -1,14 +1,13 @@
 package src.views;
-import src.core.Audio;
-import src.core.Container;
-import src.core.View;
-import src.core.Logging;
+import src.core.*;
 import src.components.*;
+import src.core.Container;
 import src.system.*;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 
@@ -73,6 +72,8 @@ public class LoginView extends View implements ActionListener{
         jbBack.setBorderPainted(false);
         bottom.add(jbBack, BorderLayout.SOUTH);
         add(bottom, BorderLayout.SOUTH);
+        Arduino ar = new Arduino();
+        try {ar.getoutputstream('W');} catch (IOException ignored) {}
     }
 
     @Override
@@ -84,7 +85,6 @@ public class LoginView extends View implements ActionListener{
             if (result) {
                 Logging.logThis("Successful login attempt for user " + User.getUsername());
                 Audio.play("success_0.wav");
-                User.setLoggedIn(true);
                 changeFocus("MainScreenView");
             } else {
                 Audio.play("error.wav");
