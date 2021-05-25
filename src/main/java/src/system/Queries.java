@@ -40,12 +40,12 @@ public class Queries {
 
     public static ArrayList<ArrayList<String>> getPersonalSettings() {
         try {
-            PreparedStatement myStmt = connection.prepareStatement("SELECT ps.InstellingenID, ps.Light, ps.Temperature FROM PersonalSettings ps JOIN Profile p ON ps.ProfileID= p.ProfileID JOIN Person pr ON p.PersonID = pr.PersonID WHERE pr.Username = ?");
+            PreparedStatement myStmt = connection.prepareStatement("SELECT ps.PersonalSettingsID, ps.Light, ps.Temperature FROM PersonalSettings ps JOIN Profile p ON ps.ProfileID= p.ProfileID JOIN Person pr ON p.PersonID = pr.PersonID WHERE pr.Username = ?");
             myStmt.setString(1, User.getUsername());
             ArrayList<ArrayList<String>> results = Database.query(myStmt);
             Logging.logThis("Retrieving personal settings for user " + User.getUsername());
             
-            /* [[instellingenID, Light, Temperature]] */
+            /* [[PersonalSettingsID	, Light, Temperature]] */
             return results;
         } catch (Exception ex) {
             System.out.println(ex);
@@ -161,7 +161,7 @@ public class Queries {
 
     public static ArrayList<ArrayList<String>> getPlaylistData(String username) {
         try {
-            PreparedStatement myStmt = connection.prepareStatement("SELECT * FROM Playlist WHERE InstellingenID = (SELECT InstellingenID FROM PersonalSettings WHERE ProfileID = (SELECT ProfileID FROM Profile WHERE PersonID = (Select PersonID from Person WHERE username = ?)))");
+            PreparedStatement myStmt = connection.prepareStatement("SELECT * FROM Playlist WHERE PersonalSettingsID	 = (SELECT PersonalSettingsID	 FROM PersonalSettings WHERE ProfileID = (SELECT ProfileID FROM Profile WHERE PersonID = (Select PersonID from Person WHERE username = ?)))");
             myStmt.setString(1, username);
             ArrayList<ArrayList<String>> results = Database.query(myStmt);
             return results;
@@ -186,7 +186,7 @@ public class Queries {
     // Not complete
     public static ArrayList<ArrayList<String>> getPlaylistSongsList(String playlistname) {
         try {
-            PreparedStatement myStmt = connection.prepareStatement("SELECT s.SongID, s.SongName, s.Duration FROM Song s JOIN LinkedSong ls ON s.SongID = ls.SongID JOIN Playlist p ON p.PlaylistID = ls.PlaylistID WHERE p.PlaylistName = ? AND p.InstellingenID = ?");
+            PreparedStatement myStmt = connection.prepareStatement("SELECT s.SongID, s.SongName, s.Duration FROM Song s JOIN LinkedSong ls ON s.SongID = ls.SongID JOIN Playlist p ON p.PlaylistID = ls.PlaylistID WHERE p.PlaylistName = ? AND p.PersonalSettingsID = ?");
             myStmt.setString(1, playlistname);
             myStmt.setInt(2, User.getSettingsID());
             ArrayList<ArrayList<String>> results = Database.query(myStmt);
@@ -200,7 +200,7 @@ public class Queries {
     public static boolean newPlaylist(String title, ArrayList<ArrayList<String>> songs) {
         if (!isPlaylistNameUsed(title)) {
             try {
-                PreparedStatement myStmt_0 = connection.prepareStatement("INSERT INTO Playlist (PlaylistName,InstellingenID) VALUES (?,?)");
+                PreparedStatement myStmt_0 = connection.prepareStatement("INSERT INTO Playlist (PlaylistName,PersonalSettingsID) VALUES (?,?)");
                 myStmt_0.setString(1, title);
                 myStmt_0.setString(2, "" + User.getSettingsID());
                 Database.query(myStmt_0);
@@ -210,7 +210,7 @@ public class Queries {
             }
 
             try {
-                PreparedStatement myStmt_1 = connection.prepareStatement("SELECT PlaylistID FROM Playlist WHERE PlaylistName = ? AND InstellingenID = ?");
+                PreparedStatement myStmt_1 = connection.prepareStatement("SELECT PlaylistID FROM Playlist WHERE PlaylistName = ? AND PersonalSettingsID = ?");
                 myStmt_1.setString(1, title);
                 myStmt_1.setString(2, "" + User.getSettingsID());
                 String playlist_id = Database.query(myStmt_1).get(0).get(0);
@@ -255,7 +255,7 @@ public class Queries {
 
     public static boolean isPlaylistNameUsed(String newPlaylistName) {
         try {
-            PreparedStatement myStmt = connection.prepareStatement("SELECT PlaylistName FROM Playlist WHERE PlaylistName = ? AND InstellingenID = ?");
+            PreparedStatement myStmt = connection.prepareStatement("SELECT PlaylistName FROM Playlist WHERE PlaylistName = ? AND PersonalSettingsID = ?");
             myStmt.setString(1, newPlaylistName);
             myStmt.setInt(2, User.getSettingsID());
             ArrayList<ArrayList<String>> results = Database.query(myStmt);
