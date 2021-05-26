@@ -13,6 +13,8 @@ public class Frame extends JFrame {
         setTitle("Google2: MainFrame");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false);
+        ImageIcon ImageIcon = new ImageIcon("src/main/java/src/resources/G2.png");
+        this.setIconImage(ImageIcon.getImage());
         setLayout(new GridLayout(0, 1));
         setLocation((Toolkit.getDefaultToolkit().getScreenSize().width)/2 - getWidth()/2, (Toolkit.getDefaultToolkit().getScreenSize().height)/2 - getHeight()/2);
 
