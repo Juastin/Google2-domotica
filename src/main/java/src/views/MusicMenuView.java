@@ -191,6 +191,7 @@ public class MusicMenuView extends MusicPlayerController implements ActionListen
             id = 0;
         }
         jpPlaylist = new MusicMenuPlaylist(this, id);
+        MusicUpdate.setSongsList(((MusicMenuPlaylist)jpPlaylist).getCurrentPlaylist());
         changeMusicPanel(jpPlaylist);
     }
 

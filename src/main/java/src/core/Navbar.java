@@ -85,6 +85,8 @@ public class Navbar extends JPanel implements ActionListener {
             Audio.play("success_1.wav");
             Logging.logThis("User " + User.getUsername() + " has logged out");
             User.logOut();
+            MusicUpdate.setIndex(0);
+            MusicUpdate.setSongsList(Queries.getAllSongs());
             parent.changeFocus("ProfileView");
             JOptionPane.showMessageDialog(this, "U bent afgemeld");
         } else if (e.getSource() == jbHome) {

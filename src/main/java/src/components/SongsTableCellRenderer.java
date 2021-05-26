@@ -14,8 +14,7 @@ import java.awt.event.ActionListener;
 public class SongsTableCellRenderer extends AbstractCellEditor implements TableCellEditor, TableCellRenderer{
     private JButton jb;
 
-    public SongsTableCellRenderer() {
-    }
+    public SongsTableCellRenderer() {}
 
     @Override
     public Object getCellEditorValue() {

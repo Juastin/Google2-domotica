@@ -90,6 +90,10 @@ public class MusicMenuPlaylist extends JPanel implements ActionListener {
         add(top, BorderLayout.NORTH);
     }
 
+    public ArrayList<ArrayList<String>> getCurrentPlaylist() {
+        return playlistSongsList;
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
 
