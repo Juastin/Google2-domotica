@@ -16,20 +16,6 @@ import java.util.ArrayList;
 
 public class MusicPlayerView extends MusicPlayerController implements ActionListener {
     private JPanel jpTop, jpCenter, jpBottom, jpLeft, jpMiddle, jpRight;
-    private JButton jbList, jbPrevious, jbPlay, jbNext;
-    private JSlider jsPlayTime;
-    private JLabel jlTitle, jlCurrentPlayTime, jlMelodyLength;
-    private String currentPlayTime, melodyLength;
-    private static boolean playing=false;
-    private Songs song = new Songs();
-    private PlayMusic music = new PlayMusic();
-    private int currentnote=0;
-    private int lastnote=0;
-    private static int currentSong;
-    private static boolean playMusic = false;
-
-    private static MusicUpdate musicUpdate = new MusicUpdate();
-
 
     public MusicPlayerView(Container container, String name) {
         super(container, name);
@@ -146,34 +132,8 @@ public class MusicPlayerView extends MusicPlayerController implements ActionList
         updateSongInfoView();
     }
 
-
     @Override
     public void onShadow() {}
-
-
-    @Override
-    public void onTick(long now) {
-        try {jsPlayTime.setMaximum(music.getLengthNotes());
-        }catch (NullPointerException e){jsPlayTime.setMaximum(0);}
-
-        jsPlayTime.setValue(currentnote);
-
-        lastnote = music.getThisNote();
-        if(playing){
-            currentnote = music.getThisNote();
-        try {
-            music.sendnotes(song.getNummer1());
-        } catch (InterruptedException | IOException interruptedException) {interruptedException.printStackTrace();
-            }
-        }
-
-        if(!playing) {
-            try {
-                music.pause();
-            } catch (IOException interruptedException) {
-                interruptedException.printStackTrace();
-            }
-        }
 
     public void updateSongInfoView() {
         jlTitle.setText("<html><div style='text-align:center;'><p style='margin: 0; font-size: 4em'>♫</p><p style='margin: 0;font-size: 1.5em'>"+ MusicUpdate.getCurrentSongName() +"</p></div></html>");
