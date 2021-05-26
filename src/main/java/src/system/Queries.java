@@ -148,7 +148,8 @@ public class Queries {
             return null;
         }
     }
-  public static ArrayList<ArrayList<String>> getAllSongs() {
+    
+    public static ArrayList<ArrayList<String>> getAllSongs() {
         try {
             PreparedStatement myStmt = connection.prepareStatement("SELECT * FROM Song ORDER BY SongID ASC");
             ArrayList<ArrayList<String>> results = Database.query(myStmt);
