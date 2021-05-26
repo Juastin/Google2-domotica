@@ -24,7 +24,7 @@ public class SongsTableModel extends AbstractTableModel {
     }
 
     public boolean isCellEditable(int rowIndex, int columnIndex){
-        return columnIndex == 0; //Or whatever column index you want to be editable
+        return false; //Or whatever column index you want to be editable
     }
 
     @Override

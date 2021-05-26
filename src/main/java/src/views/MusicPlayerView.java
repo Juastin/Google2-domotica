@@ -65,7 +65,7 @@ public class MusicPlayerView extends MusicPlayerController implements ActionList
 
         // BOTTOM
         jpBottom = new JPanel();
-        jpBottom.setBorder(BorderFactory.createEmptyBorder(10, 50, 10, 50));
+        jpBottom.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
         jpBottom.setLayout(new BorderLayout());
         // COMPONENTS
         /* Panels */
@@ -75,12 +75,12 @@ public class MusicPlayerView extends MusicPlayerController implements ActionList
         jpRight.setPreferredSize(new Dimension(60, 0));
         /* Buttons */
         jbList = new MusicButton(this, "⋮☰", 30);
-        jbList.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
+        jbList.setBorder(BorderFactory.createEmptyBorder(12, 0, 0, 30));
         jbPrevious = new MusicButton(this, "⏮", 40);
         jbPlay = new MusicButton(this, "⏵", 40);
         jbNext = new MusicButton(this, "⏭", 40);
         /* Add */
-        jpLeft.add(jbList);
+        jpRight.add(jbList);
         jpMiddle.add(jbPrevious);
         jpMiddle.add(jbPlay);
         jpMiddle.add(jbNext);
@@ -99,7 +99,7 @@ public class MusicPlayerView extends MusicPlayerController implements ActionList
 
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == jbList) {
-            this.changeFocus("MusicMenuView");
+            changeFocus("MusicMenuView");
         }
         if (e.getSource() == jbPrevious) {
             MusicUpdate.previousSong();

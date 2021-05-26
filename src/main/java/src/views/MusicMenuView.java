@@ -10,22 +10,20 @@ import src.system.Queries;
 import src.system.User;
 import src.views.musicMenuPanels.MusicMenuNewPlaylist;
 import src.views.musicMenuPanels.MusicMenuPlaylist;
-import src.views.musicMenuPanels.MusicMenuQueue;
 import src.views.musicMenuPanels.MusicMenuSongs;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 import java.util.ArrayList;
 
 public class MusicMenuView extends MusicPlayerController implements ActionListener {
     private JPanel
             jpTop,
-            jpCenter, jpSongs, jpPlaylist, jpQueue, jpNewPlaylist,
+            jpCenter, jpSongs, jpPlaylist, jpNewPlaylist,
             jpBottom, jpMiddle, jpMiddleTop, jpMiddleBottom, jpRight;
-    private JButton jbSongs, jbPlaylist, jbQueue, jbNewPlaylist;
+    private JButton jbSongs, jbPlaylist, jbNewPlaylist;
     private Color customGray = new Color(250, 250, 250);
     private Color customGray2 = new Color(189, 188, 188);
 
@@ -52,15 +50,13 @@ public class MusicMenuView extends MusicPlayerController implements ActionListen
         jpTop.setBackground(customGray);
         // COMPONENTS
         jbSongs = new MusicMenuButton(this, "Nummers", 16);
-        jbPlaylist = new MusicMenuButton(this, "Afspeellijst nummers", 16);
-        jbQueue = new MusicMenuButton(this, "Afspeelwachtrij", 16);
+        jbPlaylist = new MusicMenuButton(this, "Afspeellijsten", 16);
         jbNewPlaylist = new MusicMenuButton(this, "➕ Nieuwe afspeellijst", 16);
         jbNewPlaylist.setBorderPainted(true);
         jbNewPlaylist.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, customGray2));
         /* Add */
         jpTop.add(jbSongs);
         jpTop.add(jbPlaylist);
-        jpTop.add(jbQueue);
         jpTop.add(jbNewPlaylist);
 
         // Center panel (changeable panels with the buttons in top bar panel)
@@ -135,6 +131,10 @@ public class MusicMenuView extends MusicPlayerController implements ActionListen
         jpBottom.add(jpRight);
         jpRight.add(jbList);
 
+        /* Add default visible panel */
+        jpSongs = new MusicMenuSongs();
+        changeMusicPanel(jpSongs);
+
         // LAYOUT
         main.add(jpTop, BorderLayout.NORTH);
         main.add(jpCenter, BorderLayout.CENTER);
@@ -150,22 +150,25 @@ public class MusicMenuView extends MusicPlayerController implements ActionListen
         if (e.getSource() == jbList) {
             this.changeFocus("MusicPlayerView");
         }
-        if (e.getSource() == jbPrevious) {
-            MusicUpdate.previousSong();
-            jbPlay.setText("⏸");
-        }
-        if (e.getSource() == jbPlay) {
-            if (!MusicUpdate.isPlaying()) {
+
+        if (!MusicUpdate.getSongsList().isEmpty()) {
+            if (e.getSource() == jbPrevious) {
+                MusicUpdate.previousSong();
                 jbPlay.setText("⏸");
-                MusicUpdate.setPlaying(true);
-            } else {
-                jbPlay.setText("⏵");
-                MusicUpdate.setPlaying(false);
             }
-        }
-        if (e.getSource() == jbNext) {
-            MusicUpdate.nextSong();
-            jbPlay.setText("⏸");
+            if (e.getSource() == jbPlay) {
+                if (!MusicUpdate.isPlaying()) {
+                    jbPlay.setText("⏸");
+                    MusicUpdate.setPlaying(true);
+                } else {
+                    jbPlay.setText("⏵");
+                    MusicUpdate.setPlaying(false);
+                }
+            }
+            if (e.getSource() == jbNext) {
+                MusicUpdate.nextSong();
+                jbPlay.setText("⏸");
+            }
         }
 
         // MUSIC PLAYER TAB BUTTONS
@@ -176,16 +179,14 @@ public class MusicMenuView extends MusicPlayerController implements ActionListen
         if (e.getSource() == jbPlaylist) {
             refreshPlaylistView();
         }
-        if (e.getSource() == jbQueue) {
-            jpQueue = new MusicMenuQueue();
-            changeMusicPanel(jpQueue);
-        }
         if (e.getSource() == jbNewPlaylist) {
             jpNewPlaylist = new MusicMenuNewPlaylist();
             changeMusicPanel(jpNewPlaylist);
             ((MusicMenuNewPlaylist)jpNewPlaylist).updateGUI();
         }
         updateSongInfoView();
+        repaint();
+        revalidate();
         Audio.play("click.wav");
     }
 
@@ -197,15 +198,14 @@ public class MusicMenuView extends MusicPlayerController implements ActionListen
             id = 0;
         }
         jpPlaylist = new MusicMenuPlaylist(this, id);
+        MusicUpdate.setSongsList(((MusicMenuPlaylist)jpPlaylist).getCurrentPlaylist());
         changeMusicPanel(jpPlaylist);
     }
 
     @Override
     public void onFocus(ArrayList<String> parameters) {
         jsPlayTime.setValue(MusicUpdate.getCurrentSongTime());
-        /* Add default visible panel */
-        jpSongs = new MusicMenuSongs();
-        changeMusicPanel(jpSongs);
+        
         if (MusicUpdate.isPlaying()) {
             jbPlay.setText("⏸");
         } else {
