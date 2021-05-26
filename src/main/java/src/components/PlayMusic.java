@@ -28,6 +28,7 @@ public class PlayMusic {
 
         if(thisNote < notes * 2&&System.currentTimeMillis()-vorigetijd>noteDuration) {
             thisNote = thisNote + 2;
+//            System.out.println(thisNote);
             // calculates the duration of each note
             try {
                 divider = melody[thisNote + 1];

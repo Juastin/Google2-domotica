@@ -2,6 +2,7 @@ package src.components;
 
 import src.components.MusicButton;
 import src.core.Audio;
+import src.views.MusicUpdate;
 
 import javax.swing.*;
 import javax.swing.table.TableCellEditor;

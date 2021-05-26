@@ -5,6 +5,7 @@ import src.views.*;
 public class Main {
     public static boolean enableLogging = false;
     public static boolean enableAudio = true;
+    public static boolean enableNotifications = true;
 
     public static void main(String[] args) {
         Frame frame = new Frame();
@@ -16,5 +17,6 @@ public class Main {
         frame.addView(new PersonalSettingsView(frame.getContainer(), "PersonalSettingsView"));
         frame.addView(new MusicPlayerView(frame.getContainer(), "MusicPlayerView"));
         frame.addView(new MusicMenuView(frame.getContainer(), "MusicMenuView"));
+        frame.addView(new GameScreenView(frame.getContainer(), "GameScreenView"));
     }
 }

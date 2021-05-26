@@ -1,7 +1,9 @@
 package src.core;
 
 import src.components.CButton;
+import src.system.Queries;
 import src.system.User;
+import src.views.MusicUpdate;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,7 +14,7 @@ import java.io.IOException;
 public class Navbar extends JPanel implements ActionListener {
     private View parent;
     private JButton jbLogOut, jbHome, jbMusic, jbGame,jbSettings;
-    private ProcessBuilder pb;
+    private static ProcessBuilder pb = new ProcessBuilder();
     private static Process gameProcess;
 
     public Navbar(View parent) {
@@ -55,11 +57,32 @@ public class Navbar extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        //Closes the game before it changes from panel.
+        if (parent.getName().equals("GameScreenView")) {
+            if (gameProcess.isAlive()) {
+                String confirmationText = "Weet u het zeker?\nDe game zal worden afgesloten.";
+                int choice = JOptionPane.showConfirmDialog(this.parent, confirmationText, "Afsluiten game", JOptionPane.YES_NO_OPTION);
+                if (choice == JOptionPane.YES_OPTION) {
+                    gameProcess.destroy();
+                    Arduino.comPort.openPort();
+                } else {
+                    return;
+                }
+            } else {
+                Arduino.comPort.openPort();
+            }
+        }
+
+        //Always pauses the music player before switching panels
+        MusicUpdate.setPlaying(false);
+        try {
+            MusicUpdate.getMusic().pause();
+        } catch (IOException ioException) {
+            ioException.printStackTrace();
+        }
+
         if (e.getSource() == jbLogOut) {
             Audio.play("success_1.wav");
-            if (gameProcess != null) {
-                gameProcess.destroy();
-            }
             Logging.logThis("User " + User.getUsername() + " has logged out");
             User.logOut();
             parent.changeFocus("ProfileView");
@@ -69,11 +92,10 @@ public class Navbar extends JPanel implements ActionListener {
         } else if (e.getSource() == jbMusic) {
             parent.changeFocus("MusicPlayerView");
         } else if (e.getSource() == jbGame) {
-            if (gameProcess != null) {
-                gameProcess.destroy();
-            }
-            pb = new ProcessBuilder("java", "-jar", "src/main/java/src/components/Temple-Run.jar", User.getUsername());
+            parent.changeFocus("GameScreenView");
+            pb.command("java", "-jar", "src/main/java/src/components/Temple-Run.jar", User.getUsername());
             try {
+                Arduino.comPort.closePort();
                 gameProcess = pb.start();
             } catch (IOException ioException) {
                 ioException.printStackTrace();
@@ -82,6 +104,7 @@ public class Navbar extends JPanel implements ActionListener {
         } else if (e.getSource() == jbSettings) {
             parent.changeFocus("PersonalSettingsView");
         }
+
         Audio.play("click.wav");
     }
 
