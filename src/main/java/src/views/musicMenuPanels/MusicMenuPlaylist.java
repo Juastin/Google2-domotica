@@ -7,6 +7,7 @@ import src.components.SongsTableModel;
 import src.core.Audio;
 import src.core.Logging;
 import src.views.MusicMenuView;
+import src.views.MusicUpdate;
 import src.system.Queries;
 import src.system.User;
 
@@ -54,7 +55,7 @@ public class MusicMenuPlaylist extends JPanel implements ActionListener {
             comboList.setEditable(false);
             top.add(comboList, BorderLayout.NORTH);
 
-            cbDeletePlaylist = new CButton(this, "Delete " + playlistData.get(0).get(1), Color.red, Color.white);
+            cbDeletePlaylist = new CButton(this, "Verwijder " + playlistData.get(0).get(1), Color.red, Color.white);
             top.add(cbDeletePlaylist, BorderLayout.NORTH);
 
             jlTitle.setText("Naam afspeellijst: ");
@@ -91,6 +92,7 @@ public class MusicMenuPlaylist extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+
         if (e.getSource() == comboList) {
             String option = (String) comboList.getSelectedItem();
             playlistSongsList = Queries.getPlaylistSongsList(option);
@@ -123,6 +125,11 @@ public class MusicMenuPlaylist extends JPanel implements ActionListener {
 
         if (e.getSource() == toNewPlaylist) {
             parent.onFocus(new ArrayList<String>(Arrays.asList("show jpNewPlaylist")));
+        }
+
+        if (!MusicUpdate.getSongsList().equals(playlistSongsList)) {
+            MusicUpdate.setIndex(0);
+            MusicUpdate.setSongsList(playlistSongsList);
         }
 
         revalidate();

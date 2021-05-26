@@ -79,6 +79,10 @@ public class MusicUpdate {
         return songsList;
     }
 
+    public static void setSongsList(ArrayList<ArrayList<String>> new_list) {
+        songsList = new_list;
+    }
+
     public static PlayMusic getMusic() {
         return music;
     }
@@ -89,5 +93,9 @@ public class MusicUpdate {
 
     public static Songs getSong() {
         return song;
+    }
+
+    public static void setIndex(int new_index) {
+        currentIndex = new_index;
     }
 }
