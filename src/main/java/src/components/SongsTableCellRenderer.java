@@ -24,21 +24,25 @@ public class SongsTableCellRenderer extends AbstractCellEditor implements TableC
 
     @Override
     public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-        jb = new MusicButton("⏵", 20);
+        String tag;
+        if (MusicUpdate.getIndex()==row) {
+            if (MusicUpdate.isPlaying()) {
+                tag = "⏸";
+            } else {
+                tag = "⏵";
+            }
+        } else {
+            tag = "";
+        }
+
+        jb = new MusicButton(tag, 20);
         return jb;
     }
 
     @Override
     public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
-        jb = new MusicButton("⏵", 20);
-        jb.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                int row = table.getSelectedRow();
-                System.out.printf("\nSong: %s\n" + "SongId: %s%n", table.getValueAt(row, 1), table.getValueAt(row, 0));
-                Audio.play("click.wav");
-            }
-        });
+        String tag = (MusicUpdate.getIndex()==row) ? "⏸" : "";
+        jb = new MusicButton(tag, 20);
         return jb;
     }
 

@@ -98,4 +98,8 @@ public class MusicUpdate {
     public static void setIndex(int new_index) {
         currentIndex = new_index;
     }
+
+    public static int getIndex() {
+        return currentIndex;
+    }
 }

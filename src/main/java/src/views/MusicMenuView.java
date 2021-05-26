@@ -178,6 +178,8 @@ public class MusicMenuView extends MusicPlayerController implements ActionListen
             ((MusicMenuNewPlaylist)jpNewPlaylist).updateGUI();
         }
         updateSongInfoView();
+        repaint();
+        revalidate();
         Audio.play("click.wav");
     }
 
