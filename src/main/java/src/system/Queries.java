@@ -173,8 +173,9 @@ public class Queries {
 
     public static ArrayList<ArrayList<String>> getPlaylistSongsList(int id) {
         try {
-            PreparedStatement myStmt = connection.prepareStatement("SELECT * FROM Song s JOIN LinkedSong ls ON s.SongID = ls.SongID WHERE PlaylistID = ? ORDER BY ls.LinkedSongID ASC");
+            PreparedStatement myStmt = connection.prepareStatement("SELECT s.SongID, s.SongName, s.Duration FROM Song s JOIN LinkedSong ls ON s.SongID = ls.SongID JOIN Playlist p ON ls.PlaylistID = p.PlaylistID WHERE  ls.PlaylistID = ? AND p.PersonalSettingsID = ? ORDER BY ls.LinkedSongID ASC");
             myStmt.setInt(1, id);
+            myStmt.setInt(2, User.getSettingsID());
             ArrayList<ArrayList<String>> results = Database.query(myStmt);
             return results;
         } catch (Exception ex) {
