@@ -9,7 +9,6 @@ import java.util.ArrayList;
 public class MusicUpdate {
     private static ArrayList<ArrayList<String>> songsList = Queries.getAllSongs();
     private static int currentIndex = 0;
-
     private static ArrayList<String> firstSong = songsList.get(currentIndex);
     private static String currentSongName = firstSong.get(1);
     private static int currentSongID = Integer.parseInt(firstSong.get(0));

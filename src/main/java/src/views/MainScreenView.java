@@ -157,17 +157,20 @@ public class MainScreenView extends View implements ActionListener {
         if (source == mbList) {
             this.changeFocus("MusicMenuView");
         }
-        if (source == mbPrevious) {
-            MusicUpdate.previousSong();
-            changeFocus("MusicPlayerView");
-        }
-        if (source == mbPlay) {
-            MusicUpdate.setPlaying(true);
-            changeFocus("MusicPlayerView");
-        }
-        if (source == mbNext) {
-            MusicUpdate.nextSong();
-            changeFocus("MusicPlayerView");
+
+        if (!MusicUpdate.getSongsList().isEmpty()) {
+            if (source == mbPrevious) {
+                MusicUpdate.previousSong();
+                changeFocus("MusicPlayerView");
+            }
+            if (source == mbPlay) {
+                MusicUpdate.setPlaying(true);
+                changeFocus("MusicPlayerView");
+            }
+            if (source == mbNext) {
+                MusicUpdate.nextSong();
+                changeFocus("MusicPlayerView");
+            }
         }
 
         Audio.play("click.wav");

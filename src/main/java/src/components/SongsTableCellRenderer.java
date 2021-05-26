@@ -35,6 +35,7 @@ public class SongsTableCellRenderer extends AbstractCellEditor implements TableC
         }
 
         jb = new MusicButton(tag, 20);
+        ((JButton)jb).setForeground(Color.gray);
         return jb;
     }
 

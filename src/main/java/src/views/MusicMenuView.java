@@ -50,7 +50,7 @@ public class MusicMenuView extends MusicPlayerController implements ActionListen
         jpTop.setBackground(customGray);
         // COMPONENTS
         jbSongs = new MusicMenuButton(this, "Nummers", 16);
-        jbPlaylist = new MusicMenuButton(this, "Afspeellijst nummers", 16);
+        jbPlaylist = new MusicMenuButton(this, "Afspeellijsten", 16);
         jbNewPlaylist = new MusicMenuButton(this, "➕ Nieuwe afspeellijst", 16);
         jbNewPlaylist.setBorderPainted(true);
         jbNewPlaylist.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, customGray2));
@@ -146,22 +146,25 @@ public class MusicMenuView extends MusicPlayerController implements ActionListen
         if (e.getSource() == jbList) {
             this.changeFocus("MusicPlayerView");
         }
-        if (e.getSource() == jbPrevious) {
-            MusicUpdate.previousSong();
-            jbPlay.setText("⏸");
-        }
-        if (e.getSource() == jbPlay) {
-            if (!MusicUpdate.isPlaying()) {
+
+        if (!MusicUpdate.getSongsList().isEmpty()) {
+            if (e.getSource() == jbPrevious) {
+                MusicUpdate.previousSong();
                 jbPlay.setText("⏸");
-                MusicUpdate.setPlaying(true);
-            } else {
-                jbPlay.setText("⏵");
-                MusicUpdate.setPlaying(false);
             }
-        }
-        if (e.getSource() == jbNext) {
-            MusicUpdate.nextSong();
-            jbPlay.setText("⏸");
+            if (e.getSource() == jbPlay) {
+                if (!MusicUpdate.isPlaying()) {
+                    jbPlay.setText("⏸");
+                    MusicUpdate.setPlaying(true);
+                } else {
+                    jbPlay.setText("⏵");
+                    MusicUpdate.setPlaying(false);
+                }
+            }
+            if (e.getSource() == jbNext) {
+                MusicUpdate.nextSong();
+                jbPlay.setText("⏸");
+            }
         }
 
         // MUSIC PLAYER TAB BUTTONS
