@@ -353,7 +353,7 @@ public class Songs {
             NOTE_A4,4, NOTE_F4,-8, NOTE_C5,16, NOTE_A4,2,
 
     }, {
-            NOTE_A5, 1, REST, 4, NOTE_G5, 4, NOTE_A5, 4, NOTE_C6, 1, REST, 4, REST, 4, REST, 4, NOTE_A5, 2,
+            REST, 1, NOTE_A5, 1, REST, 4, NOTE_G5, 4, NOTE_A5, 4, NOTE_C6, 1, REST, 4, REST, 4, REST, 4, NOTE_A5, 2,
             NOTE_G5, 1, REST, 4, NOTE_F5, 4, NOTE_G5, 4, NOTE_E5, 1, REST, 2, NOTE_C5, 4, NOTE_D5, 4, NOTE_E5, 4
     }
     };
