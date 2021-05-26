@@ -46,6 +46,8 @@ public class MusicMenuSongs extends JPanel {
             }
         }
         */
+        MusicUpdate.setIndex(0);
+        MusicUpdate.setSongsList(Queries.getAllSongs());
 
         // Table songs
         songsList = MusicUpdate.getSongsList();
