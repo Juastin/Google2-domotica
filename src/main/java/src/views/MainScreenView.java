@@ -93,11 +93,11 @@ public class MainScreenView extends View implements ActionListener {
         toolbar.setLayout(new BorderLayout());
         toolbar.setBorder(new EmptyBorder(0, 10, 10, 10));
         mbList = new MusicButton(this, "⋮☰", 20);
-        mbList.setBorder(new EmptyBorder(0, 13, 0, 0));
-        toolbar.add(mbList, BorderLayout.WEST);
+        mbList.setBorder(new EmptyBorder(0, 0, 0, 13));
+        toolbar.add(mbList, BorderLayout.EAST);
         JPanel toolbarCenter = new JPanel();
         toolbarCenter.setLayout(new GridBagLayout());
-        toolbarCenter.setBorder(new EmptyBorder(0, 0, 4, 35));
+        toolbarCenter.setBorder(new EmptyBorder(0, 35, 4, 0));
         mbPrevious = new MusicButton(this, "⏮", 30);
         toolbarCenter.add(mbPrevious);
         mbPlay = new MusicButton(this, "⏵", 30);

@@ -131,6 +131,10 @@ public class MusicMenuView extends MusicPlayerController implements ActionListen
         jpBottom.add(jpRight);
         jpRight.add(jbList);
 
+        /* Add default visible panel */
+        jpSongs = new MusicMenuSongs();
+        changeMusicPanel(jpSongs);
+
         // LAYOUT
         main.add(jpTop, BorderLayout.NORTH);
         main.add(jpCenter, BorderLayout.CENTER);
@@ -201,9 +205,7 @@ public class MusicMenuView extends MusicPlayerController implements ActionListen
     @Override
     public void onFocus(ArrayList<String> parameters) {
         jsPlayTime.setValue(MusicUpdate.getCurrentSongTime());
-        /* Add default visible panel */
-        jpSongs = new MusicMenuSongs();
-        changeMusicPanel(jpSongs);
+        
         if (MusicUpdate.isPlaying()) {
             jbPlay.setText("⏸");
         } else {
