@@ -72,10 +72,10 @@ public class MusicPlayerView extends MusicPlayerController implements ActionList
         jpLeft = new JPanel();
         jpMiddle = new JPanel();
         jpRight = new JPanel();
-        jpRight.setPreferredSize(new Dimension(60, 0));
+        jpLeft.setPreferredSize(new Dimension(69, 0));
         /* Buttons */
         jbList = new MusicButton(this, "⋮☰", 30);
-        jbList.setBorder(BorderFactory.createEmptyBorder(12, 0, 0, 30));
+        jbList.setBorder(BorderFactory.createEmptyBorder(12, 0, 0, 21));
         jbPrevious = new MusicButton(this, "⏮", 40);
         jbPlay = new MusicButton(this, "⏵", 40);
         jbNext = new MusicButton(this, "⏭", 40);
