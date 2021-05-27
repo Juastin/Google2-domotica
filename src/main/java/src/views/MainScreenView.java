@@ -134,12 +134,18 @@ public class MainScreenView extends View implements ActionListener {
         jlLightSmall.setText("🔆 " + User.getLight() + "%");
 
         // If statements to show if heating and light is on.
-        if (Integer.parseInt(data.get(0).get(1)) < User.getTemperature()) {
+        System.out.println(Integer.parseInt(data.get(0).get(0)));
+        if (Integer.parseInt(data.get(0).get(0)) < User.getTemperature()) {
             jlHeating.setForeground(Color.RED);
+        } else {
+            jlHeating.setForeground(Color.black);
         }
+
         if (Queries.getEndpercentage() != 0) {
             if (Queries.getEndpercentage() < User.getLight()) {
                 jlLightSmall.setForeground(Color.BLUE);
+            } else {
+                jlLightSmall.setForeground(Color.black);
             }
         }
     }
