@@ -26,7 +26,6 @@ public class MusicMenuView extends MusicPlayerController implements ActionListen
     private JButton jbSongs, jbPlaylist, jbNewPlaylist;
     private Color customGray = new Color(250, 250, 250);
     private Color customGray2 = new Color(189, 188, 188);
-
     private int id;
     private String name;
 
