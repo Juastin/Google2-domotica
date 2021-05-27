@@ -130,7 +130,8 @@ public class MusicMenuNewPlaylist extends JPanel implements ActionListener {
             JLabel title = new JLabel(song.get(1));
             title.setBorder(new EmptyBorder(0, 10, 0, 0));
             title.setPreferredSize(new Dimension(fw2, height));
-            JLabel length = new JLabel(song.get(2));
+            int duration = Integer.parseInt(song.get(2)) / 2;
+            JLabel length = new JLabel(String.valueOf(duration));
             length.setPreferredSize(new Dimension(fw3, height));
             bar.add(button);
             bar.add(title);
@@ -149,7 +150,8 @@ public class MusicMenuNewPlaylist extends JPanel implements ActionListener {
             JLabel title = new JLabel(song.get(1));
             title.setBorder(new EmptyBorder(0, 10, 0, 0));
             title.setPreferredSize(new Dimension(fw2, height));
-            JLabel length = new JLabel(song.get(2));
+            int duration = Integer.parseInt(song.get(2)) / 2;
+            JLabel length = new JLabel(String.valueOf(duration));
             length.setPreferredSize(new Dimension(fw3, height));
             bar.add(button);
             bar.add(title);

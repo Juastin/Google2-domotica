@@ -2,6 +2,7 @@ package src.components;
 import java.lang.*;
 
 import src.core.Arduino;
+import src.views.MusicUpdate;
 
 import java.io.IOException;
 
@@ -24,9 +25,8 @@ public class PlayMusic {
         int notes = melody.length;
         totalnotes = notes;
 
-        if(thisNote < notes * 2&&System.currentTimeMillis()- lasttime >noteDuration) {
+        if (thisNote < notes * 2 && System.currentTimeMillis() - lasttime > noteDuration) {
             thisNote = thisNote + 2;
-//            System.out.println(thisNote);
             // calculates the duration of each note
             try {
                 divider = melody[thisNote + 1];
@@ -49,6 +49,7 @@ public class PlayMusic {
             } catch (ArrayIndexOutOfBoundsException e) {
                 note = 0;
                 thisNote = 0;
+                MusicUpdate.nextSong();
             }
             ar.getoutputstream(note);
             // Wait for the specief duration before playing the next note.

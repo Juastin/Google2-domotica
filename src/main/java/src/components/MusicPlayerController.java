@@ -24,25 +24,30 @@ public abstract class MusicPlayerController extends View {
 
     public void onTick(long now) {
 
-        try {jsPlayTime.setMaximum(MusicUpdate.getMusic().getLengthNotes());
-        }catch (NullPointerException e){jsPlayTime.setMaximum(0);}
-        jsPlayTime.setValue(currentnote);
+        if (0 == MusicUpdate.getMusic().getThisNote()) {
+            updateSongInfoView();
+            repaint();
+        }
 
-        if(MusicUpdate.isPlaying()){
-            currentnote = MusicUpdate.getMusic().getThisNote();
+        if (MusicUpdate.isPlaying()){
+            currentnote = MusicUpdate.getMusic().getThisNote()/2;
+            MusicUpdate.setCurrentSongTime(currentnote);
+            jsPlayTime.setValue(MusicUpdate.getCurrentSongTime());
             try {
                 Integer[] song = MusicUpdate.getSong().getMelody(MusicUpdate.getCurrentSongID());
                 MusicUpdate.getMusic().sendnotes(song);
             } catch (InterruptedException | IOException interruptedException) {
                 interruptedException.printStackTrace();
             }
-        } if(!MusicUpdate.isPlaying()) {
+        } else if (!MusicUpdate.isPlaying()) {
             try {
                 MusicUpdate.getMusic().pause();
             } catch (IOException interruptedException) {
                 interruptedException.printStackTrace();
             }
         }
+
+
     }
 
     public abstract void updateSongInfoView();
