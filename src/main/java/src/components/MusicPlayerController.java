@@ -26,6 +26,7 @@ public abstract class MusicPlayerController extends View {
 
         if (0 == MusicUpdate.getMusic().getThisNote()) {
             updateSongInfoView();
+            repaint();
         }
 
         try {
