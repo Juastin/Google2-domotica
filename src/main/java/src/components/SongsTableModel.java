@@ -33,7 +33,9 @@ public class SongsTableModel extends AbstractTableModel {
         switch(columnIndex) {
             case 0: return song.get(0);
             case 1: return song.get(1);
-            case 2: return song.get(2);
+            case 2:
+                int duration = Integer.parseInt(song.get(2)) / 2;
+                return duration;
             default: return null;
         }
     }

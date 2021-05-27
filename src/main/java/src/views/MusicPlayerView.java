@@ -49,13 +49,12 @@ public class MusicPlayerView extends MusicPlayerController implements ActionList
         jsPlayTime = new JSlider(JSlider.HORIZONTAL, 0);
         jsPlayTime.setMinorTickSpacing(1);
         jsPlayTime.setSnapToTicks(true);
-//        jsPlayTime.setEnabled(false);
+        jsPlayTime.setEnabled(false);
         jsPlayTime.addChangeListener(e -> {
-            currentPlayTime = String.format("%02d:%02d", (int) Math.floor(jsPlayTime.getValue() / 60), jsPlayTime.getValue() - (int) Math.floor(jsPlayTime.getValue() / 60) * 60);
+            currentPlayTime = String.valueOf(jsPlayTime.getValue());
             jlCurrentPlayTime.setText(currentPlayTime);
         });
-        melodyLength = String.format("%02d:%02d", (int) Math.floor(jsPlayTime.getMaximum() / 60), jsPlayTime.getMaximum() - (int) Math.floor(jsPlayTime.getMaximum() / 60) * 60);
-        currentPlayTime = String.format("%02d:%02d", (int) Math.floor(jsPlayTime.getValue() / 60), jsPlayTime.getValue() - (int) Math.floor(jsPlayTime.getValue() / 60) * 60);
+        melodyLength = String.valueOf(jsPlayTime.getMaximum());
         jlCurrentPlayTime = new JLabel(String.valueOf(currentPlayTime));
         jlMelodyLength = new JLabel(melodyLength);
         /* Add */
@@ -138,7 +137,7 @@ public class MusicPlayerView extends MusicPlayerController implements ActionList
     public void updateSongInfoView() {
         jlTitle.setText("<html><div style='text-align:center;'><p style='margin: 0; font-size: 4em'>♫</p><p style='margin: 0;font-size: 1.5em'>"+ MusicUpdate.getCurrentSongName() +"</p></div></html>");
         jsPlayTime.setMaximum(MusicUpdate.getCurrentSongDuration());
-        melodyLength = String.format("%02d:%02d", (int) Math.floor(jsPlayTime.getMaximum() / 60), jsPlayTime.getMaximum() - (int) Math.floor(jsPlayTime.getMaximum() / 60) * 60);
+        melodyLength = String.valueOf(jsPlayTime.getMaximum());
         jlMelodyLength.setText(melodyLength);
         jsPlayTime.setValue(MusicUpdate.getCurrentSongTime());
 
