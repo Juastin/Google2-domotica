@@ -47,11 +47,9 @@ public class Database {
                 }
                 result.add(result_part);
             }
-        } catch (SQLNonTransientConnectionException ex) {
-            System.out.println("Client lost connection");
         } catch (Exception ex) {
-            ex.printStackTrace();
-            System.out.println(ex);
+            maakVerbinding();
+            System.out.println("Database.java: Connection reset");
         } finally {
             try {
                 if (myRs != null) {myRs.close();}
