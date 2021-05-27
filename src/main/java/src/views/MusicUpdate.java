@@ -12,7 +12,7 @@ public class MusicUpdate {
     private static ArrayList<String> firstSong = songsList.get(currentIndex);
     private static String currentSongName = firstSong.get(1);
     private static int currentSongID = Integer.parseInt(firstSong.get(0));
-    private static int currentSongDuration = Integer.parseInt(firstSong.get(2));
+    private static int currentSongDuration = Integer.parseInt(firstSong.get(2))/2;
     private static boolean isPlaying = false;
     private static int currentSongTime = 0;
     private static PlayMusic music = new PlayMusic();
@@ -44,7 +44,7 @@ public class MusicUpdate {
         ArrayList<String> setSong = songsList.get(currentIndex);
         currentSongID = Integer.parseInt(setSong.get(0));
         currentSongName = setSong.get(1);
-        currentSongDuration = Integer.parseInt(setSong.get(2));
+        currentSongDuration = Integer.parseInt(setSong.get(2))/2;
         currentSongTime = 0;
         music = new PlayMusic();
         System.out.printf("\n===Song playing===\n" +
@@ -100,5 +100,9 @@ public class MusicUpdate {
 
     public static int getIndex() {
         return currentIndex;
+    }
+
+    public static void setCurrentSongTime(int currentSongTime) {
+        MusicUpdate.currentSongTime = currentSongTime;
     }
 }

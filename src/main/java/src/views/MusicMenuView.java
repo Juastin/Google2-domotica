@@ -93,13 +93,12 @@ public class MusicMenuView extends MusicPlayerController implements ActionListen
         jsPlayTime.setBackground(customGray);
         jsPlayTime.setMinorTickSpacing(1);
         jsPlayTime.setSnapToTicks(true);
-//        jsPlayTime.setEnabled(false);
+        jsPlayTime.setEnabled(false);
         jsPlayTime.addChangeListener(e -> {
-            currentPlayTime = String.format("%02d:%02d", (int) Math.floor(jsPlayTime.getValue() / 60), jsPlayTime.getValue() - (int) Math.floor(jsPlayTime.getValue() / 60) * 60);
+            currentPlayTime = String.valueOf(jsPlayTime.getValue());
             jlCurrentPlayTime.setText(currentPlayTime);
         });
-        melodyLength = String.format("%02d:%02d", (int) Math.floor(jsPlayTime.getMaximum() / 60), jsPlayTime.getMaximum() - (int) Math.floor(jsPlayTime.getMaximum() / 60) * 60);
-        currentPlayTime = String.format("%02d:%02d", (int) Math.floor(jsPlayTime.getValue() / 60), jsPlayTime.getValue() - (int) Math.floor(jsPlayTime.getValue() / 60) * 60);
+        melodyLength = String.valueOf(jsPlayTime.getMaximum());
         jlCurrentPlayTime = new JLabel(String.valueOf(currentPlayTime));
         jlMelodyLength = new JLabel(melodyLength);
         jlCurrentPlayTime.setPreferredSize(new Dimension(30,0));
@@ -237,7 +236,7 @@ public class MusicMenuView extends MusicPlayerController implements ActionListen
     public void updateSongInfoView() {
         jlTitle.setText("♫ " + MusicUpdate.getCurrentSongName());
         jsPlayTime.setMaximum(MusicUpdate.getCurrentSongDuration());
-        melodyLength = String.format("%02d:%02d", (int) Math.floor(jsPlayTime.getMaximum() / 60), jsPlayTime.getMaximum() - (int) Math.floor(jsPlayTime.getMaximum() / 60) * 60);
+        melodyLength = String.valueOf(jsPlayTime.getMaximum());
         jlMelodyLength.setText(melodyLength);
         jsPlayTime.setValue(MusicUpdate.getCurrentSongTime());
     }
