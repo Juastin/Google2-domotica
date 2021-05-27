@@ -1,11 +1,9 @@
 package src.components;
 import java.lang.*;
-import com.fazecast.jSerialComm.SerialPort;
+
 import src.core.Arduino;
-import src.views.MusicPlayerView;
 
 import java.io.IOException;
-import java.lang.reflect.Array;
 
 
 public class PlayMusic {
@@ -15,7 +13,8 @@ public class PlayMusic {
     private int tempo=40;
     private int wholenote = (6000*4)/tempo;
     private int thisNote = 0;
-    private long vorigetijd =0;
+    private long lasttime =0;
+    private int totalnotes=0;
 
     public PlayMusic(){}
 
@@ -23,8 +22,9 @@ public class PlayMusic {
 
     public void sendnotes(Integer[] melody) throws InterruptedException, IOException {
         int notes = melody.length;
+        totalnotes = notes;
 
-        if(thisNote < notes * 2&&System.currentTimeMillis()-vorigetijd>noteDuration) {
+        if(thisNote < notes * 2&&System.currentTimeMillis()- lasttime >noteDuration) {
             thisNote = thisNote + 2;
 //            System.out.println(thisNote);
             // calculates the duration of each note
@@ -53,10 +53,18 @@ public class PlayMusic {
             ar.getoutputstream(note);
             // Wait for the specief duration before playing the next note.
             // stop the waveform generation before the next note.
-            vorigetijd = System.currentTimeMillis();
+            lasttime = System.currentTimeMillis();
         }
     }
     public void pause() throws IOException {
         ar.getoutputstream(0);
+    }
+
+    public int getLengthNotes(){
+        return totalnotes;
+    }
+
+    public int getThisNote() {
+        return thisNote;
     }
 }

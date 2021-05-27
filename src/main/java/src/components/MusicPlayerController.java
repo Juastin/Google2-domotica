@@ -16,13 +16,20 @@ public abstract class MusicPlayerController extends View {
     protected JLabel jlTitle, jlCurrentPlayTime, jlMelodyLength;
     protected String currentPlayTime, melodyLength;
     protected JSlider jsPlayTime;
+    private int currentnote=0;
 
     public MusicPlayerController(Container parent, String name) {
         super(parent, name);
     }
 
     public void onTick(long now) {
+
+        try {jsPlayTime.setMaximum(MusicUpdate.getMusic().getLengthNotes());
+        }catch (NullPointerException e){jsPlayTime.setMaximum(0);}
+        jsPlayTime.setValue(currentnote);
+
         if(MusicUpdate.isPlaying()){
+            currentnote = MusicUpdate.getMusic().getThisNote();
             try {
                 Integer[] song = MusicUpdate.getSong().getMelody(MusicUpdate.getCurrentSongID());
                 MusicUpdate.getMusic().sendnotes(song);
