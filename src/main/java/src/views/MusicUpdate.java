@@ -41,6 +41,7 @@ public class MusicUpdate {
     }
 
     public static void setSong(int currentIndex) {
+        try {
         ArrayList<String> setSong = songsList.get(currentIndex);
         currentSongID = Integer.parseInt(setSong.get(0));
         currentSongName = setSong.get(1);
@@ -51,7 +52,7 @@ public class MusicUpdate {
                 "Id: %s\n" +
                 "Name: %s\n" +
                 "Duration: %ss\n" +
-                "==================\n", currentSongID, currentSongName, currentSongDuration);
+                "==================\n", currentSongID, currentSongName, currentSongDuration);}catch (IndexOutOfBoundsException ignore){}
     }
 
     public static boolean isPlaying() {
