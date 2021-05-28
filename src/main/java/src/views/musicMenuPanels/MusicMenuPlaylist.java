@@ -34,6 +34,7 @@ public class MusicMenuPlaylist extends JPanel implements ActionListener {
         this.parent = parent;
         setVisible(false);
         setLayout(new BorderLayout());
+        MusicUpdate.setIndex(0);
 
         playlistSongsList = Queries.getPlaylistSongsList(id);
         playlistData = Queries.getPlaylistData(User.getUsername());

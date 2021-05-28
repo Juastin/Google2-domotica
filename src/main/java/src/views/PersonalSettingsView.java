@@ -165,6 +165,8 @@ public class PersonalSettingsView extends View implements ActionListener, Change
                 }
             }
         }
+        jsLightIntensity.setValue(User.getLight());
+        smHeatingValue.setValue(User.getTemperature());
         Audio.play("click.wav");
     }
 
