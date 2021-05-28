@@ -51,11 +51,18 @@ public class Arduino {
         openport();
         if(isportopen){
         String digit = ""+value;
-            try {
-                for(int i=0;i<=digit.length();i++){
-                    comPort.getOutputStream().write(digit.charAt(i));}
-            }catch (StringIndexOutOfBoundsException ignored){}
-
+        if(value>999){
+            comPort.getOutputStream().write(digit.charAt(0));
+            comPort.getOutputStream().write(digit.charAt(1));
+            comPort.getOutputStream().write(digit.charAt(2));
+            comPort.getOutputStream().write(digit.charAt(3));
+        }
+        else if(value>254){
+            comPort.getOutputStream().write(digit.charAt(0));
+            comPort.getOutputStream().write(digit.charAt(1));
+            comPort.getOutputStream().write(digit.charAt(2));
+        }
+        else {comPort.getOutputStream().write(value);}
         comPort.getOutputStream().write('X');
     }}
 }
