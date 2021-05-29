@@ -4,6 +4,8 @@ import javax.swing.*;
 import javax.swing.plaf.metal.MetalSliderUI;
 import java.awt.event.MouseEvent;
 
+// source: https://java-swing-tips.blogspot.com/2015/10/display-tooltip-while-dragging-jslider.html
+
 public class MetalSlider extends MetalSliderUI {
 
     public TrackListener createTrackListener(JSlider slider) {

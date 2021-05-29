@@ -185,7 +185,6 @@ public class Queries {
         }
     }
 
-    // Not complete
     public static ArrayList<ArrayList<String>> getPlaylistSongsList(String playlistname) {
         try {
             PreparedStatement myStmt = connection.prepareStatement("SELECT s.SongID, s.SongName, s.Duration FROM Song s JOIN LinkedSong ls ON s.SongID = ls.SongID JOIN Playlist p ON p.PlaylistID = ls.PlaylistID WHERE p.PlaylistName = ? AND p.PersonalSettingsID = ? ORDER BY ls.LinkedSongID ASC");
